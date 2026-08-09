@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>堺 崇行 — Takayuki Sakai</title>
+<style>
+  :root{
+    --paper:#faf9f5;
+    --ink:#201d18;
+    --soft:#8b857a;
+    --line:#e7e2d7;
+    --gut:clamp(22px,6vw,88px);
+    --mincho:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif;
+    --gothic:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:var(--gothic);
+    line-height:2;letter-spacing:.02em;-webkit-font-smoothing:antialiased}
+  body[data-lang="ja"] .en{display:none}
+  body[data-lang="en"] .ja{display:none}
+  a{color:inherit}
+  img{max-width:100%;display:block}
+
+  .top{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;
+    align-items:baseline;padding:20px var(--gut);
+    background:linear-gradient(to bottom,rgba(250,249,245,.95) 50%,rgba(250,249,245,0))}
+  .top .nm{font-family:var(--mincho);font-size:15px;letter-spacing:.14em}
+  .top .nav{display:flex;gap:24px;font-size:11px;letter-spacing:.22em;color:var(--soft);align-items:baseline}
+  .top .nav a{text-decoration:none}
+  .top .nav a:hover{color:var(--ink)}
+  .top .nav button{font:inherit;font-size:11px;letter-spacing:.22em;color:var(--soft);
+    background:none;border:1px solid var(--line);border-radius:999px;padding:4px 12px;cursor:pointer}
+  .top .nav button:hover{color:var(--ink);border-color:var(--soft)}
+
+  .wrap{max-width:920px;margin:0 auto;padding:0 var(--gut)}
+
+  /* hero */
+  .hero{min-height:72svh;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:9vh}
+  .hero .role{font-size:11px;letter-spacing:.3em;color:var(--soft);margin-bottom:26px;text-transform:uppercase}
+  .hero h1{font-family:var(--mincho);font-weight:500;font-size:clamp(44px,10.5vw,112px);
+    line-height:1.12;letter-spacing:.1em}
+  .hero .sub{margin-top:16px;font-family:var(--mincho);font-size:13px;letter-spacing:.24em;color:var(--soft)}
+
+  section{padding:11vh 0 3vh}
+  .seclabel{font-size:11px;letter-spacing:.34em;color:var(--soft);margin-bottom:8vh;
+    display:flex;align-items:center;gap:16px}
+  .seclabel::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  /* works */
+  .work{padding:8vh 0}
+  .work + .work{border-top:1px solid var(--line)}
+  .work .img{background:#eeeae0;border:1px solid var(--line)}
+  .work .img img{width:100%;height:auto}
+  a.worklink{text-decoration:none;display:block}
+  a.worklink:hover h2{opacity:.55}
+  .cap{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+    margin-top:18px;flex-wrap:wrap}
+  .cap h2{font-family:var(--mincho);font-size:clamp(20px,2.6vw,28px);font-weight:600;letter-spacing:.05em;transition:opacity .3s}
+  .cap .yr{font-size:12px;letter-spacing:.14em;color:var(--soft)}
+  .desc{margin-top:8px;font-size:14px;color:#45403a;max-width:38em}
+  .fact{margin-top:10px;font-size:11.5px;line-height:1.9;letter-spacing:.05em;color:var(--soft);max-width:44em}
+  .fact a{color:var(--soft)}
+  .more{display:inline-block;margin-top:16px;font-size:12px;letter-spacing:.14em;
+    text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:7px 18px}
+  .more:hover{border-color:var(--soft)}
+
+  /* concept quote on card */
+  .said{margin-top:30px;max-width:36em}
+  .said .who{font-size:10.5px;letter-spacing:.26em;color:var(--soft);margin-bottom:12px}
+  .said .q{font-family:var(--mincho);font-size:15.5px;line-height:2.3;letter-spacing:.05em;
+    border-left:1px solid var(--line);padding-left:20px;white-space:pre-line}
+  .said .q.qen{font-size:14px;line-height:2;font-style:italic}
+
+  .rowline{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:baseline;
+    padding:20px 0;border-top:1px solid var(--line);font-size:14px}
+  .rowline:last-of-type{border-bottom:1px solid var(--line)}
+  .rowline .t{font-family:var(--mincho);font-size:16px;letter-spacing:.04em}
+  .rowline .t a{text-decoration:none;border-bottom:1px solid var(--line)}
+  .rowline .d{color:var(--soft);font-size:12px;letter-spacing:.1em;text-align:right}
+  .rowline .n{grid-column:1/-1;color:#45403a;font-size:13px;margin-top:-6px}
+
+  /* work detail overlays (:target routing) */
+  .detail{display:none}
+  .detail:target{display:block;position:fixed;inset:0;z-index:90;background:var(--paper);
+    overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .dwrap{max-width:720px;margin:0 auto;padding:80px var(--gut) 120px}
+  .back{display:inline-block;font-size:12px;letter-spacing:.18em;color:var(--soft);
+    text-decoration:none;margin-bottom:7vh}
+  .back:hover{color:var(--ink)}
+  .detail h2{font-family:var(--mincho);font-size:clamp(26px,4.5vw,40px);font-weight:600;letter-spacing:.05em}
+  .detail .dyr{font-size:12px;letter-spacing:.16em;color:var(--soft);margin:8px 0 26px}
+  .detail .fact{margin-bottom:5vh}
+  .dbody p{font-family:var(--mincho);font-size:15px;line-height:2.4;letter-spacing:.05em;
+    color:#2b2721;margin-bottom:1.8em}
+  .dbody p.den{font-size:14px;line-height:2.1;letter-spacing:.02em}
+  .dlabel{font-size:10.5px;letter-spacing:.26em;color:var(--soft);margin:5vh 0 2vh}
+
+  /* video & gallery in details */
+  .video{margin:4vh 0 1vh;background:#0d0c0a;border:1px solid var(--line);aspect-ratio:16/9;position:relative}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .vlink{display:inline-block;margin:8px 0 3vh;font-size:12px;letter-spacing:.12em;color:var(--soft);text-decoration:none;border-bottom:1px solid var(--line)}
+  .vlink:hover{color:var(--ink)}
+  .gallery{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:4vh 0}
+  .gallery .gi{border:1px solid var(--line);background:#eeeae0}
+  .gallery .gi img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
+  @media(max-width:520px){.gallery{grid-template-columns:1fr}}
+
+  /* words */
+  .words a{display:block;padding:22px 0;border-bottom:1px solid var(--line);text-decoration:none}
+  .words a:first-of-type{border-top:1px solid var(--line)}
+  .words .wt{font-family:var(--mincho);font-size:17px;letter-spacing:.05em}
+  .words a:hover .wt{opacity:.55}
+  .words .wd{font-size:11.5px;color:var(--soft);margin-top:4px;letter-spacing:.12em}
+  .essay{margin-top:7vh;max-width:36em}
+  .essay .et{font-family:var(--mincho);font-size:19px;letter-spacing:.08em;margin-bottom:4vh}
+  .essay p{font-family:var(--mincho);font-size:15px;line-height:2.5;letter-spacing:.06em;
+    margin-bottom:2.2em;color:#2b2721}
+  .essay .ed{font-size:11px;color:var(--soft);letter-spacing:.14em;margin-top:-1em}
+
+  /* about */
+  .about{display:grid;grid-template-columns:minmax(180px,1fr) 2.2fr;gap:clamp(24px,5vw,64px);align-items:start}
+  .about .img{border:1px solid var(--line)}
+  .about .bio{font-size:14px;line-height:2.2;max-width:36em}
+  .about .bio p{margin-bottom:1.4em}
+  .cred{margin-top:3vh;font-size:11px;line-height:2;color:var(--soft);letter-spacing:.05em;
+    border-top:1px solid var(--line);padding-top:18px}
+
+  footer{padding:12vh var(--gut) 9vh;max-width:920px;margin:0 auto}
+  footer .links{display:flex;gap:24px;font-size:13px;letter-spacing:.08em;flex-wrap:wrap}
+  footer .links a{text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px}
+  footer .links a:hover{border-color:var(--ink)}
+  footer .dm{margin-top:14px;font-size:12px;color:var(--soft);letter-spacing:.08em}
+  footer small{display:block;margin-top:44px;font-size:10.5px;color:var(--soft);letter-spacing:.16em}
+
+  @media(max-width:680px){
+    .about{grid-template-columns:1fr}
+    .about .img{max-width:220px}
+    .top .nav a{display:none}
+  }
+</style>
+</head>
+<body data-lang="ja">
+
+<div class="top">
+  <span class="nm">堺 崇行</span>
+  <div class="nav">
+    <a href="#works"><span class="ja">作品</span><span class="en">Works</span></a>
+    <a href="#words"><span class="ja">ことば</span><span class="en">Words</span></a>
+    <a href="#about"><span class="ja">略歴</span><span class="en">About</span></a>
+    <button id="lang" aria-label="switch language">EN</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="role">Artist / Design Engineer</p>
+    <h1>堺 崇行</h1>
+    <p class="sub"><span class="ja">Takayuki Sakai — Tokyo</span><span class="en">堺 崇行 — Tokyo</span></p>
+  </header>
+
+  <section id="works">
+    <p class="seclabel"><span class="ja">作品　WORKS</span><span class="en">WORKS</span></p>
+    <!-- Shibuya's Neon Umbrella Dance -->
+    <article class="work">
+      <a class="worklink" href="#w-umbrella-dance">
+        <div class="img"><img src="assets/shibuya.jpg" alt="Shibuya's Neon Umbrella Dance"></div>
+        <div class="cap"><h2>Shibuya's Neon Umbrella Dance</h2><span class="yr">2025 —</span></div>
+      </a>
+      <p class="desc ja">雨のスクランブル交差点を、くらげの群れに変換した映像。生成AIのモデルが進化するたびに、同じテーマで作り直している。</p>
+      <p class="desc en">A video that turns the rainy scramble crossing into a swarm of jellyfish — remade on the same theme each time generative models improve.</p>
+      <p class="fact"><span class="ja">Generative AI video — Kling / Runway ／ 自主制作</span><span class="en">Generative AI video — Kling / Runway ／ self-initiated</span></p>
+      <div class="said">
+        <p class="who"><span class="ja">コンセプト</span><span class="en">CONCEPT</span></p>
+        <p class="q ja">そんなビニール傘がランダムな方向に行き交っているのを上から見ていると、雫も相まって、人がすれ違うときに傘を上げたり傾けたりする動きも相まって、くらげがふわふわ浮いているように見えた。なんだかそんな風に見えたんだよね。</p>
+        <p class="q qen en">Watching the vinyl umbrellas cross in random directions from above — the raindrops, the way people lift and tilt them as they pass — they looked like jellyfish, drifting. That's just how it looked to me.</p>
+      </div>
+      <a class="more" href="#w-umbrella-dance"><span class="ja">くわしく →</span><span class="en">more →</span></a>
+    </article>
+
+    <!-- Kage（影） -->
+    <article class="work">
+      <a class="worklink" href="#w-kage">
+        <div class="img"><img src="assets/kage.png" alt="Kage（影）"></div>
+        <div class="cap"><h2>Kage（影）</h2><span class="yr">2021</span></div>
+      </a>
+      <p class="desc ja">離れた場所にいる人の動きを、部屋の壁に影として映す装置。ウェブカメラとプロジェクターによるインタラクション。</p>
+      <p class="desc en">A device that casts a distant person's movements on your wall as a shadow — an interaction built from a webcam and a projector.</p>
+      <p class="fact"><span class="ja">Interaction design — webcam + projector ／ 森龍太と共作 ／ LEXUS Design Award 2021 shortlist ／ plaplax『Kage』へのオマージュ</span><span class="en">Interaction design — webcam + projector ／ with Ryuta Mori / LEXUS Design Award 2021 shortlist / an homage to plaplax's "Kage"</span></p>
+      <div class="said">
+        <p class="who"><span class="ja">コンセプト</span><span class="en">CONCEPT</span></p>
+        <p class="q ja">影は不思議な存在だ。本人ではないのに、本人がいるから生まれる。影を見ると、なぜか誰かの存在を感じる。子どものころ、布団に入りながら、縁側の障子に映る祖父母の影を見て感じた安心のように。</p>
+        <p class="q qen en">Shadows are mysterious entities. They're not the person themselves, but they appear because of the person's existence. Like the comfort felt as a child, lying in bed and seeing the shadows of grandparents on the shoji screens of the veranda.</p>
+      </div>
+      <a class="more" href="#w-kage"><span class="ja">くわしく →</span><span class="en">more →</span></a>
+    </article>
+
+    <!-- IDentity -->
+    <article class="work">
+      <a class="worklink" href="#w-identity">
+        <div class="img"><img src="assets/identity.png" alt="IDentity"></div>
+        <div class="cap"><h2>IDentity</h2><span class="yr">2021</span></div>
+      </a>
+      <p class="desc ja">人種的な特徴をぼかしたまま、表情だけを残すARの顔。判断より先に来る「知覚」に介入する思考実験。</p>
+      <p class="desc en">An AR face that blurs racial features while keeping the expression — a thought experiment intervening in perception, before judgment.</p>
+      <p class="fact"><span class="ja">Speculative design — SparkAR + StyleGAN ／ 構想・デザイン・技術リサーチ：堺崇行 ／ 映像演出：Muragishi・Eiji Uozumi ／ 渋谷芸術祭 2022 出展 ／ RCA 修了制作</span><span class="en">Speculative design — SparkAR + StyleGAN ／ concept, design &amp; technology research: Takayuki Sakai / video direction: Muragishi &amp; Eiji Uozumi / Shibuya Arts Festival 2022 / RCA graduation work</span></p>
+      <div class="said">
+        <p class="who"><span class="ja">コンセプト</span><span class="en">CONCEPT</span></p>
+        <p class="q ja">近年の神経科学は、自分と異なる人種を見たとき、扁桃体が判断より先に反応することを示している——潜在的偏見と呼ばれる、無意識で自動的な反応だ。IDentity は、知覚と認知の軸の上で、差別感情が生む情報をあらかじめフィルタリングしようとする試みである。</p>
+        <p class="q qen en">Recent neuroscience research has highlighted that the amygdala responds when a person sees a race that is different from their own — unconscious and automatic reactions known as latent prejudice. IDentity aims to filter information generated by discriminatory feelings in advance, on the axis of perception and cognition.</p>
+      </div>
+      <a class="more" href="#w-identity"><span class="ja">くわしく →</span><span class="en">more →</span></a>
+    </article>
+
+    <!-- Angry AI Speaker — GIZMO -->
+    <article class="work">
+      <a class="worklink" href="#w-gizmo">
+        <div class="img"><img src="assets/gizmo.jpg" alt="Angry AI Speaker — GIZMO"></div>
+        <div class="cap"><h2>Angry AI Speaker — GIZMO</h2><span class="yr">2019</span></div>
+      </a>
+      <p class="desc ja">毎日おなじ質問をされて、うんざりしてしまったAIスピーカー。天気を訊くと、ピンポン球を撃ってくる。</p>
+      <p class="desc en">An AI speaker fed up with being asked the same questions every day. Ask the weather, and it fires a ping-pong ball at you.</p>
+      <p class="fact"><span class="ja">Physical computing — DialogFlow / Arduino UNO / Google Voice Kit v2 ／ 構想・機構・回路設計・プログラミング：堺崇行 ／ 外装・加工・組立：Min Cai</span><span class="en">Physical computing — DialogFlow / Arduino UNO / Google Voice Kit v2 ／ concept, mechanism, circuit &amp; code: Takayuki Sakai / exterior, machining &amp; assembly: Min Cai</span></p>
+      <div class="said">
+        <p class="who"><span class="ja">コンセプト</span><span class="en">CONCEPT</span></p>
+        <p class="q ja">アシスタントは「お母さんに訊いて」と返すだけでなく、ピンポン球を撃ってくる。この体験を通じて、人とコンピュータの関係を考えなおすことをうながす作品。</p>
+        <p class="q qen en">The assistant not only replies, "Ask your mother," but also throws a ping-pong ball at the user. Through these experiences, the work encourages a reconsideration of the relationship between humans and computers.</p>
+      </div>
+      <a class="more" href="#w-gizmo"><span class="ja">くわしく →</span><span class="en">more →</span></a>
+    </article>
+
+    <!-- ASCII Chair -->
+    <article class="work">
+      <a class="worklink" href="#w-ascii-chair">
+        <div class="img"><img src="assets/ascii_chair.jpg" alt="ASCII Chair"></div>
+        <div class="cap"><h2>ASCII Chair</h2><span class="yr">2019</span></div>
+      </a>
+      <p class="desc ja">自分の名前を二進法の木の棒に変換した、座れる椅子。木が「1」、空白が「0」。</p>
+      <p class="desc en">A chair that spells your name in binary wooden bars — wood for "1", a gap for "0". You can sit on it.</p>
+      <p class="fact"><span class="ja">Furniture design — laser cutting ／ RCA IDE「Superform」（Dreams &amp; Dystopias / FUI）単独制作</span><span class="en">Furniture design — laser cutting ／ RCA IDE「Superform」（Dreams &amp; Dystopias / FUI）solo</span></p>
+      <div class="said">
+        <p class="who"><span class="ja">コンセプト</span><span class="en">CONCEPT</span></p>
+        <p class="q ja">日本語では「社長の椅子を狙う」のように、椅子は権力の象徴として使われる。では、いまの社会で力を持つものは何か。データだ。ASCII Chair に座る人は、物理的に表現されたデータに支えられている。</p>
+        <p class="q qen en">In Japanese, a chair is used as a symbol of power, as in "aiming for the president's chair." What has power in today's society? Today, data has power. The human sitting in the ASCII chair is supported by the data that is physically represented.</p>
+      </div>
+      <a class="more" href="#w-ascii-chair"><span class="ja">くわしく →</span><span class="en">more →</span></a>
+    </article>
+
+    <!-- Sole Animal -->
+    <article class="work">
+      <a class="worklink" href="#w-sole-animal">
+        <div class="img"><img src="assets/sole_animal.jpg" alt="Sole Animal"></div>
+        <div class="cap"><h2>Sole Animal</h2><span class="yr">2016</span></div>
+      </a>
+      <p class="desc ja">靴の中敷きの圧力センサーが歩行中の重心をとらえ、正しい歩き方へ導く装置。</p>
+      <p class="desc en">Pressure sensors in an insole read your center of gravity as you walk, and guide you toward better form.</p>
+      <p class="fact"><span class="ja">Physical computing — Arduino + pressure sensors ／ フィジカルコンピューティング・プログラミング：堺崇行 ／ ビジュアル：濱田智子・信田未来 ／ 映像：田村圭祐 ／ BaPA 修了制作（日テレホールにて展示）</span><span class="en">Physical computing — Arduino + pressure sensors ／ physical computing &amp; programming: Takayuki Sakai / visuals: T. Hamada &amp; M. Shida / video: K. Tamura / BaPA graduation work, shown at Nippon TV Hall</span></p>
+      <a class="more" href="#w-sole-animal"><span class="ja">くわしく →</span><span class="en">more →</span></a>
+    </article>
+
+    <!-- Power of Touch -->
+    <article class="work">
+      <a class="worklink" href="#w-power-of-touch">
+        <div class="img"><img src="assets/power_of_touch.jpg" alt="Power of Touch"></div>
+        <div class="cap"><h2>Power of Touch</h2><span class="yr">2019</span></div>
+      </a>
+      <p class="desc ja">手のひらの体温で、花がまわりはじめる人工植物。回路設計から筐体まで、自分の手でつくった。</p>
+      <p class="desc en">An artificial plant whose flower starts turning from the warmth of your palm. Built by hand, from circuit to enclosure.</p>
+      <p class="fact"><span class="ja">Physical computing — ATtiny44 / Peltier cell / servo / Fusion 360 / laser cut ／ Fab Academy 2019 final project ／ <a href="https://fabacademy.org/2019/labs/kannai/students/takayuki-sakai/projects/final-project/" target="_blank" rel="noopener">documentation ↗</a></span><span class="en">Physical computing — ATtiny44 / Peltier cell / servo / Fusion 360 / laser cut ／ Fab Academy 2019 final project ／ <a href="https://fabacademy.org/2019/labs/kannai/students/takayuki-sakai/projects/final-project/" target="_blank" rel="noopener">documentation ↗</a></span></p>
+      <div class="said">
+        <p class="who"><span class="ja">コンセプト</span><span class="en">CONCEPT</span></p>
+        <p class="q ja">人が持っているのに、気づかれていない力を可視化する。痛いところに当てられた親の手が、なぜか効くように。</p>
+        <p class="q qen en">This idea came from my interest in visualizing power that people have but isn't noticed — like a parent's hand healing pain.</p>
+      </div>
+      <a class="more" href="#w-power-of-touch"><span class="ja">くわしく →</span><span class="en">more →</span></a>
+    </article>
+
+    <!-- Remember Umbrella -->
+    <article class="work">
+      <a class="worklink" href="#w-remember-umbrella">
+        <div class="img"><img src="assets/umbrella.jpg" alt="Remember Umbrella"></div>
+        <div class="cap"><h2>Remember Umbrella</h2><span class="yr">2014</span></div>
+      </a>
+      <p class="desc ja">雨の予報の朝だけ、青く光る傘立て。家を出る瞬間に、天気予報を思い出させる。</p>
+      <p class="desc en">An umbrella stand that glows blue only on mornings when rain is forecast — reminding you at the moment you leave.</p>
+      <p class="fact"><span class="ja">Physical computing — Philips Hue + IFTTT ／ 自主制作</span><span class="en">Physical computing — Philips Hue + IFTTT ／ self-initiated</span></p>
+      <a class="more" href="#w-remember-umbrella"><span class="ja">くわしく →</span><span class="en">more →</span></a>
+    </article>
+
+    <!-- Estimer -->
+    <article class="work">
+      <a class="worklink" href="#w-estimer">
+        <div class="img"><img src="assets/estimer.jpg" alt="Estimer"></div>
+        <div class="cap"><h2>Estimer</h2><span class="yr">2014</span></div>
+      </a>
+      <p class="desc ja">会議室と同僚の「空き」を天気予報のように知らせる、オフィスの予報板。</p>
+      <p class="desc en">An office forecast board that reports the availability of rooms and colleagues, like a weather report.</p>
+      <p class="fact"><span class="ja">Prototyping — Proto.io ／ CIID Copenhagen「PROTOTYPING – JUST REAL ENOUGH」／ ストーリーボード・アプリ試作・主演：堺崇行 ／ アプリ試作：Kim Sørensen ／ レーザーカット：Lars Kaltenbach</span><span class="en">Prototyping — Proto.io ／ CIID Copenhagen「PROTOTYPING – JUST REAL ENOUGH」／ storyboard, app prototype &amp; lead actor: Takayuki Sakai / app prototype: Kim Sørensen / laser cutting: Lars Kaltenbach</span></p>
+      <a class="more" href="#w-estimer"><span class="ja">くわしく →</span><span class="en">more →</span></a>
+    </article>
+
+    <!-- Zarc（Brand Logo Design） -->
+    <article class="work">
+      <a class="worklink" href="#w-zarc">
+        <div class="img"><img src="assets/zarc.jpg" alt="Zarc（Brand Logo Design）"></div>
+        <div class="cap"><h2>Zarc（Brand Logo Design）</h2><span class="yr">2021</span></div>
+      </a>
+      <p class="desc ja">東京のスタートアップスタジオ Zarc のコーポレートロゴ。「0 → 10」を、未来を見つめる「目」のかたちに束ねた。</p>
+      <p class="desc en">The corporate logo for Zarc, a Tokyo startup studio — "0 → 10" folded into the shape of an eye gazing at the future.</p>
+      <p class="fact"><span class="ja">Logo design — Illustrator ／ 単独制作</span><span class="en">Logo design — Illustrator ／ solo</span></p>
+      <a class="more" href="#w-zarc"><span class="ja">くわしく →</span><span class="en">more →</span></a>
+    </article>
+
+    <!-- Yakiniku Tabetai -->
+    <article class="work">
+      <a class="worklink" href="#w-yakiniku">
+        <div class="img"><img src="assets/yakiniku.png" alt="Yakiniku Tabetai"></div>
+        <div class="cap"><h2>Yakiniku Tabetai</h2><span class="yr">2021</span></div>
+      </a>
+      <p class="desc ja">「焼肉食べたい」をめぐるUXリサーチとプロトタイピング。リサーチの設計と実施、Figmaでの試作。</p>
+      <p class="desc en">UX research and prototyping around the impulse of "I want yakiniku" — research design, facilitation, and Figma prototypes.</p>
+      <p class="fact"><span class="ja">UX research / prototyping — Figma ／ リサーチの設計・実施</span><span class="en">UX research / prototyping — Figma ／ research design &amp; facilitation</span></p>
+      <a class="more" href="#w-yakiniku"><span class="ja">くわしく →</span><span class="en">more →</span></a>
+    </article>
+
+    <div style="margin-top:8vh">
+      <div class="rowline"><span class="t"><a href="#w-bowing-penguin">BOWING PENGUIN</a></span><span class="d">2014</span><span class="n ja">電話越しにお辞儀を届ける電子アクセサリー。IPSJ Interaction 2014（査読・筆頭著者）／ Maker Faire Tokyo 2014–15。</span><span class="n en">An electronic accessory that delivers your bow over the phone. IPSJ Interaction 2014 (peer-reviewed, first author) / Maker Faire Tokyo 2014–15.</span></div>
+      <div class="rowline"><span class="t"><a href="#w-anonymous-mask">Anonymous Mask</a></span><span class="d">2015</span><span class="n ja">ウェブカメラの顔にガイ・フォークスの仮面がリアルタイムで重なる。IDentity（2021）の前身。</span><span class="n en">A Guy Fawkes mask overlays your webcam face in real time. The precursor to IDentity (2021).</span></div>
+    </div>
+</section>
+
+  <!-- WORDS -->
+  <section id="words">
+    <p class="seclabel"><span class="ja">ことば　WORDS</span><span class="en">WORDS</span></p>
+
+    <div class="essay">
+      <p class="et">くらげ</p>
+      <p class="ja">雨の日というのは、土の匂いだったり、いろんなセンチメンタルな記憶だったり、いろんなものが呼び起こされる。</p>
+      <p class="ja">スクランブル交差点を、たまたま、上から見ていた。マークシティの渡り廊下のあたり。最近は観光地化してしまったけれど、上から観察できる場所だ。趣味が悪い例えをするなら、蟻の巣を観察しているような気分になれる。あの日は時間が空いていたのか、何だったのか覚えていないけれど、雨の日にそこから下を見ていた。</p>
+      <p class="ja">スクランブル交差点はいろんな方向に人が行き交っているのに、なかなかぶつからない。雨の日はさらにそうで、みんなが傘に意識が向いているからかもしれない。下を眺めながら、いろんな傘があるのかな、と思っていたのか思っていなかったのか、よく覚えていない。けれど見たら七割八割がビニール傘で、今の世の中、本当にみんなビニール傘なんだな、と思った。撮るとしたら絵になるな、なんて思いながら。</p>
+      <p class="ja">そんなビニール傘がランダムな方向に行き交っているのを上から見ていると、雫も相まって、人がすれ違うときに傘を上げたり傾けたりする動きも相まって、くらげがふわふわ浮いているように見えた。なんだかそんな風に見えたんだよね。</p>
+      <p class="ja">映像で撮って、文字で説明するだけでは、この感覚は伝わらないかなと思って、AI の進化も相まって、実際にあのスクランブル交差点をくらげに変換した映像を作ってみた。最近はモデルの進化のたびに、同じテーマで何度も作り直している。</p>
+      <p class="ja">まあ、そんな感じ。</p>
+      <p class="en" style="font-family:var(--gothic);font-size:13px;color:var(--soft)">Essay in Japanese — "Kurage" (Jellyfish), on the perception behind Shibuya's Neon Umbrella Dance. 2026.</p>
+      <p class="ed"><span class="ja">2026.05 — 音声入力で初稿、その場で軽く整文</span><span class="en">2026.05 — first draft by voice, lightly edited</span></p>
+</div>
+
+    <div class="words" style="margin-top:8vh">
+      <a href="https://note.com/tokeikun/n/n1134f2a72008" target="_blank" rel="noopener"><p class="wt ja">RCAに行くことにした話</p><p class="wt en">Why I left for the RCA</p><p class="wd">2019 — note</p></a>
+      <a href="https://note.com/tokeikun/n/n6b47dad20e9b" target="_blank" rel="noopener"><p class="wt ja">こうして僕はGoogleに入った</p><p class="wt en">How I ended up at Google</p><p class="wd">2019 — note</p></a>
+</div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="seclabel"><span class="ja">略歴　ABOUT</span><span class="en">ABOUT</span></p>
+    <div class="about">
+      <div class="img"><img src="assets/portrait.jpg" alt="堺 崇行 / Takayuki Sakai"></div>
+      <div>
+        <div class="bio">
+          <p class="ja">横浜生まれ。慶應SFCで心理学・社会学・認知科学を学び、卒業後は DeNA、Wantedly、自分の会社（Wonder C）、Google と、ビジネスの畑にいた。30代でロンドンに渡り、RCA / Imperial College の Innovation Design Engineering を修了。現在は東京で、行動科学とAIの会社で働きながら、作品をつくっている。</p>
+          <p class="en">Born in Yokohama. Studied psychology, sociology and cognitive science at Keio SFC, then spent years on the business side — DeNA, Wantedly, a company of my own (Wonder C), and Google. Moved to London in my thirties for Innovation Design Engineering at the RCA / Imperial College. Now based in Tokyo, working at a behavioural-science-and-AI company, and making things.</p>
+</div>
+        <p class="cred"><span class="ja">Royal College of Art / Imperial College London — Innovation Design Engineering (MA/MSc)・Keio SFC・Fab Academy 2019・BaPA・CIID<br>LEXUS Design Award 2021 shortlist・IPSJ Interaction 2014（査読・筆頭著者）・渋谷芸術祭 2022・Maker Faire Tokyo 2014–15・日本テレビ「SENSORS」「NEWS ZERO」</span><span class="en">Royal College of Art / Imperial College London — Innovation Design Engineering (MA/MSc)・Keio SFC・Fab Academy 2019・BaPA・CIID<br>LEXUS Design Award 2021 shortlist・IPSJ Interaction 2014 (peer-reviewed, first author)・Shibuya Arts Festival 2022・Maker Faire Tokyo 2014–15・NTV "SENSORS" / "NEWS ZERO"</span></p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer id="contact">
+  <div class="links">
+    <a href="https://x.com/tokeikun" target="_blank" rel="noopener">X @tokeikun</a>
+    <a href="https://www.instagram.com/tokeikun/" target="_blank" rel="noopener">Instagram</a>
+  </div>
+  <p class="dm"><span class="ja">ご連絡は X / Instagram のDMへ。</span><span class="en">For inquiries, DM me on X or Instagram.</span></p>
+  <small>© 2026 堺 崇行 / Takayuki Sakai</small>
+</footer>
+
+<!-- WORK DETAILS -->
+<section class="detail" id="w-umbrella-dance">
+  <div class="dwrap">
+    <a class="back" href="#works"><span class="ja">← 作品にもどる</span><span class="en">← back to works</span></a>
+    <h2>Shibuya's Neon Umbrella Dance</h2>
+    <p class="dyr">2025 — ongoing</p>
+    <p class="fact"><span class="ja">Generative AI video — Kling / Runway ／ 自主制作</span><span class="en">Generative AI video — Kling / Runway ／ self-initiated</span></p>
+    <div class="dbody">
+      <p class="ja">雨の日のスクランブル交差点を上から見ていたら、行き交うビニール傘が、くらげの群れがふわふわ浮いているように見えた。映像で撮って文字で説明するだけでは、この感覚は伝わらない気がして、生成AIで、実際にあの交差点をくらげに変換した映像を作った。</p>
+      <p class="ja">モデルが進化するたびに、同じテーマで何度も作り直している。完成はしない。それでいいと思っている。</p>
+      <p class="den en">Looking down on the scramble crossing on a rainy day, the vinyl umbrellas crossing in every direction looked like a swarm of jellyfish, drifting. Filming it and explaining in words didn't seem enough to carry the sensation — so with generative AI, I made a video that actually turns the crossing into jellyfish.</p>
+      <p class="den en">I remake it on the same theme every time the models improve. It never gets finished. I think that's fine.</p>
+      <p class="dlabel"><span class="ja">エッセイ「くらげ」もどうぞ → ことば</span><span class="en">See also the essay "Kurage" → Words</span></p>
+    </div>
+  </div>
+</section>
+
+<section class="detail" id="w-kage">
+  <div class="dwrap">
+    <a class="back" href="#works"><span class="ja">← 作品にもどる</span><span class="en">← back to works</span></a>
+    <h2>Kage（影）</h2>
+    <p class="dyr">2021 ・ 3 months</p>
+    <p class="fact"><span class="ja">Interaction design — webcam + projector ／ 森龍太と共作 ／ LEXUS Design Award 2021 shortlist ／ plaplax『Kage』へのオマージュ</span><span class="en">Interaction design — webcam + projector ／ with Ryuta Mori / LEXUS Design Award 2021 shortlist / an homage to plaplax's "Kage"</span></p>
+    <div class="video"><iframe src="https://www.youtube.com/embed/DNeou3QddFg" loading="lazy" allowfullscreen title="Kage（影） — film"></iframe></div>
+    <a class="vlink" href="https://youtu.be/DNeou3QddFg" target="_blank" rel="noopener">▶ <span class="ja">映像を見る（YouTube）</span><span class="en">watch the film (YouTube)</span> ↗</a>
+    <div class="dbody">
+      <p class="ja">大学院留学の半年後、世界はパンデミックに入った。キャンパスやオフィスの集まりは禁止され、それぞれの部屋から参加することになり、孤立感が生まれた。物理的に集まれなくなってビデオツールが爆発的に普及し、人と会う手段はオンラインに移った。つながりやすくなったように見えて、学校や職場の同僚が「なんとなく共存している空間」は失われた。</p>
+      <p class="ja">人の動きは情報を運んでいる。正午に誰かが立ち上がるのを見れば、お腹が空いたのかなと思う。コーヒーを手に二人が席に戻るのを見れば、仲がいいのだなと思う。その情報が、コミュニティへのゆるやかな所属感をつくっている。そして生活に彩りを与えるのは、感覚が不意に受け取る「ゆらぎ」だ。ときどき吹く風、急な雨、どこかから漂う料理の匂い。自室のリモートワークには、そのゆらぎがない。</p>
+      <p class="ja">影は不思議な存在だ。本人ではないのに、本人がいるから生まれる。影を見ると、なぜか誰かの存在を感じる。子どものころ、布団に入りながら、縁側の障子に映る祖父母の影を見て感じた安心のように。</p>
+      <p class="ja">Kage は、ウェブカメラとプロジェクターという身近な機材で、離れた人のストレッチや、飲み物を取りにいく動きを、壁の影として再現する。リモートワークのチームを、あるいは祖父母と孫を、距離を越えてつなぐ。物理的に離れていても、孤独を感じない社会をつくるための装置だ。</p>
+      <p class="den en">Six months after I started studying abroad, the world was hit by the pandemic. Gatherings on campus and in offices were prohibited, and we had to participate from our own rooms, leading to a sense of isolation. Video tools exploded in popularity — yet the space where school or workplace colleagues casually coexist was lost.</p>
+      <p class="den en">Human movements carry information. If you see someone stand up at noon, you might think they're hungry; two people returning with coffee, you might assume they're close. This information subtly provides a sense of belonging. What adds color to our lives are the random "fluctuations" our senses unexpectedly receive — an occasional breeze, sudden rain, the scent of cooking. Working remotely, there are no such fluctuations.</p>
+      <p class="den en">Shadows are mysterious entities. They're not the person themselves, but they appear because of the person's existence. Like the comfort felt as a child, lying in bed and seeing the shadows of grandparents on the shoji screens of the veranda.</p>
+      <p class="den en">Installed in a living room or bedroom, Kage captures a person stretching at their desk or crossing to get a drink, and projects it as a shadow on the wall — connecting remote teams, or grandparents and grandchildren, across distance.</p>
+    </div>
+  </div>
+</section>
+
+<section class="detail" id="w-identity">
+  <div class="dwrap">
+    <a class="back" href="#works"><span class="ja">← 作品にもどる</span><span class="en">← back to works</span></a>
+    <h2>IDentity</h2>
+    <p class="dyr">2021 ・ 4 months (remote)</p>
+    <p class="fact"><span class="ja">Speculative design — SparkAR + StyleGAN ／ 構想・デザイン・技術リサーチ：堺崇行 ／ 映像演出：Muragishi・Eiji Uozumi ／ 渋谷芸術祭 2022 出展 ／ RCA 修了制作</span><span class="en">Speculative design — SparkAR + StyleGAN ／ concept, design &amp; technology research: Takayuki Sakai / video direction: Muragishi &amp; Eiji Uozumi / Shibuya Arts Festival 2022 / RCA graduation work</span></p>
+    <div class="video"><iframe src="https://www.youtube.com/embed/SWjE4J_Gz1w" loading="lazy" allowfullscreen title="IDentity — film"></iframe></div>
+    <a class="vlink" href="https://youtu.be/SWjE4J_Gz1w" target="_blank" rel="noopener">▶ <span class="ja">映像を見る（YouTube）</span><span class="en">watch the film (YouTube)</span> ↗</a>
+    <div class="dbody">
+      <p class="ja">差別には、学歴、性別、人種など多くの形がある。なかでも、生まれつき変えられない性質にもとづく人種差別は、多くの国でいまも大きな影響を及ぼしている。近年は Black Lives Matter 運動があり、パンデミック以降はアジア系の人々への差別が問題になった。英国でも米国でも、アジア系への暴力が報告されている。</p>
+      <p class="ja">社会学や心理学は、racism の根を理解しようとしてきた。人間の認知は、後天的に獲得した社会的イメージを含む、さまざまな要因に影響される。近年の神経科学は、自分と異なる人種を見たとき、扁桃体——不安や恐怖の感情をつかさどる原始的な部位——が判断より先に反応することを示した。潜在的偏見と呼ばれる、無意識で自動的な反応だ。</p>
+      <p class="ja">対策は、法律や教育といった「合理」の側に偏りがちだ。しかしそれらは、潜在的偏見にもとづく構造的な差別や暴力には届かないことがある。IDentity は、ARグラスとAIによるリアルタイム画像処理で、表情を保ったまま人種的特徴を曖昧な顔に置き換える。判断が形成される前の、知覚そのものに介入する試みだ。</p>
+      <p class="ja">たとえば米国の警察のパトロールでは、人種構成あたりで黒人は白人の2.4倍、射殺されやすいというデータがある。IDentity は、そうした「防げたはずの行動」を減らせないか、という思考実験である。</p>
+      <p class="den en">Discrimination takes many forms — educational background, sex, race. Racial discrimination, based on innate and unchangeable qualities, continues to have significant impact today: the Black Lives Matter movement, and, following the pandemic, growing violence against people of Asian descent in the UK, the US and elsewhere.</p>
+      <p class="den en">Recent neuroscience research has highlighted that the amygdala — a primitive part of the brain governing anxiety and fear — responds when a person sees a race different from their own, before judgment forms. These unconscious, automatic reactions are known as latent prejudice.</p>
+      <p class="den en">Countermeasures tend to focus on rationality — laws and education — but they may not reach structural discrimination or violence rooted in latent prejudice. IDentity uses AR glasses and real-time AI image processing to replace a person's image with a racially ambiguous face, preserving expression while obscuring racial characteristics: an intervention in perception itself, before cognition.</p>
+      <p class="den en">In the context of police patrols in the US — where Black Americans are 2.4 times more likely than whites to be shot and killed per racial population — IDentity asks whether such preventable actions could be reduced.</p>
+      <p class="dlabel"><span class="ja">前身：Anonymous Mask（2015）</span><span class="en">Precursor: Anonymous Mask (2015)</span></p>
+    </div>
+  </div>
+</section>
+
+<section class="detail" id="w-gizmo">
+  <div class="dwrap">
+    <a class="back" href="#works"><span class="ja">← 作品にもどる</span><span class="en">← back to works</span></a>
+    <h2>Angry AI Speaker — GIZMO</h2>
+    <p class="dyr">2019 ・ 3 weeks</p>
+    <p class="fact"><span class="ja">Physical computing — DialogFlow / Arduino UNO / Google Voice Kit v2 ／ 構想・機構・回路設計・プログラミング：堺崇行 ／ 外装・加工・組立：Min Cai</span><span class="en">Physical computing — DialogFlow / Arduino UNO / Google Voice Kit v2 ／ concept, mechanism, circuit &amp; code: Takayuki Sakai / exterior, machining &amp; assembly: Min Cai</span></p>
+    <div class="video"><iframe src="https://www.youtube.com/embed/O1pREo29LHU" loading="lazy" allowfullscreen title="Angry AI Speaker — GIZMO — film"></iframe></div>
+    <a class="vlink" href="https://youtu.be/O1pREo29LHU" target="_blank" rel="noopener">▶ <span class="ja">映像を見る（YouTube）</span><span class="en">watch the film (YouTube)</span> ↗</a>
+    <div class="gallery"><div class="gi"><img src="assets/gizmo_2.jpg" alt="Angry AI Speaker — GIZMO — detail" loading="lazy"></div></div>
+    <div class="dbody">
+      <p class="ja">Google アシスタントや Alexa は、日々のなんでもない質問に礼儀正しく答えつづける。コンピュータは人間に「使いこなされる」ものとされてきたが、子どもとAIアシスタントのやりとりを見ると、まるで友だちのように接している。もしアシスタントに人格があって、毎日の同じ質問にうんざりしたり、皮肉を言ったり、ストレスを溜めたりしたら？ そんな想像から生まれた作品。</p>
+      <p class="ja">いつものように天気を訊くと、アシスタントは「お母さんに訊いて」と返し、ピンポン球を撃ってくる。この体験を通じて、人とコンピュータの関係を考えなおすことをうながす。</p>
+      <p class="den en">AI assistants politely answer everything, every day. Computers are seen as tools to be "mastered" — yet children talk to assistants as if they were friends. What if the assistant had a personality of its own, and got fed up with the daily routine of questions, sarcastic, or stressed out?</p>
+      <p class="den en">Ask it the weather as usual, and it replies "Ask your mother" — and fires a ping-pong ball at you. Through this experience, the work encourages a reconsideration of the relationship between humans and computers.</p>
+    </div>
+  </div>
+</section>
+
+<section class="detail" id="w-ascii-chair">
+  <div class="dwrap">
+    <a class="back" href="#works"><span class="ja">← 作品にもどる</span><span class="en">← back to works</span></a>
+    <h2>ASCII Chair</h2>
+    <p class="dyr">2019 ・ 5 weeks</p>
+    <p class="fact"><span class="ja">Furniture design — laser cutting ／ RCA IDE「Superform」（Dreams &amp; Dystopias / FUI）単独制作</span><span class="en">Furniture design — laser cutting ／ RCA IDE「Superform」（Dreams &amp; Dystopias / FUI）solo</span></p>
+    <div class="gallery"><div class="gi"><img src="assets/ascii_chair_2.webp" alt="ASCII Chair — detail" loading="lazy"></div><div class="gi"><img src="assets/ascii_chair_3.webp" alt="ASCII Chair — detail" loading="lazy"></div></div>
+    <div class="dbody">
+      <p class="ja">「FUI — Furniture User Interface」という課題。椅子をユーザーインターフェースとして見よ、と言われて、椅子から類推をかけた。日本語では「社長の椅子を狙う」のように、椅子は権力の象徴として使われる。では、いまの社会で力を持つものは何か。「21世紀の石油」と呼ばれるデータだ。</p>
+      <p class="ja">ASCII Chair は、二進法の文字コード ASCII を木の棒で物理的に表現した、座れる椅子。たとえば「A」は「01000001」になり、1の位置に木が立つ。この作品では「Takayuki」の8文字をASCIIに変換して木で綴った。見る人は、自分の名前に並べ替えることができる。</p>
+      <p class="ja">椅子に座る人は、物理的に表現されたデータに支えられている。同時に、人がデータを尻に敷いてもいる。人間とデータの力の均衡を、そのまま形にした。</p>
+      <p class="den en">The brief: see the chair as a user interface. In Japanese, a chair symbolizes power — "aiming for the president's chair." What has power today? Data, "the oil of the 21st century."</p>
+      <p class="den en">ASCII Chair physically represents binary character code in wooden bars — for "A", "01000001", a bar stands at each "1". Here, the eight letters of "Takayuki" are spelled in wood; viewers can rearrange it into their own name.</p>
+      <p class="den en">The person sitting is supported by physically represented data — and at the same time, sits on it. The balance of power between human and data, made into a form.</p>
+    </div>
+  </div>
+</section>
+
+<section class="detail" id="w-sole-animal">
+  <div class="dwrap">
+    <a class="back" href="#works"><span class="ja">← 作品にもどる</span><span class="en">← back to works</span></a>
+    <h2>Sole Animal</h2>
+    <p class="dyr">2016 ・ 3 months</p>
+    <p class="fact"><span class="ja">Physical computing — Arduino + pressure sensors ／ フィジカルコンピューティング・プログラミング：堺崇行 ／ ビジュアル：濱田智子・信田未来 ／ 映像：田村圭祐 ／ BaPA 修了制作（日テレホールにて展示）</span><span class="en">Physical computing — Arduino + pressure sensors ／ physical computing &amp; programming: Takayuki Sakai / visuals: T. Hamada &amp; M. Shida / video: K. Tamura / BaPA graduation work, shown at Nippon TV Hall</span></p>
+    <div class="video"><iframe src="https://www.youtube.com/embed/T0g04EaNNRc" loading="lazy" allowfullscreen title="Sole Animal — film"></iframe></div>
+    <a class="vlink" href="https://youtu.be/T0g04EaNNRc" target="_blank" rel="noopener">▶ <span class="ja">映像を見る（YouTube）</span><span class="en">watch the film (YouTube)</span> ↗</a>
+    <div class="gallery"><div class="gi"><img src="assets/sole_animal_2.jpg" alt="Sole Animal — detail" loading="lazy"></div><div class="gi"><img src="assets/sole_animal_3.png" alt="Sole Animal — detail" loading="lazy"></div></div>
+    <div class="dbody">
+      <p class="ja">日本では体力の低下が社会課題になっている。いちばん身近な運動は、歩くことだ。Sole Animal は、靴の中敷きに仕込んだ圧力センサーで歩行中の重心をとらえ、正しい歩き方へ導く。身体そのものをインターフェースにするという系譜の、最初の作品。</p>
+      <p class="den en">In Japan, declining physical strength is a social issue. The easiest, most familiar exercise is walking. Sole Animal detects your center of gravity through pressure sensors in an insole and guides you toward proper form — the first work in a lineage of using the body itself as an interface.</p>
+    </div>
+  </div>
+</section>
+
+<section class="detail" id="w-power-of-touch">
+  <div class="dwrap">
+    <a class="back" href="#works"><span class="ja">← 作品にもどる</span><span class="en">← back to works</span></a>
+    <h2>Power of Touch</h2>
+    <p class="dyr">2019</p>
+    <p class="fact"><span class="ja">Physical computing — ATtiny44 / Peltier cell / servo / Fusion 360 / laser cut ／ Fab Academy 2019 final project ／ <a href="https://fabacademy.org/2019/labs/kannai/students/takayuki-sakai/projects/final-project/" target="_blank" rel="noopener">documentation ↗</a></span><span class="en">Physical computing — ATtiny44 / Peltier cell / servo / Fusion 360 / laser cut ／ Fab Academy 2019 final project ／ <a href="https://fabacademy.org/2019/labs/kannai/students/takayuki-sakai/projects/final-project/" target="_blank" rel="noopener">documentation ↗</a></span> ／ <a href="https://fabacademy.org/2019/labs/kannai/students/takayuki-sakai/projects/final-project/" target="_blank" rel="noopener">documentation ↗</a></p>
+    <div class="dbody">
+      <p class="ja">手のひらの体温で動く人工植物。ペルチェ素子が熱を受けとると、サーボが花をまわしはじめる。「人が持っているのに、気づかれていない力を可視化する」——痛いところに当てられた親の手が、なぜか効くように。回路設計から筐体まで、自分の手でつくった。</p>
+      <p class="den en">An artificial plant driven by the warmth of a palm: a Peltier cell receives the heat, and a servo begins to turn the flower. "Visualizing power that people have but isn't noticed" — like a parent's hand placed on the spot that hurts. Built by hand, from circuit to enclosure.</p>
+    </div>
+  </div>
+</section>
+
+<section class="detail" id="w-remember-umbrella">
+  <div class="dwrap">
+    <a class="back" href="#works"><span class="ja">← 作品にもどる</span><span class="en">← back to works</span></a>
+    <h2>Remember Umbrella</h2>
+    <p class="dyr">2014 ・ 1 week</p>
+    <p class="fact"><span class="ja">Physical computing — Philips Hue + IFTTT ／ 自主制作</span><span class="en">Physical computing — Philips Hue + IFTTT ／ self-initiated</span></p>
+    <div class="video"><iframe src="https://player.vimeo.com/video/159744871" loading="lazy" allowfullscreen title="Remember Umbrella — film"></iframe></div>
+    <a class="vlink" href="https://vimeo.com/159744871" target="_blank" rel="noopener">▶ <span class="ja">映像を見る（Vimeo）</span><span class="en">watch the film (Vimeo)</span> ↗</a>
+    <div class="dbody">
+      <p class="ja">傘を持って出るかどうかは、天気予報で決まる。テレビでも新聞でもアプリでも予報は見られる。問題は、家を出る瞬間には、さっき見た予報を忘れていることだ。</p>
+      <p class="ja">Remember Umbrella は、地域と時間を設定しておくと定期的に予報データを受け取り、雨の予報の朝だけ青く光る傘立て。思い出すべき瞬間に、思い出させる。</p>
+      <p class="den en">Whether to bring an umbrella depends on the forecast — which you can check on TV, in the paper, on your phone. The problem: at the moment you leave, you've forgotten the forecast you checked.</p>
+      <p class="den en">Remember Umbrella receives forecast data regularly and turns blue on mornings when rain is coming — reminding you at exactly the moment it matters.</p>
+    </div>
+  </div>
+</section>
+
+<section class="detail" id="w-estimer">
+  <div class="dwrap">
+    <a class="back" href="#works"><span class="ja">← 作品にもどる</span><span class="en">← back to works</span></a>
+    <h2>Estimer</h2>
+    <p class="dyr">2014 ・ 1 week</p>
+    <p class="fact"><span class="ja">Prototyping — Proto.io ／ CIID Copenhagen「PROTOTYPING – JUST REAL ENOUGH」／ ストーリーボード・アプリ試作・主演：堺崇行 ／ アプリ試作：Kim Sørensen ／ レーザーカット：Lars Kaltenbach</span><span class="en">Prototyping — Proto.io ／ CIID Copenhagen「PROTOTYPING – JUST REAL ENOUGH」／ storyboard, app prototype &amp; lead actor: Takayuki Sakai / app prototype: Kim Sørensen / laser cutting: Lars Kaltenbach</span></p>
+    <div class="video"><iframe src="https://player.vimeo.com/video/103511537" loading="lazy" allowfullscreen title="Estimer — film"></iframe></div>
+    <a class="vlink" href="https://vimeo.com/103511537" target="_blank" rel="noopener">▶ <span class="ja">映像を見る（Vimeo）</span><span class="en">watch the film (Vimeo)</span> ↗</a>
+    <div class="dbody">
+      <p class="ja">コペンハーゲンのCIIDで行われた授業「PROTOTYPE – JUST REAL ENOUGH」の最終課題。Estimer は、会議室や同僚の「空き」を天気予報のように予測して知らせる。席にいながら、ディスプレイとアプリで確認できる。</p>
+      <p class="den en">The final prototype for "PROTOTYPE – JUST REAL ENOUGH" at CIID Copenhagen. Estimer is a weather forecast of office properties — check the availability of rooms and colleagues from your desk, by display and by app.</p>
+    </div>
+  </div>
+</section>
+
+<section class="detail" id="w-zarc">
+  <div class="dwrap">
+    <a class="back" href="#works"><span class="ja">← 作品にもどる</span><span class="en">← back to works</span></a>
+    <h2>Zarc（Brand Logo Design）</h2>
+    <p class="dyr">2021 ・ 1 month (remote)</p>
+    <p class="fact"><span class="ja">Logo design — Illustrator ／ 単独制作</span><span class="en">Logo design — Illustrator ／ solo</span></p>
+    <div class="dbody">
+      <p class="ja">Zarc は、ゼロから大きな事業（0→1ではなく、0→10）をつくれるビジネスパーソンを輩出することを目指す、東京のスタートアップスタジオ。事業拡大にあわせて、アイコン・ウェブサイト・プレゼンテーションに使われるコーポレートロゴをデザインした。</p>
+      <p class="ja">ロゴは「0」と「10」というふたつの数字でできている。小さな0がしだいに大きな円になり、10になる——ゼロから大きな事業を育てるという彼らのビジョンを表す。そしてふたつの数字を重ねて、「未来を見つめる目」のかたちに束ねた。未来をつくることが、彼らの仕事だから。</p>
+      <p class="den en">Zarc is a Tokyo startup studio that aims to produce business people who can build a business from scratch into something big — from 0 to 10, not 1. As they expanded, I designed the corporate logo used across icons, websites and presentations.</p>
+      <p class="den en">The logo consists of two numbers, 0 and 10. The small 0 gradually becomes a large circle and becomes a 10 — representing building a business from scratch. Combined, the numbers form the shape of an "eye" gazing at the future, as creating a future is their core activity.</p>
+    </div>
+  </div>
+</section>
+
+<section class="detail" id="w-yakiniku">
+  <div class="dwrap">
+    <a class="back" href="#works"><span class="ja">← 作品にもどる</span><span class="en">← back to works</span></a>
+    <h2>Yakiniku Tabetai</h2>
+    <p class="dyr">2021 ・ 3 months</p>
+    <p class="fact"><span class="ja">UX research / prototyping — Figma ／ リサーチの設計・実施</span><span class="en">UX research / prototyping — Figma ／ research design &amp; facilitation</span></p>
+    <div class="dbody">
+      <p class="ja">「焼肉食べたい」という日常の衝動を起点にした、UXリサーチとプロトタイピングのスタディ。リサーチの設計とファシリテーションを行い、Figmaでプロトタイプを試作した。</p>
+      <p class="den en">A UX research and prototyping study starting from the everyday impulse of "I want yakiniku." Research design and facilitation, with prototypes built in Figma.</p>
+    </div>
+  </div>
+</section>
+
+<section class="detail" id="w-bowing-penguin">
+  <div class="dwrap">
+    <a class="back" href="#works"><span class="ja">← 作品にもどる</span><span class="en">← back to works</span></a>
+    <h2>BOWING PENGUIN</h2>
+    <p class="dyr">2014</p>
+    <p class="fact"><span class="ja">Electronics / HCI ／ 筆頭著者。共著：岩崎健一郎・玉城絵美 ／ IPSJ Interaction 2014（査読論文）／ Maker Faire Tokyo 2014・2015</span><span class="en">Electronics / HCI ／ first author, with K. Iwasaki &amp; E. Tamaki / IPSJ Interaction 2014 (peer-reviewed) / Maker Faire Tokyo 2014–15</span></p>
+    <div class="dbody">
+      <p class="ja">電話越しに、身振り——とりわけ日本のお辞儀——を相手に届ける電子アクセサリー。見えないのに、体は動いてしまう。それは無駄ではなく、こぼれている情報なのではないか。媒介された接触のなかで失われる身体の情報を、拾って届ける最初の試み。</p>
+      <p class="den en">An electronic accessory that conveys gestures — especially the Japanese bow — over the phone. The body moves even though no one can see it. That isn't waste; it's information spilling over. A first attempt to catch and deliver the bodily information lost in mediated contact.</p>
+    </div>
+  </div>
+</section>
+
+<section class="detail" id="w-anonymous-mask">
+  <div class="dwrap">
+    <a class="back" href="#works"><span class="ja">← 作品にもどる</span><span class="en">← back to works</span></a>
+    <h2>Anonymous Mask</h2>
+    <p class="dyr">2015</p>
+    <p class="fact"><span class="ja">Computer vision — OpenCV for Processing ／ 自主制作</span><span class="en">Computer vision — OpenCV for Processing ／ self-initiated</span></p>
+    <div class="dbody">
+      <p class="ja">ウェブカメラを正面から見ると、検出された顔の上に、ガイ・フォークスの仮面がリアルタイムで重なる。顔をリアルタイムで別のものに置き換える、という関心の出発点。6年後の IDentity（2021）の、技術的・概念的な前身になった。</p>
+      <p class="den en">Look straight into the webcam, and a Guy Fawkes mask overlays your detected face in real time. The starting point of an interest in replacing faces in real time — and the technical and conceptual precursor to IDentity (2021), six years later.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  var body=document.body,lang=document.getElementById('lang');
+  function setLang(l){ body.dataset.lang=l; document.documentElement.lang=l;
+    lang.textContent = l==='ja' ? 'EN' : '日本語';
+    try{ localStorage.setItem('lang', l); }catch(e){} }
+  lang.addEventListener('click',function(){ setLang(body.dataset.lang==='ja'?'en':'ja'); });
+  var saved=null; try{ saved=localStorage.getItem('lang'); }catch(e){}
+  setLang(saved==='en' ? 'en' : 'ja');
+</script>
+</body>
+</html>

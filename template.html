@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>堺 崇行 — Takayuki Sakai</title>
+<style>
+  :root{
+    --paper:#faf9f5;
+    --ink:#201d18;
+    --soft:#8b857a;
+    --line:#e7e2d7;
+    --gut:clamp(22px,6vw,88px);
+    --mincho:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif;
+    --gothic:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:var(--gothic);
+    line-height:2;letter-spacing:.02em;-webkit-font-smoothing:antialiased}
+  body[data-lang="ja"] .en{display:none}
+  body[data-lang="en"] .ja{display:none}
+  a{color:inherit}
+  img{max-width:100%;display:block}
+
+  .top{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;
+    align-items:baseline;padding:20px var(--gut);
+    background:linear-gradient(to bottom,rgba(250,249,245,.95) 50%,rgba(250,249,245,0))}
+  .top .nm{font-family:var(--mincho);font-size:15px;letter-spacing:.14em}
+  .top .nav{display:flex;gap:24px;font-size:11px;letter-spacing:.22em;color:var(--soft);align-items:baseline}
+  .top .nav a{text-decoration:none}
+  .top .nav a:hover{color:var(--ink)}
+  .top .nav button{font:inherit;font-size:11px;letter-spacing:.22em;color:var(--soft);
+    background:none;border:1px solid var(--line);border-radius:999px;padding:4px 12px;cursor:pointer}
+  .top .nav button:hover{color:var(--ink);border-color:var(--soft)}
+
+  .wrap{max-width:920px;margin:0 auto;padding:0 var(--gut)}
+
+  /* hero */
+  .hero{min-height:72svh;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:9vh}
+  .hero .role{font-size:11px;letter-spacing:.3em;color:var(--soft);margin-bottom:26px;text-transform:uppercase}
+  .hero h1{font-family:var(--mincho);font-weight:500;font-size:clamp(44px,10.5vw,112px);
+    line-height:1.12;letter-spacing:.1em}
+  .hero .sub{margin-top:16px;font-family:var(--mincho);font-size:13px;letter-spacing:.24em;color:var(--soft)}
+
+  section{padding:11vh 0 3vh}
+  .seclabel{font-size:11px;letter-spacing:.34em;color:var(--soft);margin-bottom:8vh;
+    display:flex;align-items:center;gap:16px}
+  .seclabel::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  /* works */
+  .work{padding:8vh 0}
+  .work + .work{border-top:1px solid var(--line)}
+  .work .img{background:#eeeae0;border:1px solid var(--line)}
+  .work .img img{width:100%;height:auto}
+  a.worklink{text-decoration:none;display:block}
+  a.worklink:hover h2{opacity:.55}
+  .cap{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+    margin-top:18px;flex-wrap:wrap}
+  .cap h2{font-family:var(--mincho);font-size:clamp(20px,2.6vw,28px);font-weight:600;letter-spacing:.05em;transition:opacity .3s}
+  .cap .yr{font-size:12px;letter-spacing:.14em;color:var(--soft)}
+  .desc{margin-top:8px;font-size:14px;color:#45403a;max-width:38em}
+  .fact{margin-top:10px;font-size:11.5px;line-height:1.9;letter-spacing:.05em;color:var(--soft);max-width:44em}
+  .fact a{color:var(--soft)}
+  .more{display:inline-block;margin-top:16px;font-size:12px;letter-spacing:.14em;
+    text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:7px 18px}
+  .more:hover{border-color:var(--soft)}
+
+  /* concept quote on card */
+  .said{margin-top:30px;max-width:36em}
+  .said .who{font-size:10.5px;letter-spacing:.26em;color:var(--soft);margin-bottom:12px}
+  .said .q{font-family:var(--mincho);font-size:15.5px;line-height:2.3;letter-spacing:.05em;
+    border-left:1px solid var(--line);padding-left:20px;white-space:pre-line}
+  .said .q.qen{font-size:14px;line-height:2;font-style:italic}
+
+  .rowline{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:baseline;
+    padding:20px 0;border-top:1px solid var(--line);font-size:14px}
+  .rowline:last-of-type{border-bottom:1px solid var(--line)}
+  .rowline .t{font-family:var(--mincho);font-size:16px;letter-spacing:.04em}
+  .rowline .t a{text-decoration:none;border-bottom:1px solid var(--line)}
+  .rowline .d{color:var(--soft);font-size:12px;letter-spacing:.1em;text-align:right}
+  .rowline .n{grid-column:1/-1;color:#45403a;font-size:13px;margin-top:-6px}
+
+  /* work detail overlays (:target routing) */
+  .detail{display:none}
+  .detail:target{display:block;position:fixed;inset:0;z-index:90;background:var(--paper);
+    overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .dwrap{max-width:720px;margin:0 auto;padding:80px var(--gut) 120px}
+  .back{display:inline-block;font-size:12px;letter-spacing:.18em;color:var(--soft);
+    text-decoration:none;margin-bottom:7vh}
+  .back:hover{color:var(--ink)}
+  .detail h2{font-family:var(--mincho);font-size:clamp(26px,4.5vw,40px);font-weight:600;letter-spacing:.05em}
+  .detail .dyr{font-size:12px;letter-spacing:.16em;color:var(--soft);margin:8px 0 26px}
+  .detail .fact{margin-bottom:5vh}
+  .dbody p{font-family:var(--mincho);font-size:15px;line-height:2.4;letter-spacing:.05em;
+    color:#2b2721;margin-bottom:1.8em}
+  .dbody p.den{font-size:14px;line-height:2.1;letter-spacing:.02em}
+  .dlabel{font-size:10.5px;letter-spacing:.26em;color:var(--soft);margin:5vh 0 2vh}
+
+  /* video & gallery in details */
+  .video{margin:4vh 0 1vh;background:#0d0c0a;border:1px solid var(--line);aspect-ratio:16/9;position:relative}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .vlink{display:inline-block;margin:8px 0 3vh;font-size:12px;letter-spacing:.12em;color:var(--soft);text-decoration:none;border-bottom:1px solid var(--line)}
+  .vlink:hover{color:var(--ink)}
+  .gallery{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:4vh 0}
+  .gallery .gi{border:1px solid var(--line);background:#eeeae0}
+  .gallery .gi img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
+  @media(max-width:520px){.gallery{grid-template-columns:1fr}}
+
+  /* words */
+  .words a{display:block;padding:22px 0;border-bottom:1px solid var(--line);text-decoration:none}
+  .words a:first-of-type{border-top:1px solid var(--line)}
+  .words .wt{font-family:var(--mincho);font-size:17px;letter-spacing:.05em}
+  .words a:hover .wt{opacity:.55}
+  .words .wd{font-size:11.5px;color:var(--soft);margin-top:4px;letter-spacing:.12em}
+  .essay{margin-top:7vh;max-width:36em}
+  .essay .et{font-family:var(--mincho);font-size:19px;letter-spacing:.08em;margin-bottom:4vh}
+  .essay p{font-family:var(--mincho);font-size:15px;line-height:2.5;letter-spacing:.06em;
+    margin-bottom:2.2em;color:#2b2721}
+  .essay .ed{font-size:11px;color:var(--soft);letter-spacing:.14em;margin-top:-1em}
+
+  /* about */
+  .about{display:grid;grid-template-columns:minmax(180px,1fr) 2.2fr;gap:clamp(24px,5vw,64px);align-items:start}
+  .about .img{border:1px solid var(--line)}
+  .about .bio{font-size:14px;line-height:2.2;max-width:36em}
+  .about .bio p{margin-bottom:1.4em}
+  .cred{margin-top:3vh;font-size:11px;line-height:2;color:var(--soft);letter-spacing:.05em;
+    border-top:1px solid var(--line);padding-top:18px}
+
+  footer{padding:12vh var(--gut) 9vh;max-width:920px;margin:0 auto}
+  footer .links{display:flex;gap:24px;font-size:13px;letter-spacing:.08em;flex-wrap:wrap}
+  footer .links a{text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px}
+  footer .links a:hover{border-color:var(--ink)}
+  footer .dm{margin-top:14px;font-size:12px;color:var(--soft);letter-spacing:.08em}
+  footer small{display:block;margin-top:44px;font-size:10.5px;color:var(--soft);letter-spacing:.16em}
+
+  @media(max-width:680px){
+    .about{grid-template-columns:1fr}
+    .about .img{max-width:220px}
+    .top .nav a{display:none}
+  }
+</style>
+</head>
+<body data-lang="ja">
+
+<div class="top">
+  <span class="nm">堺 崇行</span>
+  <div class="nav">
+    <a href="#works"><span class="ja">作品</span><span class="en">Works</span></a>
+    <a href="#words"><span class="ja">ことば</span><span class="en">Words</span></a>
+    <a href="#about"><span class="ja">略歴</span><span class="en">About</span></a>
+    <button id="lang" aria-label="switch language">EN</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="role">Artist / Design Engineer</p>
+    <h1>堺 崇行</h1>
+    <p class="sub"><span class="ja">Takayuki Sakai — Tokyo</span><span class="en">堺 崇行 — Tokyo</span></p>
+  </header>
+
+  <section id="works">
+    <p class="seclabel"><span class="ja">作品　WORKS</span><span class="en">WORKS</span></p>
+<!--WORKS-->
+</section>
+
+  <!-- WORDS -->
+  <section id="words">
+    <p class="seclabel"><span class="ja">ことば　WORDS</span><span class="en">WORDS</span></p>
+
+    <div class="essay">
+<!--ESSAY-->
+</div>
+
+    <div class="words" style="margin-top:8vh">
+<!--LINKS-->
+</div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="seclabel"><span class="ja">略歴　ABOUT</span><span class="en">ABOUT</span></p>
+    <div class="about">
+      <div class="img"><img src="assets/portrait.jpg" alt="堺 崇行 / Takayuki Sakai"></div>
+      <div>
+        <div class="bio">
+<!--BIO-->
+</div>
+        <p class="cred"><!--CRED--></p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer id="contact">
+  <div class="links">
+    <a href="https://x.com/tokeikun" target="_blank" rel="noopener">X @tokeikun</a>
+    <a href="https://www.instagram.com/tokeikun/" target="_blank" rel="noopener">Instagram</a>
+  </div>
+  <p class="dm"><!--CONTACT--></p>
+  <small>© 2026 堺 崇行 / Takayuki Sakai</small>
+</footer>
+
+<!-- WORK DETAILS -->
+<!--DETAILS-->
+
+<script>
+  var body=document.body,lang=document.getElementById('lang');
+  function setLang(l){ body.dataset.lang=l; document.documentElement.lang=l;
+    lang.textContent = l==='ja' ? 'EN' : '日本語';
+    try{ localStorage.setItem('lang', l); }catch(e){} }
+  lang.addEventListener('click',function(){ setLang(body.dataset.lang==='ja'?'en':'ja'); });
+  var saved=null; try{ saved=localStorage.getItem('lang'); }catch(e){}
+  setLang(saved==='en' ? 'en' : 'ja');
+</script>
+</body>
+</html>
