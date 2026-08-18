@@ -14,7 +14,7 @@
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{background:var(--paper);color:var(--ink);font-family:var(--gothic);line-height:1.9;
-    max-width:760px;margin:0 auto;padding:40px 20px 120px;-webkit-font-smoothing:antialiased}
+    max-width:720px;margin:0 auto;padding:40px 20px 140px;-webkit-font-smoothing:antialiased}
   h1{font-family:var(--mincho);font-size:20px;letter-spacing:.12em;margin-bottom:4px}
   .sub{font-size:11px;letter-spacing:.16em;color:var(--soft);margin-bottom:36px}
   .hidden{display:none!important}
@@ -23,7 +23,8 @@
   button:hover{border-color:var(--soft)}
   button.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
   button:disabled{opacity:.4;pointer-events:none}
-  input[type=password],input[type=text]{width:100%;font:inherit;font-size:14px;padding:10px 4px;
+  button.quiet{border:none;font-size:11px;color:var(--soft);padding:6px 8px}
+  input[type=password]{width:100%;font:inherit;font-size:14px;padding:10px 4px;
     background:transparent;border:none;border-bottom:1px solid var(--line);outline:none;color:var(--ink)}
   .note{font-size:12px;color:var(--soft);line-height:1.9;margin:14px 0}
   .note a{color:var(--soft)}
@@ -38,16 +39,35 @@
   .fitem .fn{font-family:var(--mincho)}
   .fitem .meta{font-size:11px;color:var(--soft);white-space:nowrap}
 
-  /* editor */
-  textarea{width:100%;min-height:60vh;font-family:ui-monospace,Menlo,monospace;font-size:13.5px;
+  /* form editor */
+  .crumb{font-size:12px;color:var(--soft);letter-spacing:.1em;margin-bottom:26px;
+    display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+  .crumb a{color:var(--soft);text-decoration:none;border-bottom:1px solid var(--line)}
+  .crumb .sp{flex:1}
+  .field{margin-bottom:30px}
+  .field label{display:block;font-size:11px;letter-spacing:.22em;color:var(--soft);margin-bottom:8px}
+  .field input[type=text], .field select{
+    width:100%;font:inherit;font-size:15px;padding:8px 2px;color:var(--ink);
+    background:transparent;border:none;border-bottom:1px solid var(--line);outline:none}
+  .field select{appearance:auto;-webkit-appearance:menulist}
+  .field textarea{
+    width:100%;font-family:var(--mincho);font-size:15px;line-height:2.1;letter-spacing:.04em;
+    padding:12px 2px;color:var(--ink);background:transparent;
+    border:none;border-bottom:1px solid var(--line);outline:none;resize:none;overflow:hidden;min-height:60px}
+  .field textarea:focus, .field input:focus{border-bottom-color:var(--soft)}
+  .field .hint{font-size:11px;color:var(--soft);margin-top:6px;opacity:.8}
+  .group{font-family:var(--mincho);font-size:14px;letter-spacing:.2em;color:var(--ink);
+    border-top:1px solid var(--line);padding-top:26px;margin:40px 0 24px}
+
+  /* raw editor */
+  #rawtext{width:100%;min-height:60vh;font-family:ui-monospace,Menlo,monospace;font-size:13px;
     line-height:1.9;padding:16px;border:1px solid var(--line);border-radius:8px;background:#fffdf8;
     outline:none;resize:vertical;color:var(--ink)}
-  .bar{position:sticky;bottom:0;background:linear-gradient(to top,var(--paper) 75%,transparent);
-    padding:18px 0 6px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-  #status{font-size:12.5px;letter-spacing:.06em;color:var(--soft)}
+
+  .bar{position:fixed;left:0;right:0;bottom:0;background:linear-gradient(to top,var(--paper) 70%,rgba(250,249,245,0));
+    padding:20px;display:flex;gap:14px;align-items:center;justify-content:center}
+  #status{font-size:12.5px;letter-spacing:.06em;color:var(--soft);max-width:50%}
   #status.ok{color:var(--ok)} #status.err{color:var(--err)}
-  .crumb{font-size:12px;color:var(--soft);letter-spacing:.1em;margin-bottom:14px}
-  .crumb a{color:var(--soft);text-decoration:none;border-bottom:1px solid var(--line)}
 </style>
 </head>
 <body>
@@ -74,21 +94,28 @@
   <div class="flist" id="files"></div>
   <div class="row">
     <button id="newwork">＋ 新しい作品</button>
-    <button id="reload">再読み込み</button>
+    <button id="reload" class="quiet">再読み込み</button>
     <a href="./" style="font-size:12px;color:var(--soft)">サイトを見る →</a>
-    <button id="changetoken" style="margin-left:auto;font-size:11px;color:var(--soft)">トークンを変える</button>
+    <button id="changetoken" class="quiet" style="margin-left:auto">トークンを変える</button>
   </div>
   <p class="note">保存すると自動でビルドが走り、<b>1〜2分</b>でサイトに反映されます。</p>
 </div>
 
 <!-- editor -->
 <div id="editor" class="hidden">
-  <p class="crumb"><a href="#" id="back">← 一覧にもどる</a>　<span id="fname"></span></p>
-  <textarea id="text" spellcheck="false"></textarea>
-  <div class="bar">
-    <button class="primary" id="save">保存する</button>
-    <span id="status"></span>
-  </div>
+  <p class="crumb">
+    <a href="#" id="back">← 一覧にもどる</a>
+    <span id="fname" style="font-size:11px"></span>
+    <span class="sp"></span>
+    <button id="modetoggle" class="quiet">生テキストで編集</button>
+  </p>
+  <div id="form"></div>
+  <textarea id="rawtext" class="hidden" spellcheck="false"></textarea>
+</div>
+
+<div class="bar hidden" id="savebar">
+  <button class="primary" id="save">保存する</button>
+  <span id="status"></span>
 </div>
 
 <script>
@@ -98,11 +125,57 @@
   var KEY="site_editor_token";
 
   var $=function(id){return document.getElementById(id)};
-  var setup=$("setup"), list=$("list"), editor=$("editor"), status=$("status");
-  var current={path:null, sha:null};
+  var setup=$("setup"), list=$("list"), editor=$("editor"), status=$("status"), savebar=$("savebar");
+  var current={path:null, sha:null, model:null, raw:false};
+
+  // ---------- friendly labels ----------
+  var WORK_HEAD = [
+    ["title","タイトル",""],
+    ["year","年（一覧に出る表記）","例: 2021 ／ 2025 —"],
+    ["year_detail","年（詳細ページの表記）","例: 2021 ・ 3 months"],
+    ["card","見せ方",""],
+    ["image","画像ファイル名","assets/ に入っているファイル名。例: kage.png"],
+    ["video","動画URL","YouTube か Vimeo のURLをそのまま"],
+    ["gallery","追加画像","カンマ区切り。例: a.jpg, b.jpg"],
+    ["docs","資料リンク","外部ドキュメントのURL（あれば）"],
+    ["id","ID（変えない）","URLに使われます"]
+  ];
+  var WORK_SECTIONS = [
+    ["desc.ja","説明（日本語）","一覧に出る1〜2文"],
+    ["desc.en","説明（英語）",""],
+    ["fact.ja","技法・クレジット（日本語）","例: Interaction design ／ ◯◯と共作 ／ 受賞"],
+    ["fact.en","技法・クレジット（英語）",""],
+    ["concept.ja","コンセプト（日本語）","一覧カードに引用として出ます。なければ空でOK"],
+    ["concept.en","コンセプト（英語）",""],
+    ["detail.ja","詳細ページ本文（日本語）","空行で段落を分ける"],
+    ["detail.en","詳細ページ本文（英語）",""],
+    ["note.ja","補足（日本語）","詳細ページ末尾の小さな一行。なければ空でOK"],
+    ["note.en","補足（英語）",""]
+  ];
+  var SITE_HEAD = [
+    ["hero_role","肩書き（トップ）",""],
+    ["hero_name","名前（トップの大きな文字）",""],
+    ["hero_sub_ja","名前の下の行（日本語表示時）",""],
+    ["hero_sub_en","名前の下の行（英語表示時）",""]
+  ];
+  var SITE_SECTIONS = [
+    ["essay.title","エッセイのタイトル",""],
+    ["essay.ja","エッセイ本文","空行で段落を分ける"],
+    ["essay.date.ja","エッセイの日付（日本語）",""],
+    ["essay.date.en","エッセイの日付（英語）",""],
+    ["essay.note.en","英語表示時の注記",""],
+    ["links","「ことば」のリンク","1行に1つ。形式: 日本語タイトル | 英語タイトル | 日付 | URL"],
+    ["bio.ja","略歴（日本語）",""],
+    ["bio.en","略歴（英語）",""],
+    ["cred.ja","学歴・受賞など（日本語）","改行で行を分ける"],
+    ["cred.en","学歴・受賞など（英語）",""],
+    ["contact.ja","連絡の文（日本語）",""],
+    ["contact.en","連絡の文（英語）",""]
+  ];
 
   function token(){ try{return localStorage.getItem(KEY)||""}catch(e){return ""} }
-  function show(el){ [setup,list,editor].forEach(function(x){x.classList.add("hidden")}); el.classList.remove("hidden"); }
+  function show(el){ [setup,list,editor].forEach(function(x){x.classList.add("hidden")}); el.classList.remove("hidden");
+    savebar.classList.toggle("hidden", el!==editor); }
   function setStatus(msg, cls){ status.textContent=msg||""; status.className=cls||""; }
 
   function b64decode(b64){
@@ -132,20 +205,129 @@
     });
   }
 
-  function label(name){
-    return name.replace(/^\d+_/,"").replace(/\.md$/,"");
+  // ---------- md <-> model ----------
+  function parseMd(text){
+    var head={}, headOrder=[], sections={}, secOrder=[], preamble=[];
+    var cur=null, buf=[];
+    text.split("\n").forEach(function(line){
+      if(line.indexOf("## ")===0){
+        if(cur!==null){ sections[cur]=buf.join("\n").trim(); }
+        cur=line.slice(3).trim(); buf=[];
+        if(secOrder.indexOf(cur)<0) secOrder.push(cur);
+      } else if(cur===null){
+        var m=line.match(/^([\w.\-]+):\s?(.*)$/);
+        if(m){ head[m[1]]=m[2]; headOrder.push(m[1]); }
+        else if(line.trim()!=="") preamble.push(line);
+      } else buf.push(line);
+    });
+    if(cur!==null) sections[cur]=buf.join("\n").trim();
+    return {head:head, headOrder:headOrder, sections:sections, secOrder:secOrder, preamble:preamble};
   }
+
+  function serializeMd(m){
+    var out=[];
+    m.preamble.forEach(function(l){ out.push(l); });
+    if(m.preamble.length) out.push("");
+    var seen={};
+    m.headOrder.concat(Object.keys(m.head)).forEach(function(k){
+      if(seen[k]) return; seen[k]=1;
+      var v=(m.head[k]||"").trim();
+      if(v!=="") out.push(k+": "+v);
+    });
+    out.push("");
+    var sseen={};
+    m.secOrder.concat(Object.keys(m.sections)).forEach(function(k){
+      if(sseen[k]) return; sseen[k]=1;
+      var v=(m.sections[k]||"").trim();
+      if(v!==""){ out.push("## "+k); out.push(v); out.push(""); }
+    });
+    return out.join("\n").replace(/\n{3,}/g,"\n\n").trim()+"\n";
+  }
+
+  // ---------- form rendering ----------
+  function autogrow(t){ t.style.height="auto"; t.style.height=(t.scrollHeight+2)+"px"; }
+
+  function addField(box, label, hint, node){
+    var w=document.createElement("div"); w.className="field";
+    var l=document.createElement("label"); l.textContent=label; w.appendChild(l);
+    w.appendChild(node);
+    if(hint){ var h=document.createElement("div"); h.className="hint"; h.textContent=hint; w.appendChild(h); }
+    box.appendChild(w);
+  }
+
+  function buildForm(model, isSite){
+    var box=$("form"); box.textContent="";
+    var HEAD=isSite?SITE_HEAD:WORK_HEAD, SECS=isSite?SITE_SECTIONS:WORK_SECTIONS;
+    var known={};
+
+    HEAD.forEach(function(def){
+      var k=def[0]; known["h:"+k]=1;
+      if(isSite && model.head[k]===undefined) return;
+      var node;
+      if(k==="card"){
+        node=document.createElement("select");
+        [["yes","画像つきカード"],["row","文字だけの行"]].forEach(function(o){
+          var op=document.createElement("option"); op.value=o[0]; op.textContent=o[1]; node.appendChild(op);
+        });
+        node.value=model.head[k]==="row"?"row":"yes";
+      } else {
+        node=document.createElement("input"); node.type="text";
+        node.value=model.head[k]||"";
+      }
+      node.dataset.bind="h:"+k;
+      addField(box,def[1],def[2],node);
+    });
+
+    SECS.forEach(function(def){
+      var k=def[0]; known["s:"+k]=1;
+      var node=document.createElement("textarea");
+      node.value=model.sections[k]||"";
+      node.dataset.bind="s:"+k;
+      node.addEventListener("input",function(){autogrow(node)});
+      addField(box,def[1],def[2],node);
+      autogrow(node);
+    });
+
+    // unknown extras (future fields) — show raw so nothing is lost
+    var extras=[];
+    Object.keys(model.head).forEach(function(k){ if(!known["h:"+k]) extras.push(["h:"+k,k]); });
+    Object.keys(model.sections).forEach(function(k){ if(!known["s:"+k]) extras.push(["s:"+k,k]); });
+    if(extras.length){
+      var g=document.createElement("div"); g.className="group"; g.textContent="その他"; box.appendChild(g);
+      extras.forEach(function(e){
+        var node=document.createElement("textarea");
+        node.value=(e[0][0]==="h"?model.head[e[1]]:model.sections[e[1]])||"";
+        node.dataset.bind=e[0];
+        node.addEventListener("input",function(){autogrow(node)});
+        addField(box,e[1],"",node);
+        autogrow(node);
+      });
+    }
+    // grow all after layout
+    requestAnimationFrame(function(){ box.querySelectorAll("textarea").forEach(autogrow); });
+  }
+
+  function collectForm(model){
+    document.querySelectorAll("#form [data-bind]").forEach(function(n){
+      var b=n.dataset.bind, k=b.slice(2);
+      if(b[0]==="h") model.head[k]=n.value; else model.sections[k]=n.value;
+    });
+    return model;
+  }
+
+  // ---------- flows ----------
+  function label(name){ return name.replace(/^\d+_/,"").replace(/\.md$/,""); }
 
   function loadList(){
     show(list);
-    $("files").innerHTML='<div class="note">読み込み中…</div>';
-    Promise.all([ gh("content/works?ref="+BRANCH), gh("content/site.md?ref="+BRANCH) ])
+    var box=$("files"); box.textContent="読み込み中…";
+    Promise.all([ gh("content/works?ref="+BRANCH) ])
     .then(function(res){
-      var works=res[0].filter(function(f){return f.name.endsWith(".md")});
+      var works=res[0].filter(function(f){return f.name.slice(-3)===".md"});
       works.sort(function(a,b){return a.name<b.name?-1:1});
-      var box=$("files"); box.textContent="";
+      box.textContent="";
       function addItem(path, name, meta){
-        var b=document.createElement("button"); b.className="fitem"; b.setAttribute("data-path",path);
+        var b=document.createElement("button"); b.className="fitem";
         var s1=document.createElement("span"); s1.className="fn"; s1.textContent=name;
         var s2=document.createElement("span"); s2.className="meta"; s2.textContent=meta;
         b.appendChild(s1); b.appendChild(s2);
@@ -154,23 +336,36 @@
       }
       addItem("content/site.md","サイト全体の文章（エッセイ・略歴・連絡）","site.md");
       works.forEach(function(f){ addItem("content/works/"+f.name, label(f.name), f.name); });
-    }).catch(function(e){ $("files").innerHTML='<div class="note" style="color:var(--err)">'+e.message+'</div>'; });
+    }).catch(function(e){ box.textContent=e.message; });
   }
 
   function openFile(path){
     show(editor); setStatus("読み込み中…");
-    $("fname").textContent=path;
+    $("fname").textContent=label(path.split("/").pop());
     gh(path+"?ref="+BRANCH).then(function(f){
-      current={path:path, sha:f.sha};
-      $("text").value=b64decode(f.content);
+      var text=b64decode(f.content);
+      current={path:path, sha:f.sha, model:parseMd(text), raw:false};
+      $("rawtext").value=text;
+      setMode(false);
+      buildForm(current.model, path==="content/site.md");
       setStatus("");
     }).catch(function(e){ setStatus(e.message,"err"); });
   }
 
+  function setMode(raw){
+    current.raw=raw;
+    $("form").classList.toggle("hidden", raw);
+    $("rawtext").classList.toggle("hidden", !raw);
+    $("modetoggle").textContent = raw ? "かんたん編集にもどる" : "生テキストで編集";
+    if(raw){ $("rawtext").value=serializeMd(collectForm(current.model)); }
+    else if($("rawtext").value.trim()){ current.model=parseMd($("rawtext").value); buildForm(current.model, current.path==="content/site.md"); }
+  }
+
   function save(){
     if(!current.path) return;
+    var text = current.raw ? $("rawtext").value : serializeMd(collectForm(current.model));
     setStatus("保存中…"); $("save").disabled=true;
-    var body={ message:"edit "+current.path+" via admin", content:b64encode($("text").value), branch:BRANCH };
+    var body={ message:"edit "+current.path+" via admin", content:b64encode(text), branch:BRANCH };
     if(current.sha) body.sha=current.sha;
     gh(current.path,{method:"PUT",body:JSON.stringify(body)}).then(function(res){
       current.sha=res.content.sha;
@@ -179,33 +374,29 @@
     .finally(function(){ $("save").disabled=false; });
   }
 
-  var TEMPLATE=[
-    "id: my-new-work",
-    "title: 作品名",
-    "card: yes",
-    "year: 2026",
-    "year_detail: 2026",
-    "image: my-new-work.jpg",
-    "",
-    "## desc.ja","一覧に出る短い説明。","",
-    "## desc.en","Short description in English.","",
-    "## fact.ja","技法 ／ 共作者 ／ 受賞など","",
-    "## fact.en","Same in English","",
-    "## detail.ja","詳細ページの本文。空行で段落を分ける。","",
-    "## detail.en","Detail text in English.",""
-  ].join("\n");
-
   function newWork(){
     var num=prompt("表示順の番号（小さいほど上。既存は 010〜130）","065");
     if(!num) return;
-    var id=prompt("作品ID（英数字とハイフン。ファイル名とURLに使われます）","my-new-work");
+    var id=prompt("作品ID（英数字とハイフン。URLに使われます）","my-new-work");
     if(!id) return;
     var path="content/works/"+num+"_"+id+".md";
-    current={path:path, sha:null};
+    var model={head:{id:id,title:"",card:"yes",year:"",year_detail:"",image:id+".jpg",video:"",gallery:"",docs:""},
+      headOrder:["id","title","card","year","year_detail","image","video","gallery","docs"],
+      sections:{}, secOrder:["desc.ja","desc.en","fact.ja","fact.en","concept.ja","concept.en","detail.ja","detail.en"],
+      preamble:[]};
+    current={path:path, sha:null, model:model, raw:false};
     show(editor);
-    $("fname").textContent=path+"（新規）";
-    $("text").value=TEMPLATE.replace("my-new-work",id).replace("my-new-work.jpg",id+".jpg");
-    setStatus("画像は assets/ に追加が必要です（Claudeに頼むかGitHubでアップロード）。");
+    $("fname").textContent=label(path.split("/").pop())+"（新規）";
+    $("rawtext").value="";
+    setModeNew();
+    setStatus("画像は assets/ への追加が必要です（Claudeに頼むかGitHubでアップロード）。");
+  }
+  function setModeNew(){
+    current.raw=false;
+    $("form").classList.remove("hidden");
+    $("rawtext").classList.add("hidden");
+    $("modetoggle").textContent="生テキストで編集";
+    buildForm(current.model,false);
   }
 
   $("savetoken").addEventListener("click",function(){
@@ -220,6 +411,7 @@
   $("save").addEventListener("click",save);
   $("reload").addEventListener("click",loadList);
   $("newwork").addEventListener("click",newWork);
+  $("modetoggle").addEventListener("click",function(){ setMode(!current.raw); });
 
   if(token()) loadList(); else show(setup);
 })();
