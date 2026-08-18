@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://api.github.com; base-uri 'none'; form-action 'none'">
 <title>編集 — takayukisakai.com</title>
 <style>
   :root{
@@ -142,15 +143,17 @@
     .then(function(res){
       var works=res[0].filter(function(f){return f.name.endsWith(".md")});
       works.sort(function(a,b){return a.name<b.name?-1:1});
-      var html="";
-      html+='<button class="fitem" data-path="content/site.md"><span class="fn">サイト全体の文章（エッセイ・略歴・連絡）</span><span class="meta">site.md</span></button>';
-      works.forEach(function(f){
-        html+='<button class="fitem" data-path="content/works/'+f.name+'"><span class="fn">'+label(f.name)+'</span><span class="meta">'+f.name+'</span></button>';
-      });
-      $("files").innerHTML=html;
-      Array.prototype.forEach.call(document.querySelectorAll(".fitem"),function(btn){
-        btn.addEventListener("click",function(){ openFile(btn.getAttribute("data-path")); });
-      });
+      var box=$("files"); box.textContent="";
+      function addItem(path, name, meta){
+        var b=document.createElement("button"); b.className="fitem"; b.setAttribute("data-path",path);
+        var s1=document.createElement("span"); s1.className="fn"; s1.textContent=name;
+        var s2=document.createElement("span"); s2.className="meta"; s2.textContent=meta;
+        b.appendChild(s1); b.appendChild(s2);
+        b.addEventListener("click",function(){ openFile(path); });
+        box.appendChild(b);
+      }
+      addItem("content/site.md","サイト全体の文章（エッセイ・略歴・連絡）","site.md");
+      works.forEach(function(f){ addItem("content/works/"+f.name, label(f.name), f.name); });
     }).catch(function(e){ $("files").innerHTML='<div class="note" style="color:var(--err)">'+e.message+'</div>'; });
   }
 
