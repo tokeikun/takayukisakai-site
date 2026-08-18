@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>編集 — takayukisakai.com</title>
+<style>
+  :root{
+    --paper:#faf9f5; --ink:#201d18; --soft:#8b857a; --line:#e7e2d7; --ok:#3d7a4f; --err:#b44a32;
+    --mincho:"Hiragino Mincho ProN","Yu Mincho",serif;
+    --gothic:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--gothic);line-height:1.9;
+    max-width:760px;margin:0 auto;padding:40px 20px 120px;-webkit-font-smoothing:antialiased}
+  h1{font-family:var(--mincho);font-size:20px;letter-spacing:.12em;margin-bottom:4px}
+  .sub{font-size:11px;letter-spacing:.16em;color:var(--soft);margin-bottom:36px}
+  .hidden{display:none!important}
+  button{font:inherit;cursor:pointer;background:none;border:1px solid var(--line);
+    border-radius:999px;padding:9px 20px;font-size:13px;letter-spacing:.1em;color:var(--ink)}
+  button:hover{border-color:var(--soft)}
+  button.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  button:disabled{opacity:.4;pointer-events:none}
+  input[type=password],input[type=text]{width:100%;font:inherit;font-size:14px;padding:10px 4px;
+    background:transparent;border:none;border-bottom:1px solid var(--line);outline:none;color:var(--ink)}
+  .note{font-size:12px;color:var(--soft);line-height:1.9;margin:14px 0}
+  .note a{color:var(--soft)}
+  .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:18px}
+
+  /* file list */
+  .flist{border-top:1px solid var(--line)}
+  .fitem{display:flex;justify-content:space-between;align-items:baseline;gap:10px;width:100%;
+    text-align:left;border:none;border-bottom:1px solid var(--line);border-radius:0;
+    padding:16px 4px;font-size:15px;letter-spacing:.04em;background:none}
+  .fitem:hover{background:#f2efe7}
+  .fitem .fn{font-family:var(--mincho)}
+  .fitem .meta{font-size:11px;color:var(--soft);white-space:nowrap}
+
+  /* editor */
+  textarea{width:100%;min-height:60vh;font-family:ui-monospace,Menlo,monospace;font-size:13.5px;
+    line-height:1.9;padding:16px;border:1px solid var(--line);border-radius:8px;background:#fffdf8;
+    outline:none;resize:vertical;color:var(--ink)}
+  .bar{position:sticky;bottom:0;background:linear-gradient(to top,var(--paper) 75%,transparent);
+    padding:18px 0 6px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  #status{font-size:12.5px;letter-spacing:.06em;color:var(--soft)}
+  #status.ok{color:var(--ok)} #status.err{color:var(--err)}
+  .crumb{font-size:12px;color:var(--soft);letter-spacing:.1em;margin-bottom:14px}
+  .crumb a{color:var(--soft);text-decoration:none;border-bottom:1px solid var(--line)}
+</style>
+</head>
+<body>
+<h1>編集</h1>
+<p class="sub">takayukisakai.com — content editor</p>
+
+<!-- token setup -->
+<div id="setup" class="hidden">
+  <p class="note">はじめに、GitHubのアクセストークンをひとつ。<br>
+  トークンはこの端末のなか（localStorage）にだけ保存されます。</p>
+  <input type="password" id="token" placeholder="github_pat_… を貼り付け" autocomplete="off">
+  <div class="row"><button class="primary" id="savetoken">保存する</button></div>
+  <p class="note">
+    作り方：<a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a> を開く →<br>
+    ① Token name: 「site-editor」など適当に ／ Expiration: 1 year<br>
+    ② Repository access: <b>Only select repositories</b> → <b>takayukisakai-site</b> を選択<br>
+    ③ Permissions → Repository permissions → <b>Contents</b> を <b>Read and write</b> に<br>
+    ④ 「Generate token」→ 表示された github_pat_… をここに貼る
+  </p>
+</div>
+
+<!-- file list -->
+<div id="list" class="hidden">
+  <div class="flist" id="files"></div>
+  <div class="row">
+    <button id="newwork">＋ 新しい作品</button>
+    <button id="reload">再読み込み</button>
+    <a href="./" style="font-size:12px;color:var(--soft)">サイトを見る →</a>
+    <button id="changetoken" style="margin-left:auto;font-size:11px;color:var(--soft)">トークンを変える</button>
+  </div>
+  <p class="note">保存すると自動でビルドが走り、<b>1〜2分</b>でサイトに反映されます。</p>
+</div>
+
+<!-- editor -->
+<div id="editor" class="hidden">
+  <p class="crumb"><a href="#" id="back">← 一覧にもどる</a>　<span id="fname"></span></p>
+  <textarea id="text" spellcheck="false"></textarea>
+  <div class="bar">
+    <button class="primary" id="save">保存する</button>
+    <span id="status"></span>
+  </div>
+</div>
+
+<script>
+(function(){
+  var OWNER="tokeikun", REPO="takayukisakai-site", BRANCH="main";
+  var API="https://api.github.com/repos/"+OWNER+"/"+REPO+"/contents/";
+  var KEY="site_editor_token";
+
+  var $=function(id){return document.getElementById(id)};
+  var setup=$("setup"), list=$("list"), editor=$("editor"), status=$("status");
+  var current={path:null, sha:null};
+
+  function token(){ try{return localStorage.getItem(KEY)||""}catch(e){return ""} }
+  function show(el){ [setup,list,editor].forEach(function(x){x.classList.add("hidden")}); el.classList.remove("hidden"); }
+  function setStatus(msg, cls){ status.textContent=msg||""; status.className=cls||""; }
+
+  function b64decode(b64){
+    var bin=atob(b64.replace(/\n/g,"")), bytes=new Uint8Array(bin.length);
+    for(var i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+    return new TextDecoder("utf-8").decode(bytes);
+  }
+  function b64encode(str){
+    var bytes=new TextEncoder().encode(str), bin="";
+    for(var i=0;i<bytes.length;i++) bin+=String.fromCharCode(bytes[i]);
+    return btoa(bin);
+  }
+
+  function gh(path, opts){
+    opts=opts||{};
+    opts.headers=Object.assign({
+      "Authorization":"Bearer "+token(),
+      "Accept":"application/vnd.github+json",
+      "X-GitHub-Api-Version":"2022-11-28"
+    }, opts.headers||{});
+    return fetch(API+path, opts).then(function(r){
+      if(r.status===401){ show(setup); throw new Error("トークンが無効です。作り直して貼り直してください。"); }
+      if(!r.ok) return r.json().catch(function(){return{}}).then(function(j){
+        throw new Error("GitHub: "+r.status+(j.message?" — "+j.message:""));
+      });
+      return r.json();
+    });
+  }
+
+  function label(name){
+    return name.replace(/^\d+_/,"").replace(/\.md$/,"");
+  }
+
+  function loadList(){
+    show(list);
+    $("files").innerHTML='<div class="note">読み込み中…</div>';
+    Promise.all([ gh("content/works?ref="+BRANCH), gh("content/site.md?ref="+BRANCH) ])
+    .then(function(res){
+      var works=res[0].filter(function(f){return f.name.endsWith(".md")});
+      works.sort(function(a,b){return a.name<b.name?-1:1});
+      var html="";
+      html+='<button class="fitem" data-path="content/site.md"><span class="fn">サイト全体の文章（エッセイ・略歴・連絡）</span><span class="meta">site.md</span></button>';
+      works.forEach(function(f){
+        html+='<button class="fitem" data-path="content/works/'+f.name+'"><span class="fn">'+label(f.name)+'</span><span class="meta">'+f.name+'</span></button>';
+      });
+      $("files").innerHTML=html;
+      Array.prototype.forEach.call(document.querySelectorAll(".fitem"),function(btn){
+        btn.addEventListener("click",function(){ openFile(btn.getAttribute("data-path")); });
+      });
+    }).catch(function(e){ $("files").innerHTML='<div class="note" style="color:var(--err)">'+e.message+'</div>'; });
+  }
+
+  function openFile(path){
+    show(editor); setStatus("読み込み中…");
+    $("fname").textContent=path;
+    gh(path+"?ref="+BRANCH).then(function(f){
+      current={path:path, sha:f.sha};
+      $("text").value=b64decode(f.content);
+      setStatus("");
+    }).catch(function(e){ setStatus(e.message,"err"); });
+  }
+
+  function save(){
+    if(!current.path) return;
+    setStatus("保存中…"); $("save").disabled=true;
+    var body={ message:"edit "+current.path+" via admin", content:b64encode($("text").value), branch:BRANCH };
+    if(current.sha) body.sha=current.sha;
+    gh(current.path,{method:"PUT",body:JSON.stringify(body)}).then(function(res){
+      current.sha=res.content.sha;
+      setStatus("保存しました。1〜2分でサイトに反映されます。","ok");
+    }).catch(function(e){ setStatus(e.message,"err"); })
+    .finally(function(){ $("save").disabled=false; });
+  }
+
+  var TEMPLATE=[
+    "id: my-new-work",
+    "title: 作品名",
+    "card: yes",
+    "year: 2026",
+    "year_detail: 2026",
+    "image: my-new-work.jpg",
+    "",
+    "## desc.ja","一覧に出る短い説明。","",
+    "## desc.en","Short description in English.","",
+    "## fact.ja","技法 ／ 共作者 ／ 受賞など","",
+    "## fact.en","Same in English","",
+    "## detail.ja","詳細ページの本文。空行で段落を分ける。","",
+    "## detail.en","Detail text in English.",""
+  ].join("\n");
+
+  function newWork(){
+    var num=prompt("表示順の番号（小さいほど上。既存は 010〜130）","065");
+    if(!num) return;
+    var id=prompt("作品ID（英数字とハイフン。ファイル名とURLに使われます）","my-new-work");
+    if(!id) return;
+    var path="content/works/"+num+"_"+id+".md";
+    current={path:path, sha:null};
+    show(editor);
+    $("fname").textContent=path+"（新規）";
+    $("text").value=TEMPLATE.replace("my-new-work",id).replace("my-new-work.jpg",id+".jpg");
+    setStatus("画像は assets/ に追加が必要です（Claudeに頼むかGitHubでアップロード）。");
+  }
+
+  $("savetoken").addEventListener("click",function(){
+    var t=$("token").value.trim();
+    if(!t) return;
+    try{localStorage.setItem(KEY,t)}catch(e){}
+    $("token").value="";
+    loadList();
+  });
+  $("changetoken").addEventListener("click",function(){ try{localStorage.removeItem(KEY)}catch(e){} show(setup); });
+  $("back").addEventListener("click",function(e){ e.preventDefault(); loadList(); });
+  $("save").addEventListener("click",save);
+  $("reload").addEventListener("click",loadList);
+  $("newwork").addEventListener("click",newWork);
+
+  if(token()) loadList(); else show(setup);
+})();
+</script>
+</body>
+</html>
