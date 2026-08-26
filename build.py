@@ -47,7 +47,7 @@ def video_embed(url):
 
 def render_work_card(h, s):
     wid = h["id"]
-    out = [f'    <!-- {h["title"]} -->', '    <article class="work">',
+    out = [f'    <!-- {h["title"]} -->', f'    <article class="work" id="c-{wid}">',
            f'      <a class="worklink" href="#w-{wid}">',
            f'        <div class="img"><img src="assets/{h["image"]}" alt="{h["title"]}"></div>',
            f'        <div class="cap"><h2>{h["title"]}</h2><span class="yr">{h["year"]}</span></div>',
@@ -118,6 +118,11 @@ def main():
     rows_items = [render_work_row(h, s) for h, s in works if h.get("card") == "row"]
     rows = ('\n    <div style="margin-top:8vh">\n' + "\n".join(rows_items) + "\n    </div>") if rows_items else ""
     details = "\n\n".join(render_detail(h, s) for h, s in works)
+    index_items = []
+    for h, _s in works:
+        href = ("#c-"+h["id"]) if h.get("card","yes")=="yes" else ("#w-"+h["id"])
+        index_items.append(f'      <a href="{href}"><span class="t">{h["title"]}</span><span class="y">{h["year"]}</span></a>')
+    windex = '<nav class="windex">\n' + "\n".join(index_items) + '\n    </nav>'
 
     sh, ss = parse_md(os.path.join(ROOT, "content/site.md"))
 
@@ -143,7 +148,8 @@ def main():
     contact = bi(ss.get("contact.ja",""), ss.get("contact.en",""))
 
     out = tpl
-    out = out.replace("<!--WORKS-->", cards + "\n" + rows)
+    out = out.replace("<!--INDEX-->", windex)
+    out = out.replace("<!--WORKS-->", cards)
     out = out.replace("<!--DETAILS-->", details)
     out = out.replace("<!--ESSAY-->", "\n".join(essay))
     out = out.replace("<!--LINKS-->", "\n".join(links))

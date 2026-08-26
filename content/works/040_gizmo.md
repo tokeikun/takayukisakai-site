@@ -3,9 +3,9 @@ title: Angry AI Speaker — GIZMO
 card: yes
 year: 2019
 year_detail: 2019 ・ 3 weeks
-image: gizmo.jpg
+image: gizmo_hero.jpg
 video: https://youtu.be/O1pREo29LHU
-gallery: gizmo_2.jpg
+gallery: gizmo.jpg, gizmo_2.jpg
 
 ## desc.ja
 毎日おなじ質問をされて、うんざりしてしまったAIスピーカー。天気を訊くと、ピンポン球を撃ってくる。

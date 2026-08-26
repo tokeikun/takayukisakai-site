@@ -48,8 +48,17 @@
     display:flex;align-items:center;gap:16px}
   .seclabel::after{content:"";flex:1;height:1px;background:var(--line)}
 
+  /* works index */
+  .windex{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(20px,4vw,48px);margin-bottom:9vh}
+  .windex a{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+    padding:11px 2px;border-bottom:1px solid var(--line);text-decoration:none;font-size:13.5px}
+  .windex a:hover{background:#f2efe7}
+  .windex .t{font-family:var(--mincho);letter-spacing:.04em}
+  .windex .y{color:var(--soft);font-size:11px;letter-spacing:.12em;font-variant-numeric:tabular-nums}
+  @media(max-width:680px){.windex{grid-template-columns:1fr}}
+
   /* works */
-  .work{padding:8vh 0}
+  .work{padding:8vh 0;scroll-margin-top:60px}
   .work + .work{border-top:1px solid var(--line)}
   .work .img{background:#eeeae0;border:1px solid var(--line)}
   .work .img img{width:100%;height:auto}
@@ -163,8 +172,23 @@
 
   <section id="works">
     <p class="seclabel"><span class="ja">作品　WORKS</span><span class="en">WORKS</span></p>
+<nav class="windex">
+      <a href="#c-umbrella-dance"><span class="t">Shibuya's Neon Umbrella Dance</span><span class="y">2025 —</span></a>
+      <a href="#c-kage"><span class="t">Kage（影）</span><span class="y">2021</span></a>
+      <a href="#c-identity"><span class="t">IDentity</span><span class="y">2021</span></a>
+      <a href="#c-gizmo"><span class="t">Angry AI Speaker — GIZMO</span><span class="y">2019</span></a>
+      <a href="#c-ascii-chair"><span class="t">ASCII Chair</span><span class="y">2019</span></a>
+      <a href="#c-sole-animal"><span class="t">Sole Animal</span><span class="y">2016</span></a>
+      <a href="#c-power-of-touch"><span class="t">Power of Touch</span><span class="y">2019</span></a>
+      <a href="#c-remember-umbrella"><span class="t">Remember Umbrella</span><span class="y">2014</span></a>
+      <a href="#c-estimer"><span class="t">Estimer</span><span class="y">2014</span></a>
+      <a href="#c-zarc"><span class="t">Zarc（Brand Logo Design）</span><span class="y">2021</span></a>
+      <a href="#c-yakiniku"><span class="t">Yakiniku Tabetai</span><span class="y">2021</span></a>
+      <a href="#w-bowing-penguin"><span class="t">BOWING PENGUIN</span><span class="y">2014</span></a>
+      <a href="#w-anonymous-mask"><span class="t">Anonymous Mask</span><span class="y">2015</span></a>
+    </nav>
     <!-- Shibuya's Neon Umbrella Dance -->
-    <article class="work">
+    <article class="work" id="c-umbrella-dance">
       <a class="worklink" href="#w-umbrella-dance">
         <div class="img"><img src="assets/shibuya.jpg" alt="Shibuya's Neon Umbrella Dance"></div>
         <div class="cap"><h2>Shibuya's Neon Umbrella Dance</h2><span class="yr">2025 —</span></div>
@@ -181,7 +205,7 @@
     </article>
 
     <!-- Kage（影） -->
-    <article class="work">
+    <article class="work" id="c-kage">
       <a class="worklink" href="#w-kage">
         <div class="img"><img src="assets/kage.png" alt="Kage（影）"></div>
         <div class="cap"><h2>Kage（影）</h2><span class="yr">2021</span></div>
@@ -198,7 +222,7 @@
     </article>
 
     <!-- IDentity -->
-    <article class="work">
+    <article class="work" id="c-identity">
       <a class="worklink" href="#w-identity">
         <div class="img"><img src="assets/identity.png" alt="IDentity"></div>
         <div class="cap"><h2>IDentity</h2><span class="yr">2021</span></div>
@@ -215,9 +239,9 @@
     </article>
 
     <!-- Angry AI Speaker — GIZMO -->
-    <article class="work">
+    <article class="work" id="c-gizmo">
       <a class="worklink" href="#w-gizmo">
-        <div class="img"><img src="assets/gizmo.jpg" alt="Angry AI Speaker — GIZMO"></div>
+        <div class="img"><img src="assets/gizmo_hero.jpg" alt="Angry AI Speaker — GIZMO"></div>
         <div class="cap"><h2>Angry AI Speaker — GIZMO</h2><span class="yr">2019</span></div>
       </a>
       <p class="desc ja">毎日おなじ質問をされて、うんざりしてしまったAIスピーカー。天気を訊くと、ピンポン球を撃ってくる。</p>
@@ -232,9 +256,9 @@
     </article>
 
     <!-- ASCII Chair -->
-    <article class="work">
+    <article class="work" id="c-ascii-chair">
       <a class="worklink" href="#w-ascii-chair">
-        <div class="img"><img src="assets/ascii_chair.jpg" alt="ASCII Chair"></div>
+        <div class="img"><img src="assets/ascii_chair_2.webp" alt="ASCII Chair"></div>
         <div class="cap"><h2>ASCII Chair</h2><span class="yr">2019</span></div>
       </a>
       <p class="desc ja">自分の名前を二進法の木の棒に変換した、座れる椅子。木が「1」、空白が「0」。</p>
@@ -249,7 +273,7 @@
     </article>
 
     <!-- Sole Animal -->
-    <article class="work">
+    <article class="work" id="c-sole-animal">
       <a class="worklink" href="#w-sole-animal">
         <div class="img"><img src="assets/sole_animal.jpg" alt="Sole Animal"></div>
         <div class="cap"><h2>Sole Animal</h2><span class="yr">2016</span></div>
@@ -261,7 +285,7 @@
     </article>
 
     <!-- Power of Touch -->
-    <article class="work">
+    <article class="work" id="c-power-of-touch">
       <a class="worklink" href="#w-power-of-touch">
         <div class="img"><img src="assets/power_of_touch.jpg" alt="Power of Touch"></div>
         <div class="cap"><h2>Power of Touch</h2><span class="yr">2019</span></div>
@@ -278,7 +302,7 @@
     </article>
 
     <!-- Remember Umbrella -->
-    <article class="work">
+    <article class="work" id="c-remember-umbrella">
       <a class="worklink" href="#w-remember-umbrella">
         <div class="img"><img src="assets/umbrella.jpg" alt="Remember Umbrella"></div>
         <div class="cap"><h2>Remember Umbrella</h2><span class="yr">2014</span></div>
@@ -290,7 +314,7 @@
     </article>
 
     <!-- Estimer -->
-    <article class="work">
+    <article class="work" id="c-estimer">
       <a class="worklink" href="#w-estimer">
         <div class="img"><img src="assets/estimer.jpg" alt="Estimer"></div>
         <div class="cap"><h2>Estimer</h2><span class="yr">2014</span></div>
@@ -302,7 +326,7 @@
     </article>
 
     <!-- Zarc（Brand Logo Design） -->
-    <article class="work">
+    <article class="work" id="c-zarc">
       <a class="worklink" href="#w-zarc">
         <div class="img"><img src="assets/zarc.jpg" alt="Zarc（Brand Logo Design）"></div>
         <div class="cap"><h2>Zarc（Brand Logo Design）</h2><span class="yr">2021</span></div>
@@ -314,7 +338,7 @@
     </article>
 
     <!-- Yakiniku Tabetai -->
-    <article class="work">
+    <article class="work" id="c-yakiniku">
       <a class="worklink" href="#w-yakiniku">
         <div class="img"><img src="assets/yakiniku.png" alt="Yakiniku Tabetai"></div>
         <div class="cap"><h2>Yakiniku Tabetai</h2><span class="yr">2021</span></div>
@@ -324,11 +348,6 @@
       <p class="fact"><span class="ja">UX research / prototyping — Figma ／ リサーチの設計・実施</span><span class="en">UX research / prototyping — Figma ／ research design &amp; facilitation</span></p>
       <a class="more" href="#w-yakiniku"><span class="ja">くわしく →</span><span class="en">more →</span></a>
     </article>
-
-    <div style="margin-top:8vh">
-      <div class="rowline"><span class="t"><a href="#w-bowing-penguin">BOWING PENGUIN</a></span><span class="d">2014</span><span class="n ja">電話越しにお辞儀を届ける電子アクセサリー。IPSJ Interaction 2014（査読・筆頭著者）／ Maker Faire Tokyo 2014–15。</span><span class="n en">An electronic accessory that delivers your bow over the phone. IPSJ Interaction 2014 (peer-reviewed, first author) / Maker Faire Tokyo 2014–15.</span></div>
-      <div class="rowline"><span class="t"><a href="#w-anonymous-mask">Anonymous Mask</a></span><span class="d">2015</span><span class="n ja">ウェブカメラの顔にガイ・フォークスの仮面がリアルタイムで重なる。IDentity（2021）の前身。</span><span class="n en">A Guy Fawkes mask overlays your webcam face in real time. The precursor to IDentity (2021).</span></div>
-    </div>
 </section>
 
   <!-- WORDS -->
@@ -447,7 +466,7 @@
     <p class="fact"><span class="ja">Physical computing — DialogFlow / Arduino UNO / Google Voice Kit v2 ／ 構想・機構・回路設計・プログラミング：堺崇行 ／ 外装・加工・組立：Min Cai</span><span class="en">Physical computing — DialogFlow / Arduino UNO / Google Voice Kit v2 ／ concept, mechanism, circuit &amp; code: Takayuki Sakai / exterior, machining &amp; assembly: Min Cai</span></p>
     <div class="video"><iframe src="https://www.youtube.com/embed/O1pREo29LHU" loading="lazy" allowfullscreen title="Angry AI Speaker — GIZMO — film"></iframe></div>
     <a class="vlink" href="https://youtu.be/O1pREo29LHU" target="_blank" rel="noopener">▶ <span class="ja">映像を見る（YouTube）</span><span class="en">watch the film (YouTube)</span> ↗</a>
-    <div class="gallery"><div class="gi"><img src="assets/gizmo_2.jpg" alt="Angry AI Speaker — GIZMO — detail" loading="lazy"></div></div>
+    <div class="gallery"><div class="gi"><img src="assets/gizmo.jpg" alt="Angry AI Speaker — GIZMO — detail" loading="lazy"></div><div class="gi"><img src="assets/gizmo_2.jpg" alt="Angry AI Speaker — GIZMO — detail" loading="lazy"></div></div>
     <div class="dbody">
       <p class="ja">Google アシスタントや Alexa は、日々のなんでもない質問に礼儀正しく答えつづける。コンピュータは人間に「使いこなされる」ものとされてきたが、子どもとAIアシスタントのやりとりを見ると、まるで友だちのように接している。もしアシスタントに人格があって、毎日の同じ質問にうんざりしたり、皮肉を言ったり、ストレスを溜めたりしたら？ そんな想像から生まれた作品。</p>
       <p class="ja">いつものように天気を訊くと、アシスタントは「お母さんに訊いて」と返し、ピンポン球を撃ってくる。この体験を通じて、人とコンピュータの関係を考えなおすことをうながす。</p>
@@ -463,7 +482,7 @@
     <h2>ASCII Chair</h2>
     <p class="dyr">2019 ・ 5 weeks</p>
     <p class="fact"><span class="ja">Furniture design — laser cutting ／ RCA IDE「Superform」（Dreams &amp; Dystopias / FUI）単独制作</span><span class="en">Furniture design — laser cutting ／ RCA IDE「Superform」（Dreams &amp; Dystopias / FUI）solo</span></p>
-    <div class="gallery"><div class="gi"><img src="assets/ascii_chair_2.webp" alt="ASCII Chair — detail" loading="lazy"></div><div class="gi"><img src="assets/ascii_chair_3.webp" alt="ASCII Chair — detail" loading="lazy"></div></div>
+    <div class="gallery"><div class="gi"><img src="assets/ascii_chair_3.webp" alt="ASCII Chair — detail" loading="lazy"></div><div class="gi"><img src="assets/ascii_chair.jpg" alt="ASCII Chair — detail" loading="lazy"></div></div>
     <div class="dbody">
       <p class="ja">「FUI — Furniture User Interface」という課題。椅子をユーザーインターフェースとして見よ、と言われて、椅子から類推をかけた。日本語では「社長の椅子を狙う」のように、椅子は権力の象徴として使われる。では、いまの社会で力を持つものは何か。「21世紀の石油」と呼ばれるデータだ。</p>
       <p class="ja">ASCII Chair は、二進法の文字コード ASCII を木の棒で物理的に表現した、座れる椅子。たとえば「A」は「01000001」になり、1の位置に木が立つ。この作品では「Takayuki」の8文字をASCIIに変換して木で綴った。見る人は、自分の名前に並べ替えることができる。</p>
