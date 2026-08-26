@@ -4,6 +4,7 @@ card: yes
 year: 2021
 year_detail: 2021 ・ 1 month (remote)
 image: zarc.jpg
+thumb: zarc_thumb.jpg
 
 ## desc.ja
 東京のスタートアップスタジオ Zarc のコーポレートロゴ。「0 → 10」を、未来を見つめる「目」のかたちに束ねた。
