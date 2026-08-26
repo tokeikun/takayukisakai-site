@@ -50,8 +50,11 @@
 
   /* works index */
   .windex{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(20px,4vw,48px);margin-bottom:9vh}
-  .windex a{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
-    padding:11px 2px;border-bottom:1px solid var(--line);text-decoration:none;font-size:13.5px}
+  .windex a{display:flex;align-items:center;gap:14px;
+    padding:9px 2px;border-bottom:1px solid var(--line);text-decoration:none;font-size:13.5px}
+  .windex img,.windex .noimg{width:58px;height:42px;object-fit:cover;flex:none;
+    border:1px solid var(--line);background:#eeeae0}
+  .windex .t{flex:1}
   .windex a:hover{background:#f2efe7}
   .windex .t{font-family:var(--mincho);letter-spacing:.04em}
   .windex .y{color:var(--soft);font-size:11px;letter-spacing:.12em;font-variant-numeric:tabular-nums}
@@ -173,19 +176,19 @@
   <section id="works">
     <p class="seclabel"><span class="ja">作品　WORKS</span><span class="en">WORKS</span></p>
 <nav class="windex">
-      <a href="#c-umbrella-dance"><span class="t">Shibuya's Neon Umbrella Dance</span><span class="y">2025 —</span></a>
-      <a href="#c-kage"><span class="t">Kage（影）</span><span class="y">2021</span></a>
-      <a href="#c-identity"><span class="t">IDentity</span><span class="y">2021</span></a>
-      <a href="#c-gizmo"><span class="t">Angry AI Speaker — GIZMO</span><span class="y">2019</span></a>
-      <a href="#c-ascii-chair"><span class="t">ASCII Chair</span><span class="y">2019</span></a>
-      <a href="#c-sole-animal"><span class="t">Sole Animal</span><span class="y">2016</span></a>
-      <a href="#c-power-of-touch"><span class="t">Power of Touch</span><span class="y">2019</span></a>
-      <a href="#c-remember-umbrella"><span class="t">Remember Umbrella</span><span class="y">2014</span></a>
-      <a href="#c-estimer"><span class="t">Estimer</span><span class="y">2014</span></a>
-      <a href="#c-zarc"><span class="t">Zarc（Brand Logo Design）</span><span class="y">2021</span></a>
-      <a href="#c-yakiniku"><span class="t">Yakiniku Tabetai</span><span class="y">2021</span></a>
-      <a href="#w-bowing-penguin"><span class="t">BOWING PENGUIN</span><span class="y">2014</span></a>
-      <a href="#w-anonymous-mask"><span class="t">Anonymous Mask</span><span class="y">2015</span></a>
+      <a href="#c-umbrella-dance"><img src="assets/shibuya.jpg" alt="" loading="lazy"><span class="t">Shibuya's Neon Umbrella Dance</span><span class="y">2025 —</span></a>
+      <a href="#c-kage"><img src="assets/kage.png" alt="" loading="lazy"><span class="t">Kage（影）</span><span class="y">2021</span></a>
+      <a href="#c-identity"><img src="assets/identity.png" alt="" loading="lazy"><span class="t">IDentity</span><span class="y">2021</span></a>
+      <a href="#c-gizmo"><img src="assets/gizmo_hero.jpg" alt="" loading="lazy"><span class="t">Angry AI Speaker — GIZMO</span><span class="y">2019</span></a>
+      <a href="#c-ascii-chair"><img src="assets/ascii_chair_2.webp" alt="" loading="lazy"><span class="t">ASCII Chair</span><span class="y">2019</span></a>
+      <a href="#c-sole-animal"><img src="assets/sole_animal.jpg" alt="" loading="lazy"><span class="t">Sole Animal</span><span class="y">2016</span></a>
+      <a href="#c-power-of-touch"><img src="assets/power_of_touch.jpg" alt="" loading="lazy"><span class="t">Power of Touch</span><span class="y">2019</span></a>
+      <a href="#c-remember-umbrella"><img src="assets/umbrella.jpg" alt="" loading="lazy"><span class="t">Remember Umbrella</span><span class="y">2014</span></a>
+      <a href="#c-estimer"><img src="assets/estimer.jpg" alt="" loading="lazy"><span class="t">Estimer</span><span class="y">2014</span></a>
+      <a href="#c-zarc"><img src="assets/zarc.jpg" alt="" loading="lazy"><span class="t">Zarc（Brand Logo Design）</span><span class="y">2021</span></a>
+      <a href="#c-yakiniku"><img src="assets/yakiniku.png" alt="" loading="lazy"><span class="t">Yakiniku Tabetai</span><span class="y">2021</span></a>
+      <a href="#w-bowing-penguin"><span class="noimg"></span><span class="t">BOWING PENGUIN</span><span class="y">2014</span></a>
+      <a href="#w-anonymous-mask"><span class="noimg"></span><span class="t">Anonymous Mask</span><span class="y">2015</span></a>
     </nav>
     <!-- Shibuya's Neon Umbrella Dance -->
     <article class="work" id="c-umbrella-dance">

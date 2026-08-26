@@ -50,8 +50,11 @@
 
   /* works index */
   .windex{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(20px,4vw,48px);margin-bottom:9vh}
-  .windex a{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
-    padding:11px 2px;border-bottom:1px solid var(--line);text-decoration:none;font-size:13.5px}
+  .windex a{display:flex;align-items:center;gap:14px;
+    padding:9px 2px;border-bottom:1px solid var(--line);text-decoration:none;font-size:13.5px}
+  .windex img,.windex .noimg{width:58px;height:42px;object-fit:cover;flex:none;
+    border:1px solid var(--line);background:#eeeae0}
+  .windex .t{flex:1}
   .windex a:hover{background:#f2efe7}
   .windex .t{font-family:var(--mincho);letter-spacing:.04em}
   .windex .y{color:var(--soft);font-size:11px;letter-spacing:.12em;font-variant-numeric:tabular-nums}

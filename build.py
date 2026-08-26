@@ -121,7 +121,8 @@ def main():
     index_items = []
     for h, _s in works:
         href = ("#c-"+h["id"]) if h.get("card","yes")=="yes" else ("#w-"+h["id"])
-        index_items.append(f'      <a href="{href}"><span class="t">{h["title"]}</span><span class="y">{h["year"]}</span></a>')
+        thumb = f'<img src="assets/{h["image"]}" alt="" loading="lazy">' if h.get("image") else '<span class="noimg"></span>'
+        index_items.append(f'      <a href="{href}">{thumb}<span class="t">{h["title"]}</span><span class="y">{h["year"]}</span></a>')
     windex = '<nav class="windex">\n' + "\n".join(index_items) + '\n    </nav>'
 
     sh, ss = parse_md(os.path.join(ROOT, "content/site.md"))
