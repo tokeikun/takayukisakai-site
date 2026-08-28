@@ -111,7 +111,7 @@ SITE = "https://takayukisakai.com"
 def esc(t):
     return (t or "").replace('"','&quot;')
 
-def render_work_page(h, s, style, ga):
+def render_work_page(h, s, style, ga, all_works=None):
     wid=h["id"]; title=h["title"]
     desc=(s.get("desc.ja") or s.get("desc.en") or "").strip()
     img=h.get("image")
@@ -147,6 +147,20 @@ def render_work_page(h, s, style, ga):
   .wpage .hero-img img{{width:100%;height:auto;display:block}}
   .wpage .dyr{{font-size:12px;letter-spacing:.16em;color:var(--soft);margin:8px 0 26px}}
   .wpage .fact{{margin-bottom:5vh}}
+  .wlayout{{max-width:1100px;margin:0 auto;display:block}}
+  @media(min-width:1040px){{
+    .wlayout{{display:grid;grid-template-columns:240px minmax(0,1fr);gap:24px;align-items:start}}
+    .wside{{grid-column:1;grid-row:1;position:sticky;top:70px;padding:90px 0 40px 24px}}
+    .wlayout > .wpage{{grid-column:2}}
+  }}
+  .wside{{padding:20px var(--gut) 60px}}
+  .wside .slabel{{font-size:10.5px;letter-spacing:.3em;color:var(--soft);margin-bottom:14px}}
+  .wside a{{display:flex;align-items:center;gap:10px;padding:6px 0;text-decoration:none;
+    font-size:12.5px;color:var(--soft);border-bottom:1px solid transparent}}
+  .wside a:hover{{color:var(--ink)}}
+  .wside a.cur{{color:var(--ink);font-family:var(--mincho)}}
+  .wside img,.wside .ni{{width:36px;height:26px;object-fit:cover;flex:none;border:1px solid var(--line);background:#eeeae0}}
+  .wside .ni{{display:flex;align-items:center;justify-content:center;font-family:var(--mincho);font-size:12px;color:#b3ab9c}}
 </style>
 </head>
 <body data-lang="ja">
@@ -157,6 +171,7 @@ def render_work_page(h, s, style, ga):
     <button id="lang" aria-label="switch language">EN</button>
   </div>
 </div>
+<div class="wlayout">
 <main class="wpage">""")
     parts.append('  <a class="back" href="/#works"><span class="ja">← 作品にもどる</span><span class="en">← back to works</span></a>')
     if img:
@@ -181,7 +196,17 @@ def render_work_page(h, s, style, ga):
     if s.get("note.ja") or s.get("note.en"):
         parts.append(f'    <p class="dlabel">{bi(s.get("note.ja",""), s.get("note.en",""))}</p>')
     parts.append('  </div>')
-    parts.append("""</main>
+    parts.append('  </main>')
+    if all_works:
+        side=['<aside class="wside">','  <p class="slabel"><span class="ja">作品　WORKS</span><span class="en">WORKS</span></p>']
+        for oh,_os in all_works:
+            oid=oh["id"]; cur=' class="cur"' if oid==wid else ''
+            timg=oh.get("thumb") or oh.get("image")
+            tn=f'<img src="/assets/{timg}" alt="" loading="lazy">' if timg else f'<span class="ni">{(oh["title"].strip()[:1]).upper()}</span>'
+            side.append(f'  <a href="/works/{oid}/"{cur}>{tn}<span>{oh["title"]}</span></a>')
+        side.append('</aside>')
+        parts.append("\n".join(side))
+    parts.append("""</div>
 <footer style="max-width:720px;margin:0 auto;padding:0 var(--gut) 60px">
   <small style="font-size:10.5px;color:var(--soft);letter-spacing:.16em">© 堺 崇行 / Takayuki Sakai — <a href="/" style="color:var(--soft)">takayukisakai.com</a></small>
 </footer>
@@ -261,7 +286,7 @@ def main():
     if os.path.isdir(wdir): _shutil.rmtree(wdir)
     for h,sec in works:
         d=os.path.join(wdir,h["id"]); os.makedirs(d,exist_ok=True)
-        open(os.path.join(d,"index.html"),"w",encoding="utf-8").write(render_work_page(h,sec,style,ga))
+        open(os.path.join(d,"index.html"),"w",encoding="utf-8").write(render_work_page(h,sec,style,ga,works))
     urls=[SITE+"/"]+[f"{SITE}/works/{h['id']}/" for h,_ in works]
     sm='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     sm+="".join(f"  <url><loc>{u}</loc></url>\n" for u in urls)+"</urlset>\n"

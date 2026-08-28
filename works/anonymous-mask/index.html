@@ -187,6 +187,20 @@ addEventListener('hashchange',function(){
   .wpage .hero-img img{width:100%;height:auto;display:block}
   .wpage .dyr{font-size:12px;letter-spacing:.16em;color:var(--soft);margin:8px 0 26px}
   .wpage .fact{margin-bottom:5vh}
+  .wlayout{max-width:1100px;margin:0 auto;display:block}
+  @media(min-width:1040px){
+    .wlayout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:24px;align-items:start}
+    .wside{grid-column:1;grid-row:1;position:sticky;top:70px;padding:90px 0 40px 24px}
+    .wlayout > .wpage{grid-column:2}
+  }
+  .wside{padding:20px var(--gut) 60px}
+  .wside .slabel{font-size:10.5px;letter-spacing:.3em;color:var(--soft);margin-bottom:14px}
+  .wside a{display:flex;align-items:center;gap:10px;padding:6px 0;text-decoration:none;
+    font-size:12.5px;color:var(--soft);border-bottom:1px solid transparent}
+  .wside a:hover{color:var(--ink)}
+  .wside a.cur{color:var(--ink);font-family:var(--mincho)}
+  .wside img,.wside .ni{width:36px;height:26px;object-fit:cover;flex:none;border:1px solid var(--line);background:#eeeae0}
+  .wside .ni{display:flex;align-items:center;justify-content:center;font-family:var(--mincho);font-size:12px;color:#b3ab9c}
 </style>
 </head>
 <body data-lang="ja">
@@ -197,6 +211,7 @@ addEventListener('hashchange',function(){
     <button id="lang" aria-label="switch language">EN</button>
   </div>
 </div>
+<div class="wlayout">
 <main class="wpage">
   <a class="back" href="/#works"><span class="ja">← 作品にもどる</span><span class="en">← back to works</span></a>
   <h1>Anonymous Mask</h1>
@@ -206,7 +221,24 @@ addEventListener('hashchange',function(){
     <p class="ja">ウェブカメラを正面から見ると、検出された顔の上に、ガイ・フォークスの仮面がリアルタイムで重なる。顔をリアルタイムで別のものに置き換える、という関心の出発点。6年後の IDentity（2021）の、技術的・概念的な前身になった。</p>
     <p class="den en">Look straight into the webcam, and a Guy Fawkes mask overlays your detected face in real time. The starting point of an interest in replacing faces in real time — and the technical and conceptual precursor to IDentity (2021), six years later.</p>
   </div>
-</main>
+  </main>
+<aside class="wside">
+  <p class="slabel"><span class="ja">作品　WORKS</span><span class="en">WORKS</span></p>
+  <a href="/works/umbrella-dance/"><img src="/assets/shibuya.jpg" alt="" loading="lazy"><span>Shibuya's Neon Umbrella Dance</span></a>
+  <a href="/works/kage/"><img src="/assets/kage.jpg" alt="" loading="lazy"><span>Kage（影）</span></a>
+  <a href="/works/identity/"><img src="/assets/identity.jpg" alt="" loading="lazy"><span>IDentity</span></a>
+  <a href="/works/gizmo/"><img src="/assets/gizmo_hero.jpg" alt="" loading="lazy"><span>Angry AI Speaker — GIZMO</span></a>
+  <a href="/works/ascii-chair/"><img src="/assets/ascii_chair_2.jpg" alt="" loading="lazy"><span>ASCII Chair</span></a>
+  <a href="/works/sole-animal/"><img src="/assets/sole_animal.jpg" alt="" loading="lazy"><span>Sole Animal</span></a>
+  <a href="/works/power-of-touch/"><img src="/assets/power_of_touch.jpg" alt="" loading="lazy"><span>Power of Touch</span></a>
+  <a href="/works/remember-umbrella/"><img src="/assets/umbrella.jpg" alt="" loading="lazy"><span>Remember Umbrella</span></a>
+  <a href="/works/estimer/"><img src="/assets/estimer.jpg" alt="" loading="lazy"><span>Estimer</span></a>
+  <a href="/works/zarc/"><img src="/assets/zarc_thumb.jpg" alt="" loading="lazy"><span>Zarc（Brand Logo Design）</span></a>
+  <a href="/works/yakiniku/"><img src="/assets/yakiniku.jpg" alt="" loading="lazy"><span>Yakiniku Tabetai</span></a>
+  <a href="/works/bowing-penguin/"><span class="ni">B</span><span>BOWING PENGUIN</span></a>
+  <a href="/works/anonymous-mask/" class="cur"><span class="ni">A</span><span>Anonymous Mask</span></a>
+</aside>
+</div>
 <footer style="max-width:720px;margin:0 auto;padding:0 var(--gut) 60px">
   <small style="font-size:10.5px;color:var(--soft);letter-spacing:.16em">© 堺 崇行 / Takayuki Sakai — <a href="/" style="color:var(--soft)">takayukisakai.com</a></small>
 </footer>
