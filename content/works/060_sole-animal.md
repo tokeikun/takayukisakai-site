@@ -5,7 +5,7 @@ year: 2016
 year_detail: 2016 ・ 3 months
 image: sole_animal.jpg
 video: https://youtu.be/T0g04EaNNRc
-gallery: sole_animal_2.jpg, sole_animal_3.png
+gallery: sole_animal_2.jpg, sole_animal_3.jpg
 
 ## desc.ja
 靴の中敷きの圧力センサーが歩行中の重心をとらえ、正しい歩き方へ導く装置。

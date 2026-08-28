@@ -3,8 +3,8 @@ title: ASCII Chair
 card: yes
 year: 2019
 year_detail: 2019 ・ 5 weeks
-image: ascii_chair_2.webp
-gallery: ascii_chair_3.webp, ascii_chair.jpg
+image: ascii_chair_2.jpg
+gallery: ascii_chair_3.jpg, ascii_chair.jpg
 
 ## desc.ja
 自分の名前を二進法の木の棒に変換した、座れる椅子。木が「1」、空白が「0」。

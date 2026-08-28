@@ -3,7 +3,7 @@ title: Kage（影）
 card: yes
 year: 2021
 year_detail: 2021 ・ 3 months
-image: kage.png
+image: kage.jpg
 video: https://youtu.be/DNeou3QddFg
 
 ## desc.ja

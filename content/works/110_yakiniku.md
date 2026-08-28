@@ -3,7 +3,7 @@ title: Yakiniku Tabetai
 card: yes
 year: 2021
 year_detail: 2021 ・ 3 months
-image: yakiniku.png
+image: yakiniku.jpg
 
 ## desc.ja
 「焼肉食べたい」をめぐるUXリサーチとプロトタイピング。リサーチの設計と実施、Figmaでの試作。

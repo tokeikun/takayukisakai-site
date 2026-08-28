@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yakiniku Tabetai — 堺 崇行 / Takayuki Sakai</title>
+<meta name="description" content="「焼肉食べたい」をめぐるUXリサーチとプロトタイピング。リサーチの設計と実施、Figmaでの試作。">
+<link rel="canonical" href="https://takayukisakai.com/works/yakiniku/">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<meta name="theme-color" content="#faf9f5">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://takayukisakai.com/works/yakiniku/">
+<meta property="og:title" content="Yakiniku Tabetai — 堺 崇行">
+<meta property="og:description" content="「焼肉食べたい」をめぐるUXリサーチとプロトタイピング。リサーチの設計と実施、Figmaでの試作。">
+<meta property="og:image" content="https://takayukisakai.com/assets/yakiniku.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@tokeikun">
+<meta name="twitter:image" content="https://takayukisakai.com/assets/yakiniku.jpg">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"VisualArtwork","name":"Yakiniku Tabetai","url":"https://takayukisakai.com/works/yakiniku/","image":"https://takayukisakai.com/assets/yakiniku.jpg","dateCreated":"2021","creator":{"@type":"Person","name":"堺 崇行","alternateName":"Takayuki Sakai","url":"https://takayukisakai.com/"}}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KBSLT5NDX4"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
+gtag('js',new Date());gtag('config','G-KBSLT5NDX4');
+addEventListener('hashchange',function(){
+  var h=location.hash;
+  if(h.indexOf('#w-')===0){
+    gtag('event','page_view',{page_location:location.href,page_title:'work: '+h.slice(3)});
+    gtag('event','view_work',{work_id:h.slice(3)});
+  }
+});
+</script>
+<style>
+  :root{
+    --paper:#faf9f5;
+    --ink:#201d18;
+    --soft:#8b857a;
+    --line:#e7e2d7;
+    --gut:clamp(22px,6vw,88px);
+    --mincho:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif;
+    --gothic:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:var(--gothic);
+    line-height:2;letter-spacing:.02em;-webkit-font-smoothing:antialiased}
+  body[data-lang="ja"] .en{display:none}
+  body[data-lang="en"] .ja{display:none}
+  a{color:inherit}
+  img{max-width:100%;display:block}
+
+  .top{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;
+    align-items:baseline;padding:20px var(--gut);
+    background:linear-gradient(to bottom,rgba(250,249,245,.95) 50%,rgba(250,249,245,0))}
+  .top .nm{font-family:var(--mincho);font-size:15px;letter-spacing:.14em}
+  .top .nav{display:flex;gap:24px;font-size:11px;letter-spacing:.22em;color:var(--soft);align-items:baseline}
+  .top .nav a{text-decoration:none}
+  .top .nav a:hover{color:var(--ink)}
+  .top .nav button{font:inherit;font-size:11px;letter-spacing:.22em;color:var(--soft);
+    background:none;border:1px solid var(--line);border-radius:999px;padding:4px 12px;cursor:pointer}
+  .top .nav button:hover{color:var(--ink);border-color:var(--soft)}
+
+  .wrap{max-width:920px;margin:0 auto;padding:0 var(--gut)}
+
+  /* hero */
+  .hero{min-height:72svh;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:9vh}
+  .hero .role{font-size:11px;letter-spacing:.3em;color:var(--soft);margin-bottom:26px;text-transform:uppercase}
+  .hero h1{font-family:var(--mincho);font-weight:500;font-size:clamp(44px,10.5vw,112px);
+    line-height:1.12;letter-spacing:.1em}
+  .hero .sub{margin-top:16px;font-family:var(--mincho);font-size:13px;letter-spacing:.24em;color:var(--soft)}
+
+  section{padding:11vh 0 3vh}
+  .seclabel{font-size:11px;letter-spacing:.34em;color:var(--soft);margin-bottom:8vh;
+    display:flex;align-items:center;gap:16px}
+  .seclabel::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  /* works index */
+  .windex{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(20px,4vw,48px);margin-bottom:9vh}
+  .windex a{display:flex;align-items:center;gap:14px;
+    padding:9px 2px;border-bottom:1px solid var(--line);text-decoration:none;font-size:13.5px}
+  .windex img,.windex .noimg{width:58px;height:42px;object-fit:cover;flex:none;
+    border:1px solid var(--line);background:#eeeae0}
+  .windex .noimg{display:flex;align-items:center;justify-content:center;
+    font-family:var(--mincho);font-size:19px;color:#b3ab9c}
+  .windex .t{flex:1}
+  .windex a:hover{background:#f2efe7}
+  .windex .t{font-family:var(--mincho);letter-spacing:.04em}
+  .windex .y{color:var(--soft);font-size:11px;letter-spacing:.12em;font-variant-numeric:tabular-nums}
+  @media(max-width:680px){.windex{grid-template-columns:1fr}}
+
+  /* works */
+  .work{padding:8vh 0;scroll-margin-top:60px}
+  .work + .work{border-top:1px solid var(--line)}
+  .work .img{background:#eeeae0;border:1px solid var(--line)}
+  .work .img img{width:100%;height:auto}
+  a.worklink{text-decoration:none;display:block}
+  a.worklink:hover h2{opacity:.55}
+  .cap{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+    margin-top:18px;flex-wrap:wrap}
+  .cap h2{font-family:var(--mincho);font-size:clamp(20px,2.6vw,28px);font-weight:600;letter-spacing:.05em;transition:opacity .3s}
+  .cap .yr{font-size:12px;letter-spacing:.14em;color:var(--soft)}
+  .desc{margin-top:8px;font-size:14px;color:#45403a;max-width:38em}
+  .fact{margin-top:10px;font-size:11.5px;line-height:1.9;letter-spacing:.05em;color:var(--soft);max-width:44em}
+  .fact a{color:var(--soft)}
+  .more{display:inline-block;margin-top:16px;font-size:12px;letter-spacing:.14em;
+    text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:7px 18px}
+  .more:hover{border-color:var(--soft)}
+
+  /* concept quote on card */
+  .said{margin-top:30px;max-width:36em}
+  .said .who{font-size:10.5px;letter-spacing:.26em;color:var(--soft);margin-bottom:12px}
+  .said .q{font-family:var(--mincho);font-size:15.5px;line-height:2.3;letter-spacing:.05em;
+    border-left:1px solid var(--line);padding-left:20px;white-space:pre-line}
+  .said .q.qen{font-size:14px;line-height:2;font-style:italic}
+
+  .rowline{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:baseline;
+    padding:20px 0;border-top:1px solid var(--line);font-size:14px}
+  .rowline:last-of-type{border-bottom:1px solid var(--line)}
+  .rowline .t{font-family:var(--mincho);font-size:16px;letter-spacing:.04em}
+  .rowline .t a{text-decoration:none;border-bottom:1px solid var(--line)}
+  .rowline .d{color:var(--soft);font-size:12px;letter-spacing:.1em;text-align:right}
+  .rowline .n{grid-column:1/-1;color:#45403a;font-size:13px;margin-top:-6px}
+
+  /* work detail overlays (:target routing) */
+  .detail{display:none}
+  .detail:target{display:block;position:fixed;inset:0;z-index:90;background:var(--paper);
+    overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .dwrap{max-width:720px;margin:0 auto;padding:80px var(--gut) 120px}
+  .back{display:inline-block;font-size:12px;letter-spacing:.18em;color:var(--soft);
+    text-decoration:none;margin-bottom:7vh}
+  .back:hover{color:var(--ink)}
+  .detail h2{font-family:var(--mincho);font-size:clamp(26px,4.5vw,40px);font-weight:600;letter-spacing:.05em}
+  .detail .dyr{font-size:12px;letter-spacing:.16em;color:var(--soft);margin:8px 0 26px}
+  .detail .fact{margin-bottom:5vh}
+  .dbody p{font-family:var(--mincho);font-size:15px;line-height:2.4;letter-spacing:.05em;
+    color:#2b2721;margin-bottom:1.8em}
+  .dbody p.den{font-size:14px;line-height:2.1;letter-spacing:.02em}
+  .dlabel{font-size:10.5px;letter-spacing:.26em;color:var(--soft);margin:5vh 0 2vh}
+
+  /* video & gallery in details */
+  .video{margin:4vh 0 1vh;background:#0d0c0a;border:1px solid var(--line);aspect-ratio:16/9;position:relative}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .vlink{display:inline-block;margin:8px 0 3vh;font-size:12px;letter-spacing:.12em;color:var(--soft);text-decoration:none;border-bottom:1px solid var(--line)}
+  .vlink:hover{color:var(--ink)}
+  .gallery{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:4vh 0}
+  .gallery .gi{border:1px solid var(--line);background:#eeeae0}
+  .gallery .gi img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
+  @media(max-width:520px){.gallery{grid-template-columns:1fr}}
+
+  /* words */
+  .words a{display:block;padding:22px 0;border-bottom:1px solid var(--line);text-decoration:none}
+  .words a:first-of-type{border-top:1px solid var(--line)}
+  .words .wt{font-family:var(--mincho);font-size:17px;letter-spacing:.05em}
+  .words a:hover .wt{opacity:.55}
+  .words .wd{font-size:11.5px;color:var(--soft);margin-top:4px;letter-spacing:.12em}
+  .essay{margin-top:7vh;max-width:36em}
+  .essay .et{font-family:var(--mincho);font-size:19px;letter-spacing:.08em;margin-bottom:4vh}
+  .essay p{font-family:var(--mincho);font-size:15px;line-height:2.5;letter-spacing:.06em;
+    margin-bottom:2.2em;color:#2b2721}
+  .essay .ed{font-size:11px;color:var(--soft);letter-spacing:.14em;margin-top:-1em}
+
+  /* about */
+  .about{display:grid;grid-template-columns:minmax(180px,1fr) 2.2fr;gap:clamp(24px,5vw,64px);align-items:start}
+  .about .img{border:1px solid var(--line)}
+  .about .bio{font-size:14px;line-height:2.2;max-width:36em}
+  .about .bio p{margin-bottom:1.4em}
+  .cred{margin-top:3vh;font-size:11px;line-height:2;color:var(--soft);letter-spacing:.05em;
+    border-top:1px solid var(--line);padding-top:18px}
+
+  footer{padding:12vh var(--gut) 9vh;max-width:920px;margin:0 auto}
+  footer .links{display:flex;gap:24px;font-size:13px;letter-spacing:.08em;flex-wrap:wrap}
+  footer .links a{text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px}
+  footer .links a:hover{border-color:var(--ink)}
+  footer .dm{margin-top:14px;font-size:12px;color:var(--soft);letter-spacing:.08em}
+  footer small{display:block;margin-top:44px;font-size:10.5px;color:var(--soft);letter-spacing:.16em}
+
+  @media(max-width:680px){
+    .about{grid-template-columns:1fr}
+    .about .img{max-width:220px}
+    .top .nav a{display:none}
+  }
+
+  .wpage{max-width:720px;margin:0 auto;padding:90px var(--gut) 120px}
+  .wpage h1{font-family:var(--mincho);font-size:clamp(26px,4.5vw,40px);font-weight:600;letter-spacing:.05em}
+  .wpage .hero-img{border:1px solid var(--line);margin-bottom:5vh}
+  .wpage .hero-img img{width:100%;height:auto;display:block}
+  .wpage .dyr{font-size:12px;letter-spacing:.16em;color:var(--soft);margin:8px 0 26px}
+  .wpage .fact{margin-bottom:5vh}
+</style>
+</head>
+<body data-lang="ja">
+<div class="top">
+  <a href="/" style="text-decoration:none"><span class="nm">堺 崇行</span></a>
+  <div class="nav">
+    <a href="/#works"><span class="ja">作品</span><span class="en">Works</span></a>
+    <button id="lang" aria-label="switch language">EN</button>
+  </div>
+</div>
+<main class="wpage">
+  <a class="back" href="/#works"><span class="ja">← 作品にもどる</span><span class="en">← back to works</span></a>
+  <div class="hero-img"><img src="/assets/yakiniku.jpg" alt="Yakiniku Tabetai"></div>
+  <h1>Yakiniku Tabetai</h1>
+  <p class="dyr">2021 ・ 3 months</p>
+  <p class="fact"><span class="ja">UX research / prototyping — Figma ／ リサーチの設計・実施</span><span class="en">UX research / prototyping — Figma ／ research design &amp; facilitation</span></p>
+  <div class="dbody">
+    <p class="ja">「焼肉食べたい」という日常の衝動を起点にした、UXリサーチとプロトタイピングのスタディ。リサーチの設計とファシリテーションを行い、Figmaでプロトタイプを試作した。</p>
+    <p class="den en">A UX research and prototyping study starting from the everyday impulse of "I want yakiniku." Research design and facilitation, with prototypes built in Figma.</p>
+  </div>
+</main>
+<footer style="max-width:720px;margin:0 auto;padding:0 var(--gut) 60px">
+  <small style="font-size:10.5px;color:var(--soft);letter-spacing:.16em">© 堺 崇行 / Takayuki Sakai — <a href="/" style="color:var(--soft)">takayukisakai.com</a></small>
+</footer>
+<script>
+var body=document.body,lang=document.getElementById("lang");
+function setLang(l){body.dataset.lang=l;document.documentElement.lang=l;lang.textContent=l==="ja"?"EN":"日本語";try{localStorage.setItem("lang",l)}catch(e){}}
+lang.addEventListener("click",function(){setLang(body.dataset.lang==="ja"?"en":"ja")});
+var sv=null;try{sv=localStorage.getItem("lang")}catch(e){}
+setLang(sv==="en"?"en":"ja");
+</script>
+</body>
+</html>

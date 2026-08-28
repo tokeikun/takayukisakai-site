@@ -3,7 +3,7 @@ title: IDentity
 card: yes
 year: 2021
 year_detail: 2021 ・ 4 months (remote)
-image: identity.png
+image: identity.jpg
 video: https://youtu.be/SWjE4J_Gz1w
 
 ## desc.ja
