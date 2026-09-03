@@ -22,6 +22,7 @@ jobs:
           cp index.html admin.html robots.txt sitemap.xml _site/
           cp -R works _site/works
           cp -R assets _site/assets
+          for f in content/pages/*.md; do slug=$(grep '^slug:' "$f" | head -1 | cut -d: -f2 | tr -d ' '); [ -n "$slug" ] && [ -d "$slug" ] && cp -R "$slug" "_site/$slug"; done
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:

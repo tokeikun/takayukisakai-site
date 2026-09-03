@@ -66,3 +66,10 @@ Detail text in English.
 - ファイルは必ず **UTF-8** で保存（普通のエディタならそのまま）
 - `## 見出し` の行は消さない・綴りを変えない
 - 分からなくなったら Claude に「content/○○を直して」と頼めば代わりにやります
+
+## 固定ページ（できること／プレス資料 など）
+`content/pages/○○.md` が 1ページ = `/○○/` になります（例：`contact.md` → takayukisakai.com/contact/）。
+- ヘッダ：`slug`（URL）、`title_ja` / `title_en`、`desc_ja` / `desc_en`、`draft`
+- **`draft: yes` のあいだは noindex・フッター未リンク**（URLを知っている人だけ見られる確認用）。公開するときは `draft: no` に
+- 本文は `## 名前.ja` / `## 名前.en` のペア。`### 見出し`、`- リスト`、`**太字**`、`[文字](URL)`、`![説明](画像URL)` が使えます
+- `{{form}}` と書いた場所に、`content/site.md` の `contact_form:` のURLがフォームとして埋め込まれます

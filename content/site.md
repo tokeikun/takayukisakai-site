@@ -4,6 +4,8 @@ hero_role: Artist / Design Engineer
 hero_name: 堺 崇行
 hero_sub_ja: Takayuki Sakai — Tokyo
 hero_sub_en: 堺 崇行 — Tokyo
+contact_form: 
+# ↑ お問い合わせフォームの埋め込みURL（Googleフォームの「送信」→「<>」の src、または Tally/Formspree の URL）。空なら /contact/ にDM案内が出ます。
 
 ## essay.title
 くらげ
