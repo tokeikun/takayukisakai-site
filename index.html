@@ -22,7 +22,8 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-KBSLT5NDX4"></script>
 <script>
 window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
-gtag('js',new Date());gtag('config','G-KBSLT5NDX4');
+gtag('js',new Date());
+if(location.hostname==='takayukisakai.com'||location.hostname==='www.takayukisakai.com') gtag('config','G-KBSLT5NDX4');
 addEventListener('hashchange',function(){
   var h=location.hash;
   if(h.indexOf('#w-')===0){
@@ -33,401 +34,173 @@ addEventListener('hashchange',function(){
 </script>
 <title>堺 崇行 — Takayuki Sakai</title>
 <style>
-  :root{
-    --paper:#faf9f5;
-    --ink:#201d18;
-    --soft:#8b857a;
-    --line:#e7e2d7;
-    --gut:clamp(22px,6vw,88px);
-    --mincho:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif;
-    --gothic:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{background:var(--paper);color:var(--ink);font-family:var(--gothic);
-    line-height:2;letter-spacing:.02em;-webkit-font-smoothing:antialiased}
-  body[data-lang="ja"] .en{display:none}
-  body[data-lang="en"] .ja{display:none}
-  a{color:inherit}
-  img{max-width:100%;display:block}
-
-  .top{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;
-    align-items:baseline;padding:20px var(--gut);
-    background:linear-gradient(to bottom,rgba(250,249,245,.95) 50%,rgba(250,249,245,0))}
-  .top .nm{font-family:var(--mincho);font-size:15px;letter-spacing:.14em}
-  .top .nav{display:flex;gap:24px;font-size:11px;letter-spacing:.22em;color:var(--soft);align-items:baseline}
-  .top .nav a{text-decoration:none}
-  .top .nav a:hover{color:var(--ink)}
-  .top .nav button{font:inherit;font-size:11px;letter-spacing:.22em;color:var(--soft);
-    background:none;border:1px solid var(--line);border-radius:999px;padding:4px 12px;cursor:pointer}
-  .top .nav button:hover{color:var(--ink);border-color:var(--soft)}
-
-  .wrap{max-width:920px;margin:0 auto;padding:0 var(--gut)}
-
-  /* hero */
-  .hero{min-height:72svh;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:9vh}
-  .hero .role{font-size:11px;letter-spacing:.3em;color:var(--soft);margin-bottom:26px;text-transform:uppercase}
-  .hero h1{font-family:var(--mincho);font-weight:500;font-size:clamp(44px,10.5vw,112px);
-    line-height:1.12;letter-spacing:.1em}
-  .hero .sub{margin-top:16px;font-family:var(--mincho);font-size:13px;letter-spacing:.24em;color:var(--soft)}
-
-  section{padding:11vh 0 3vh}
-  .seclabel{font-size:11px;letter-spacing:.34em;color:var(--soft);margin-bottom:8vh;
-    display:flex;align-items:center;gap:16px}
-  .seclabel::after{content:"";flex:1;height:1px;background:var(--line)}
-
-  /* works index */
-  .windex{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(20px,4vw,48px);margin-bottom:9vh}
-  .windex a{display:flex;align-items:center;gap:14px;
-    padding:9px 2px;border-bottom:1px solid var(--line);text-decoration:none;font-size:13.5px}
-  .windex img,.windex .noimg{width:58px;height:42px;object-fit:cover;flex:none;
-    border:1px solid var(--line);background:#eeeae0}
-  .windex .noimg{display:flex;align-items:center;justify-content:center;
-    font-family:var(--mincho);font-size:19px;color:#b3ab9c}
-  .windex .t{flex:1}
-  .windex a:hover{background:#f2efe7}
-  .windex .t{font-family:var(--mincho);letter-spacing:.04em}
-  .windex .y{color:var(--soft);font-size:11px;letter-spacing:.12em;font-variant-numeric:tabular-nums}
-  @media(max-width:680px){.windex{grid-template-columns:1fr}}
-
-  /* works */
-  .work{padding:8vh 0;scroll-margin-top:60px}
-  .work + .work{border-top:1px solid var(--line)}
-  .work .img{background:#eeeae0;border:1px solid var(--line)}
-  .work .img img{width:100%;height:auto}
-  a.worklink{text-decoration:none;display:block}
-  a.worklink:hover h2{opacity:.55}
-  .cap{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-    margin-top:18px;flex-wrap:wrap}
-  .cap h2{font-family:var(--mincho);font-size:clamp(20px,2.6vw,28px);font-weight:600;letter-spacing:.05em;transition:opacity .3s}
-  .cap .yr{font-size:12px;letter-spacing:.14em;color:var(--soft)}
-  .desc{margin-top:8px;font-size:14px;color:#45403a;max-width:38em}
-  .fact{margin-top:10px;font-size:11.5px;line-height:1.9;letter-spacing:.05em;color:var(--soft);max-width:44em}
-  .fact a{color:var(--soft)}
-  .more{display:inline-block;margin-top:16px;font-size:12px;letter-spacing:.14em;
-    text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:7px 18px}
-  .more:hover{border-color:var(--soft)}
-
-  /* concept quote on card */
-  .said{margin-top:30px;max-width:36em}
-  .said .who{font-size:10.5px;letter-spacing:.26em;color:var(--soft);margin-bottom:12px}
-  .said .q{font-family:var(--mincho);font-size:15.5px;line-height:2.3;letter-spacing:.05em;
-    border-left:1px solid var(--line);padding-left:20px;white-space:pre-line}
-  .said .q.qen{font-size:14px;line-height:2;font-style:italic}
-
-  .rowline{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:baseline;
-    padding:20px 0;border-top:1px solid var(--line);font-size:14px}
-  .rowline:last-of-type{border-bottom:1px solid var(--line)}
-  .rowline .t{font-family:var(--mincho);font-size:16px;letter-spacing:.04em}
-  .rowline .t a{text-decoration:none;border-bottom:1px solid var(--line)}
-  .rowline .d{color:var(--soft);font-size:12px;letter-spacing:.1em;text-align:right}
-  .rowline .n{grid-column:1/-1;color:#45403a;font-size:13px;margin-top:-6px}
-
-  /* work detail overlays (:target routing) */
-  .detail{display:none}
-  .detail:target{display:block;position:fixed;inset:0;z-index:90;background:var(--paper);
-    overflow-y:auto;-webkit-overflow-scrolling:touch}
-  .dwrap{max-width:720px;margin:0 auto;padding:80px var(--gut) 120px}
-  .back{display:inline-block;font-size:12px;letter-spacing:.18em;color:var(--soft);
-    text-decoration:none;margin-bottom:7vh}
-  .back:hover{color:var(--ink)}
-  .detail h2{font-family:var(--mincho);font-size:clamp(26px,4.5vw,40px);font-weight:600;letter-spacing:.05em}
-  .detail .dyr{font-size:12px;letter-spacing:.16em;color:var(--soft);margin:8px 0 26px}
-  .detail .fact{margin-bottom:5vh}
-  .dbody p{font-family:var(--mincho);font-size:15px;line-height:2.4;letter-spacing:.05em;
-    color:#2b2721;margin-bottom:1.8em}
-  .dbody p.den{font-size:14px;line-height:2.1;letter-spacing:.02em}
-  .dlabel{font-size:10.5px;letter-spacing:.26em;color:var(--soft);margin:5vh 0 2vh}
-
-  /* video & gallery in details */
-  .video{margin:4vh 0 1vh;background:#0d0c0a;border:1px solid var(--line);aspect-ratio:16/9;position:relative}
-  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-  .vlink{display:inline-block;margin:8px 0 3vh;font-size:12px;letter-spacing:.12em;color:var(--soft);text-decoration:none;border-bottom:1px solid var(--line)}
-  .vlink:hover{color:var(--ink)}
-  .gallery{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:4vh 0}
-  .gallery .gi{border:1px solid var(--line);background:#eeeae0}
-  .gallery .gi img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
-  @media(max-width:520px){.gallery{grid-template-columns:1fr}}
-
-  /* words */
-  .words a{display:block;padding:22px 0;border-bottom:1px solid var(--line);text-decoration:none}
-  .words a:first-of-type{border-top:1px solid var(--line)}
-  .words .wt{font-family:var(--mincho);font-size:17px;letter-spacing:.05em}
-  .words a:hover .wt{opacity:.55}
-  .words .wd{font-size:11.5px;color:var(--soft);margin-top:4px;letter-spacing:.12em}
-  .essay{margin-top:7vh;max-width:36em}
-  .essay .et{font-family:var(--mincho);font-size:19px;letter-spacing:.08em;margin-bottom:4vh}
-  .essay p{font-family:var(--mincho);font-size:15px;line-height:2.5;letter-spacing:.06em;
-    margin-bottom:2.2em;color:#2b2721}
-  .essay .ed{font-size:11px;color:var(--soft);letter-spacing:.14em;margin-top:-1em}
-
-  /* about */
-  .about{display:grid;grid-template-columns:minmax(180px,1fr) 2.2fr;gap:clamp(24px,5vw,64px);align-items:start}
-  .about .img{border:1px solid var(--line)}
-  .about .bio{font-size:14px;line-height:2.2;max-width:36em}
-  .about .bio p{margin-bottom:1.4em}
-  .cred{margin-top:3vh;font-size:11px;line-height:2;color:var(--soft);letter-spacing:.05em;
-    border-top:1px solid var(--line);padding-top:18px}
-
-  footer{padding:12vh var(--gut) 9vh;max-width:920px;margin:0 auto}
-  footer .links{display:flex;gap:24px;font-size:13px;letter-spacing:.08em;flex-wrap:wrap}
-  footer .links a{text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px}
-  footer .links a:hover{border-color:var(--ink)}
-  footer .dm{margin-top:14px;font-size:12px;color:var(--soft);letter-spacing:.08em}
-  footer small{display:block;margin-top:44px;font-size:10.5px;color:var(--soft);letter-spacing:.16em}
-
-  @media(max-width:680px){
-    .about{grid-template-columns:1fr}
-    .about .img{max-width:220px}
-    .top .nav a{display:none}
-  }
+:root{--paper:#fafaf7;--ink:#242722;--soft:#656b62;--line:#dce0d7;--gut:clamp(22px,4vw,64px);--mincho:"Hiragino Mincho ProN","Yu Mincho",serif;--gothic:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font:16px/1.9 var(--gothic);background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased}body[data-lang="ja"] .en{display:none}body[data-lang="en"] .ja{display:none}a{color:inherit;text-underline-offset:5px}img{display:block;max-width:100%}button{font:inherit}a:focus-visible,button:focus-visible,summary:focus-visible,video:focus-visible{outline:2px solid #496a53;outline-offset:5px}[id]{scroll-margin-top:92px}
+.top{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:17px var(--gut);background:rgba(250,250,247,.97);border-bottom:1px solid var(--line)}.top .brand{display:flex;flex-direction:column;gap:3px;text-decoration:none;min-width:0}.top .nm{font:500 23px/1.25 var(--mincho);letter-spacing:.16em;white-space:nowrap}.top .brand-roman{font:10px/1.5 var(--gothic);letter-spacing:.1em;color:var(--soft);white-space:nowrap}.top .nav{display:flex;align-items:center;gap:26px;font-size:14px}.top .nav a{text-decoration:none}.top .nav a:hover{text-decoration:underline}.top .nav button{border:0;border-left:1px solid var(--line);background:none;cursor:pointer;padding:2px 0 2px 22px;color:var(--soft);font-size:14px}
+.top.home-top{justify-content:flex-end}
+.home-shell{max-width:1480px;margin:0 auto;padding:0 var(--gut)}.opening{display:grid;grid-template-columns:minmax(240px,.78fr) minmax(0,1.8fr);gap:clamp(36px,5vw,90px);padding:48px 0 80px;align-items:start}.hero{padding-top:34px;min-width:0}.hero .role{font-size:12px;letter-spacing:.1em;color:var(--soft);margin-bottom:28px}.hero h1{font:500 clamp(38px,4.3vw,64px)/1.3 var(--mincho);letter-spacing:.02em}.hero .sub{font-size:13px;color:var(--soft);letter-spacing:.08em;margin-top:12px}.hero .intro{font:400 clamp(17px,1.55vw,22px)/2.1 var(--mincho);margin:38px 0 28px;max-width:24em}.hero .intro p+p{margin-top:1em}.intro-link{font-size:14px;color:var(--soft);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:5px}
+.work{min-width:0}.worklink{display:block;text-decoration:none}.work .img{overflow:hidden;background:#e6e9e1}.work .img img{width:100%;height:auto}.lead-work .work .img{aspect-ratio:3/2}.lead-work .work .img img{height:100%;object-fit:cover}.cap{display:flex;gap:16px;align-items:baseline;justify-content:space-between;flex-wrap:wrap;margin-top:20px}.cap h2{font:500 clamp(23px,2.4vw,34px)/1.5 var(--mincho);letter-spacing:.02em}.cap .yr{font-size:13px;color:var(--soft);font-variant-numeric:tabular-nums}.desc{font-size:16px;line-height:1.95;max-width:43em;margin-top:12px}.fact{font-size:13px;line-height:1.9;color:var(--soft);margin-top:14px;max-width:55em}.more{display:inline-block;text-decoration:none;border-bottom:1px solid var(--ink);padding:0 0 5px;margin-top:22px;font-size:14px}.more:hover,.intro-link:hover{color:#496a53;border-color:#496a53}.seclabel{font-size:12px;font-weight:400;letter-spacing:.12em;color:var(--soft);line-height:1.8}.section-heading{display:flex;justify-content:space-between;gap:20px;align-items:baseline;border-top:1px solid var(--line);padding-top:20px;margin-bottom:40px}.section-heading a{font-size:14px;text-decoration:none}.selected-section{padding:0 0 100px}.selected{display:grid;grid-template-columns:1.08fr 1fr;gap:clamp(36px,9vw,140px);padding:0 5vw}.selected .work:nth-child(even){margin-top:100px}.selected .work .img{aspect-ratio:4/3}.selected .work .img img{height:100%;object-fit:cover}.selected .work:nth-child(even) .img{aspect-ratio:3/4}.selected .cap h2{font-size:clamp(23px,2.1vw,31px)}
+.current-study{border-top:1px solid var(--line);padding-top:20px;margin-top:48px;max-width:720px;font-size:14px;color:var(--soft)}.current-study p+p{margin-top:8px}
+.words-section{display:grid;grid-template-columns:.6fr 2fr;gap:clamp(24px,5vw,80px);border-top:1px solid var(--line);padding:56px 0 92px}.words-content{max-width:820px}.essay-title{font:500 clamp(30px,4vw,48px)/1.5 var(--mincho);margin-bottom:20px}.essay-excerpt{font:18px/2.2 var(--mincho);max-width:38em;margin-bottom:22px}.essay-reading{max-width:40em}.essay-reading summary{font-size:14px;cursor:pointer;padding:8px 0;list-style:none;border-bottom:1px solid var(--line);width:fit-content}.essay-reading summary::after{content:' ＋';padding-left:24px}.essay-reading[open] summary::after{content:' −'}.essay-reading summary::-webkit-details-marker{display:none}.essay{padding-top:32px}.essay .et{display:none}.essay p{font:16px/2.3 var(--mincho);margin-bottom:1.8em}.essay .ed{font:12px/1.8 var(--gothic);color:var(--soft)}.words{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:42px}.words a{text-decoration:none;border-top:1px solid var(--line);padding:18px 0}.words .wt{font:18px/1.7 var(--mincho)}.words .wd{font-size:12px;color:var(--soft);margin-top:8px}
+.about-section{border-top:1px solid var(--line);padding:40px 0 88px}.about-section>.seclabel{margin-bottom:36px}.about{display:grid;grid-template-columns:minmax(150px,.65fr) 1.7fr;gap:clamp(32px,6vw,96px);max-width:1000px}.about .img{max-width:260px;align-self:start}.about .bio{font-size:16px;line-height:2.15}.about .bio p{margin-bottom:1.3em}.credentials{border-top:1px solid var(--line);padding-top:18px;margin-top:26px}.credentials summary{cursor:pointer;font-size:14px;list-style:none}.credentials summary::after{content:' ＋';padding-left:18px}.credentials[open] summary::after{content:' −'}.cred{font-size:13px;line-height:2;color:var(--soft);margin-top:18px}.cred h2{font:500 16px/1.6 var(--mincho);color:var(--ink);margin:28px 0 12px}.cred h2:first-child{margin-top:0}.cred ul{list-style:none;margin:0;padding:0}.cred li{padding:9px 0;border-bottom:1px solid var(--line);line-height:1.9}.cred li:last-child{border-bottom:0}
+.about .resource-links{margin-top:24px;font-size:14px;display:flex;gap:20px;flex-wrap:wrap}
+.collaboration{background:#e9eee5;margin:0 calc(-1 * var(--gut));padding:64px var(--gut);display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,7vw,100px)}.collaboration h2{font:500 clamp(27px,3.5vw,43px)/1.65 var(--mincho);max-width:15em}.collaboration p{font-size:16px;line-height:2.1;max-width:40em}.collaboration .seclabel{margin-bottom:22px}.collaboration .more{margin-top:26px}.archive-section{padding:80px 0 32px}.windex{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 32px}.windex a{display:flex;align-items:center;gap:12px;padding:15px 0;border-bottom:1px solid var(--line);text-decoration:none;min-width:0}.windex a:hover .t{text-decoration:underline}.windex img,.windex .noimg{width:62px;height:46px;object-fit:cover;flex:none;background:#e6e9e1}.windex .noimg{display:grid;place-items:center;font:22px var(--mincho);color:#87917f}.windex .t{font:15px/1.6 var(--mincho);flex:1;min-width:0;overflow-wrap:anywhere}.windex .y{font-size:12px;color:var(--soft);white-space:nowrap}
+footer{max-width:1480px;margin:0 auto;padding:52px var(--gut) 40px}footer .links{display:flex;flex-wrap:wrap;gap:24px;font-size:14px}footer .links a{text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:4px}footer .dm{font-size:13px;color:var(--soft);margin-top:18px}footer small{display:block;font-size:12px;color:var(--soft);margin-top:42px}
+.back{display:inline-block;font-size:14px;color:var(--soft);text-decoration:none;margin-bottom:30px}.dbody p{font:16px/2.3 var(--mincho);margin-bottom:1.8em}.dbody h2,.essay h2,.bio h2{font-size:23px;font-weight:500;margin:34px 0 18px}.dbody ul,.essay ul,.bio ul{font-size:16px;padding-left:1.4em;margin:24px 0;line-height:2}.dbody .pimg,.essay .pimg,.bio .pimg{margin:30px 0}.dbody .pimg img,.essay .pimg img,.bio .pimg img{width:100%;height:auto}.process{border-top:1px solid var(--line);padding-top:30px;margin-top:44px}.process h2{font:500 23px/1.6 var(--mincho);margin-bottom:20px}.process p{font-size:16px;line-height:2.2;margin-bottom:20px}.dlabel{font-size:14px;margin-top:32px}.video{aspect-ratio:16/9;position:relative;background:#161a15;margin:30px 0 12px}.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}.video video{width:100%;height:100%;display:block;object-fit:contain}.vlink{display:inline-block;font-size:14px;color:var(--soft);margin:10px 0 30px;text-decoration:none;border-bottom:1px solid var(--line)}.film-caption{font-size:13px;color:var(--soft);line-height:1.9;margin:14px 0 32px}.gallery{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;margin:40px 0}.gallery img{width:100%;height:auto}.work-contact{border-top:1px solid var(--line);padding-top:36px;margin-top:64px}.work-contact h2{font:500 30px/1.6 var(--mincho);margin-bottom:18px}.work-contact p{font-size:16px;line-height:2;max-width:42em}.detail{display:none}.said{margin-top:24px}.said .who{font-size:12px;color:var(--soft)}.said .q{font:16px/2 var(--mincho);margin-top:10px}
+@media(max-width:1050px){.opening{grid-template-columns:minmax(220px,.8fr) minmax(0,1.35fr);gap:32px}.hero{padding-top:12px}.hero .intro{font-size:17px;margin-top:26px}.selected{padding:0;gap:48px}.windex{grid-template-columns:1fr 1fr}.words-section{grid-template-columns:.45fr 2fr;gap:30px}}
+@media(max-width:700px){[id]{scroll-margin-top:100px}.top{padding:14px var(--gut)}.top .nav{gap:15px}.top .nav .secondary-nav{display:none}.top .nm{font-size:21px}.top .brand-roman{font-size:9px;letter-spacing:.06em}.top .nav button{padding-left:12px}.opening{grid-template-columns:1fr;gap:34px;padding-top:28px;padding-bottom:52px}.hero{display:grid;grid-template-columns:1fr auto;padding:0;gap:0 16px}.hero .role{grid-column:1/-1;margin-bottom:16px;font-size:12px}.hero h1{grid-column:1;font-size:36px}.hero .sub{grid-column:1/-1;margin-top:6px}.hero .intro{grid-column:1/-1;font-size:16px;margin:20px 0 0;max-width:34em}.hero .intro p+p{margin-top:.4em}.hero .intro-link{grid-column:1/-1;justify-self:start;margin-top:14px}.lead-work .work .img{aspect-ratio:3/2}.selected{grid-template-columns:1fr;gap:44px}.selected .work:nth-child(even){margin-top:0}.selected .work:nth-child(even) .img{aspect-ratio:3/4}.selected-section{padding-bottom:56px}.section-heading{margin-bottom:26px;flex-wrap:wrap}.words-section{grid-template-columns:1fr;padding:32px 0 52px}.essay-title{font-size:34px}.essay-excerpt{font-size:17px}.words{grid-template-columns:1fr;gap:0}.about-section{padding:32px 0 56px}.about{grid-template-columns:1fr;gap:26px}.about .img{width:140px}.collaboration{grid-template-columns:1fr;gap:24px;padding-top:40px;padding-bottom:44px}.collaboration h2{font-size:29px;max-width:18em}.windex{grid-template-columns:1fr}.archive-section{padding-top:52px}.gallery{grid-template-columns:1fr}footer{padding-top:36px}}
+.desc,.bio,.collaboration p:not(.seclabel),.process p,.process ul,.dbody ul,.work-contact p,.page .pblk p,.page .pblk li{font-family:var(--mincho)}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
 <body data-lang="ja">
 
-<div class="top">
-  <span class="nm">堺 崇行</span>
+<nav class="top home-top" aria-label="Main navigation">
   <div class="nav">
     <a href="#works"><span class="ja">作品</span><span class="en">Works</span></a>
-    <a href="#words"><span class="ja">ことば</span><span class="en">Words</span></a>
-    <a href="#about"><span class="ja">略歴</span><span class="en">About</span></a>
+    <a class="secondary-nav" href="#words"><span class="ja">ことば</span><span class="en">Words</span></a>
+    <a class="secondary-nav" href="#about"><span class="ja">略歴</span><span class="en">About</span></a>
+    <a href="/contact/"><span class="ja">ご相談</span><span class="en">Contact</span></a>
     <button id="lang" aria-label="switch language">EN</button>
   </div>
-</div>
+</nav>
 
-<div class="wrap">
+<main class="home-shell">
+  <section id="works" class="opening">
+    <header class="hero">
+      <p class="role">Artist / Design Engineer</p>
+      <h1>堺 崇行</h1>
+      <p class="sub"><span class="ja">Takayuki Sakai — Tokyo</span><span class="en">堺 崇行 — Tokyo</span></p>
+      <div class="intro"><div class="ja"><p>日常でふと気になったことを、映像や動くものにしています。</p><p>自分にはこう見えた、こう感じた。その感覚を、誰かと共有できる作品にしたいと思っています。</p></div><div class="en"><p>I make moving images and working objects from things that catch my attention in everyday life.</p><p>This is how it looked to me; this is how it felt. I want to give those perceptions a form that others can encounter.</p></div></div>
+      <a class="intro-link" href="/contact/"><span class="ja">共同制作について →</span><span class="en">Collaborate with me →</span></a>
+    </header>
+    <div class="lead-work">    <!-- Kage（影） -->
+    <article class="work" id="c-kage">
+      <a class="worklink" href="works/kage/">
+        <div class="img"><img src="assets/kage.jpg" alt="Kage（影）" fetchpriority="high" decoding="async"></div>
+        <div class="cap"><h2>Kage（影）</h2><span class="yr">2021</span></div>
+      </a>
+      <p class="desc ja">離れた人の何気ない動きを、部屋の壁に影として映す。障子に映る祖父母の影に感じた安心から、会話をしなくても気配が伝わる体験を試した。</p>
+      <p class="desc en">A distant person’s small movements appear as shadows on your wall. The comfort of my grandparents’ shadows on a shoji screen led me to explore presence without a conversation.</p>
+      <a class="more" href="works/kage/"><span class="ja">映像と制作の背景 →</span><span class="en">Film &amp; story →</span></a>
+    </article></div>
+  </section>
+  <section class="selected-section">
+    <div class="section-heading">
+      <h2 class="seclabel"><span class="ja">主な作品　SELECTED WORKS</span><span class="en">SELECTED WORKS</span></h2>
+      <a href="#archive"><span class="ja">すべての作品 ↓</span><span class="en">All works ↓</span></a>
+    </div>
+    <div class="selected">    <!-- Angry AI Speaker — GIZMO -->
+    <article class="work" id="c-gizmo">
+      <a class="worklink" href="works/gizmo/">
+        <div class="img"><img src="assets/gizmo_hero.jpg" alt="Angry AI Speaker — GIZMO" loading="lazy" decoding="async"></div>
+        <div class="cap"><h2>Angry AI Speaker — GIZMO</h2><span class="yr">2019</span></div>
+      </a>
+      <p class="desc ja">天気を訊くと、返事に続いてピンポン球を撃ってくる。「いつも丁寧なAIが、うんざりしたら？」という想像を、動くスピーカーにした。</p>
+      <p class="desc en">Ask the weather, and a reply is followed by a ping-pong ball. A working speaker built from a thought: what if an always-polite AI got fed up?</p>
+      <a class="more" href="works/gizmo/"><span class="ja">映像と制作の背景 →</span><span class="en">Film &amp; story →</span></a>
+    </article>
 
-  <header class="hero">
-    <p class="role">Artist / Design Engineer</p>
-    <h1>堺 崇行</h1>
-    <p class="sub"><span class="ja">Takayuki Sakai — Tokyo</span><span class="en">堺 崇行 — Tokyo</span></p>
-  </header>
-
-  <section id="works">
-    <p class="seclabel"><span class="ja">作品　WORKS</span><span class="en">WORKS</span></p>
-<nav class="windex">
-      <a href="#c-umbrella-dance"><img src="assets/shibuya.jpg" alt="" loading="lazy"><span class="t">Shibuya's Neon Umbrella Dance</span><span class="y">2025 —</span></a>
-      <a href="#c-kage"><img src="assets/kage.jpg" alt="" loading="lazy"><span class="t">Kage（影）</span><span class="y">2021</span></a>
-      <a href="#c-identity"><img src="assets/identity.jpg" alt="" loading="lazy"><span class="t">IDentity</span><span class="y">2021</span></a>
-      <a href="#c-gizmo"><img src="assets/gizmo_hero.jpg" alt="" loading="lazy"><span class="t">Angry AI Speaker — GIZMO</span><span class="y">2019</span></a>
-      <a href="#c-ascii-chair"><img src="assets/ascii_chair_2.jpg" alt="" loading="lazy"><span class="t">ASCII Chair</span><span class="y">2019</span></a>
-      <a href="#c-sole-animal"><img src="assets/sole_animal.jpg" alt="" loading="lazy"><span class="t">Sole Animal</span><span class="y">2016</span></a>
-      <a href="#c-power-of-touch"><img src="assets/power_of_touch.jpg" alt="" loading="lazy"><span class="t">Power of Touch</span><span class="y">2019</span></a>
-      <a href="#c-remember-umbrella"><img src="assets/umbrella.jpg" alt="" loading="lazy"><span class="t">Remember Umbrella</span><span class="y">2014</span></a>
-      <a href="#c-estimer"><img src="assets/estimer.jpg" alt="" loading="lazy"><span class="t">Estimer</span><span class="y">2014</span></a>
-      <a href="#c-zarc"><img src="assets/zarc_thumb.jpg" alt="" loading="lazy"><span class="t">Zarc（Brand Logo Design）</span><span class="y">2021</span></a>
-      <a href="#c-yakiniku"><img src="assets/yakiniku.jpg" alt="" loading="lazy"><span class="t">Yakiniku Tabetai</span><span class="y">2021</span></a>
-      <a href="works/bowing-penguin/"><span class="noimg">B</span><span class="t">BOWING PENGUIN</span><span class="y">2014</span></a>
-      <a href="works/anonymous-mask/"><span class="noimg">A</span><span class="t">Anonymous Mask</span><span class="y">2015</span></a>
-    </nav>
     <!-- Shibuya's Neon Umbrella Dance -->
     <article class="work" id="c-umbrella-dance">
       <a class="worklink" href="works/umbrella-dance/">
-        <div class="img"><img src="assets/shibuya.jpg" alt="Shibuya's Neon Umbrella Dance"></div>
+        <div class="img"><img src="assets/shibuya.jpg" alt="Shibuya's Neon Umbrella Dance" loading="lazy" decoding="async"></div>
         <div class="cap"><h2>Shibuya's Neon Umbrella Dance</h2><span class="yr">2025 —</span></div>
       </a>
-      <p class="desc ja">雨のスクランブル交差点を、くらげの群れに変換した映像。生成AIのモデルが進化するたびに、同じテーマで作り直している。</p>
-      <p class="desc en">A video that turns the rainy scramble crossing into a swarm of jellyfish — remade on the same theme each time generative models improve.</p>
-      <p class="fact"><span class="ja">Generative AI video — Kling / Runway ／ 自主制作</span><span class="en">Generative AI video — Kling / Runway ／ self-initiated</span></p>
-      <div class="said">
-        <p class="who"><span class="ja">コンセプト</span><span class="en">CONCEPT</span></p>
-        <p class="q ja">そんなビニール傘がランダムな方向に行き交っているのを上から見ていると、雫も相まって、人がすれ違うときに傘を上げたり傾けたりする動きも相まって、くらげがふわふわ浮いているように見えた。なんだかそんな風に見えたんだよね。</p>
-        <p class="q qen en">Watching the vinyl umbrellas cross in random directions from above — the raindrops, the way people lift and tilt them as they pass — they looked like jellyfish, drifting. That's just how it looked to me.</p>
-      </div>
-      <a class="more" href="works/umbrella-dance/"><span class="ja">くわしく →</span><span class="en">more →</span></a>
-    </article>
-
-    <!-- Kage（影） -->
-    <article class="work" id="c-kage">
-      <a class="worklink" href="works/kage/">
-        <div class="img"><img src="assets/kage.jpg" alt="Kage（影）"></div>
-        <div class="cap"><h2>Kage（影）</h2><span class="yr">2021</span></div>
-      </a>
-      <p class="desc ja">離れた場所にいる人の動きを、部屋の壁に影として映す装置。ウェブカメラとプロジェクターによるインタラクション。</p>
-      <p class="desc en">A device that casts a distant person's movements on your wall as a shadow — an interaction built from a webcam and a projector.</p>
-      <p class="fact"><span class="ja">Interaction design — webcam + projector ／ 森龍太と共作 ／ LEXUS Design Award 2021 shortlist ／ plaplax『Kage』へのオマージュ</span><span class="en">Interaction design — webcam + projector ／ with Ryuta Mori / LEXUS Design Award 2021 shortlist / an homage to plaplax's "Kage"</span></p>
-      <div class="said">
-        <p class="who"><span class="ja">コンセプト</span><span class="en">CONCEPT</span></p>
-        <p class="q ja">影は不思議な存在だ。本人ではないのに、本人がいるから生まれる。影を見ると、なぜか誰かの存在を感じる。子どものころ、布団に入りながら、縁側の障子に映る祖父母の影を見て感じた安心のように。</p>
-        <p class="q qen en">Shadows are mysterious entities. They're not the person themselves, but they appear because of the person's existence. Like the comfort felt as a child, lying in bed and seeing the shadows of grandparents on the shoji screens of the veranda.</p>
-      </div>
-      <a class="more" href="works/kage/"><span class="ja">くわしく →</span><span class="en">more →</span></a>
-    </article>
-
-    <!-- IDentity -->
-    <article class="work" id="c-identity">
-      <a class="worklink" href="works/identity/">
-        <div class="img"><img src="assets/identity.jpg" alt="IDentity"></div>
-        <div class="cap"><h2>IDentity</h2><span class="yr">2021</span></div>
-      </a>
-      <p class="desc ja">人種的な特徴をぼかしたまま、表情だけを残すARの顔。判断より先に来る「知覚」に介入する思考実験。</p>
-      <p class="desc en">An AR face that blurs racial features while keeping the expression — a thought experiment intervening in perception, before judgment.</p>
-      <p class="fact"><span class="ja">Speculative design — SparkAR + StyleGAN ／ 構想・デザイン・技術リサーチ：堺崇行 ／ 映像演出：Muragishi・Eiji Uozumi ／ 渋谷芸術祭 2022 出展 ／ RCA 修了制作</span><span class="en">Speculative design — SparkAR + StyleGAN ／ concept, design &amp; technology research: Takayuki Sakai / video direction: Muragishi &amp; Eiji Uozumi / Shibuya Arts Festival 2022 / RCA graduation work</span></p>
-      <div class="said">
-        <p class="who"><span class="ja">コンセプト</span><span class="en">CONCEPT</span></p>
-        <p class="q ja">近年の神経科学は、自分と異なる人種を見たとき、扁桃体が判断より先に反応することを示している——潜在的偏見と呼ばれる、無意識で自動的な反応だ。IDentity は、知覚と認知の軸の上で、差別感情が生む情報をあらかじめフィルタリングしようとする試みである。</p>
-        <p class="q qen en">Recent neuroscience research has highlighted that the amygdala responds when a person sees a race that is different from their own — unconscious and automatic reactions known as latent prejudice. IDentity aims to filter information generated by discriminatory feelings in advance, on the axis of perception and cognition.</p>
-      </div>
-      <a class="more" href="works/identity/"><span class="ja">くわしく →</span><span class="en">more →</span></a>
-    </article>
-
-    <!-- Angry AI Speaker — GIZMO -->
-    <article class="work" id="c-gizmo">
-      <a class="worklink" href="works/gizmo/">
-        <div class="img"><img src="assets/gizmo_hero.jpg" alt="Angry AI Speaker — GIZMO"></div>
-        <div class="cap"><h2>Angry AI Speaker — GIZMO</h2><span class="yr">2019</span></div>
-      </a>
-      <p class="desc ja">毎日おなじ質問をされて、うんざりしてしまったAIスピーカー。天気を訊くと、ピンポン球を撃ってくる。</p>
-      <p class="desc en">An AI speaker fed up with being asked the same questions every day. Ask the weather, and it fires a ping-pong ball at you.</p>
-      <p class="fact"><span class="ja">Physical computing — DialogFlow / Arduino UNO / Google Voice Kit v2 ／ 構想・機構・回路設計・プログラミング：堺崇行 ／ 外装・加工・組立：Min Cai</span><span class="en">Physical computing — DialogFlow / Arduino UNO / Google Voice Kit v2 ／ concept, mechanism, circuit &amp; code: Takayuki Sakai / exterior, machining &amp; assembly: Min Cai</span></p>
-      <div class="said">
-        <p class="who"><span class="ja">コンセプト</span><span class="en">CONCEPT</span></p>
-        <p class="q ja">アシスタントは「お母さんに訊いて」と返すだけでなく、ピンポン球を撃ってくる。この体験を通じて、人とコンピュータの関係を考えなおすことをうながす作品。</p>
-        <p class="q qen en">The assistant not only replies, "Ask your mother," but also throws a ping-pong ball at the user. Through these experiences, the work encourages a reconsideration of the relationship between humans and computers.</p>
-      </div>
-      <a class="more" href="works/gizmo/"><span class="ja">くわしく →</span><span class="en">more →</span></a>
-    </article>
-
-    <!-- ASCII Chair -->
-    <article class="work" id="c-ascii-chair">
-      <a class="worklink" href="works/ascii-chair/">
-        <div class="img"><img src="assets/ascii_chair_2.jpg" alt="ASCII Chair"></div>
-        <div class="cap"><h2>ASCII Chair</h2><span class="yr">2019</span></div>
-      </a>
-      <p class="desc ja">自分の名前を二進法の木の棒に変換した、座れる椅子。木が「1」、空白が「0」。</p>
-      <p class="desc en">A chair that spells your name in binary wooden bars — wood for "1", a gap for "0". You can sit on it.</p>
-      <p class="fact"><span class="ja">Furniture design — laser cutting ／ RCA IDE「Superform」（Dreams &amp; Dystopias / FUI）単独制作</span><span class="en">Furniture design — laser cutting ／ RCA IDE「Superform」（Dreams &amp; Dystopias / FUI）solo</span></p>
-      <div class="said">
-        <p class="who"><span class="ja">コンセプト</span><span class="en">CONCEPT</span></p>
-        <p class="q ja">日本語では「社長の椅子を狙う」のように、椅子は権力の象徴として使われる。では、いまの社会で力を持つものは何か。データだ。ASCII Chair に座る人は、物理的に表現されたデータに支えられている。</p>
-        <p class="q qen en">In Japanese, a chair is used as a symbol of power, as in "aiming for the president's chair." What has power in today's society? Today, data has power. The human sitting in the ASCII chair is supported by the data that is physically represented.</p>
-      </div>
-      <a class="more" href="works/ascii-chair/"><span class="ja">くわしく →</span><span class="en">more →</span></a>
-    </article>
-
-    <!-- Sole Animal -->
-    <article class="work" id="c-sole-animal">
-      <a class="worklink" href="works/sole-animal/">
-        <div class="img"><img src="assets/sole_animal.jpg" alt="Sole Animal"></div>
-        <div class="cap"><h2>Sole Animal</h2><span class="yr">2016</span></div>
-      </a>
-      <p class="desc ja">靴の中敷きの圧力センサーが歩行中の重心をとらえ、正しい歩き方へ導く装置。</p>
-      <p class="desc en">Pressure sensors in an insole read your center of gravity as you walk, and guide you toward better form.</p>
-      <p class="fact"><span class="ja">Physical computing — Arduino + pressure sensors ／ フィジカルコンピューティング・プログラミング：堺崇行 ／ ビジュアル：濱田智子・信田未来 ／ 映像：田村圭祐 ／ BaPA 修了制作（日テレホールにて展示）</span><span class="en">Physical computing — Arduino + pressure sensors ／ physical computing &amp; programming: Takayuki Sakai / visuals: T. Hamada &amp; M. Shida / video: K. Tamura / BaPA graduation work, shown at Nippon TV Hall</span></p>
-      <a class="more" href="works/sole-animal/"><span class="ja">くわしく →</span><span class="en">more →</span></a>
-    </article>
-
-    <!-- Power of Touch -->
-    <article class="work" id="c-power-of-touch">
-      <a class="worklink" href="works/power-of-touch/">
-        <div class="img"><img src="assets/power_of_touch.jpg" alt="Power of Touch"></div>
-        <div class="cap"><h2>Power of Touch</h2><span class="yr">2019</span></div>
-      </a>
-      <p class="desc ja">手のひらの体温で、花がまわりはじめる人工植物。回路設計から筐体まで、自分の手でつくった。</p>
-      <p class="desc en">An artificial plant whose flower starts turning from the warmth of your palm. Built by hand, from circuit to enclosure.</p>
-      <p class="fact"><span class="ja">Physical computing — ATtiny44 / Peltier cell / servo / Fusion 360 / laser cut ／ Fab Academy 2019 final project ／ <a href="https://fabacademy.org/2019/labs/kannai/students/takayuki-sakai/projects/final-project/" target="_blank" rel="noopener">documentation ↗</a></span><span class="en">Physical computing — ATtiny44 / Peltier cell / servo / Fusion 360 / laser cut ／ Fab Academy 2019 final project ／ <a href="https://fabacademy.org/2019/labs/kannai/students/takayuki-sakai/projects/final-project/" target="_blank" rel="noopener">documentation ↗</a></span></p>
-      <div class="said">
-        <p class="who"><span class="ja">コンセプト</span><span class="en">CONCEPT</span></p>
-        <p class="q ja">人が持っているのに、気づかれていない力を可視化する。痛いところに当てられた親の手が、なぜか効くように。</p>
-        <p class="q qen en">This idea came from my interest in visualizing power that people have but isn't noticed — like a parent's hand healing pain.</p>
-      </div>
-      <a class="more" href="works/power-of-touch/"><span class="ja">くわしく →</span><span class="en">more →</span></a>
-    </article>
-
-    <!-- Remember Umbrella -->
-    <article class="work" id="c-remember-umbrella">
-      <a class="worklink" href="works/remember-umbrella/">
-        <div class="img"><img src="assets/umbrella.jpg" alt="Remember Umbrella"></div>
-        <div class="cap"><h2>Remember Umbrella</h2><span class="yr">2014</span></div>
-      </a>
-      <p class="desc ja">雨の予報の朝だけ、青く光る傘立て。家を出る瞬間に、天気予報を思い出させる。</p>
-      <p class="desc en">An umbrella stand that glows blue only on mornings when rain is forecast — reminding you at the moment you leave.</p>
-      <p class="fact"><span class="ja">Physical computing — Philips Hue + IFTTT ／ 自主制作</span><span class="en">Physical computing — Philips Hue + IFTTT ／ self-initiated</span></p>
-      <a class="more" href="works/remember-umbrella/"><span class="ja">くわしく →</span><span class="en">more →</span></a>
-    </article>
-
-    <!-- Estimer -->
-    <article class="work" id="c-estimer">
-      <a class="worklink" href="works/estimer/">
-        <div class="img"><img src="assets/estimer.jpg" alt="Estimer"></div>
-        <div class="cap"><h2>Estimer</h2><span class="yr">2014</span></div>
-      </a>
-      <p class="desc ja">会議室と同僚の「空き」を天気予報のように知らせる、オフィスの予報板。</p>
-      <p class="desc en">An office forecast board that reports the availability of rooms and colleagues, like a weather report.</p>
-      <p class="fact"><span class="ja">Prototyping — Proto.io ／ CIID Copenhagen「PROTOTYPING – JUST REAL ENOUGH」／ ストーリーボード・アプリ試作・主演：堺崇行 ／ アプリ試作：Kim Sørensen ／ レーザーカット：Lars Kaltenbach</span><span class="en">Prototyping — Proto.io ／ CIID Copenhagen「PROTOTYPING – JUST REAL ENOUGH」／ storyboard, app prototype &amp; lead actor: Takayuki Sakai / app prototype: Kim Sørensen / laser cutting: Lars Kaltenbach</span></p>
-      <a class="more" href="works/estimer/"><span class="ja">くわしく →</span><span class="en">more →</span></a>
-    </article>
-
-    <!-- Zarc（Brand Logo Design） -->
-    <article class="work" id="c-zarc">
-      <a class="worklink" href="works/zarc/">
-        <div class="img"><img src="assets/zarc.jpg" alt="Zarc（Brand Logo Design）"></div>
-        <div class="cap"><h2>Zarc（Brand Logo Design）</h2><span class="yr">2021</span></div>
-      </a>
-      <p class="desc ja">東京のスタートアップスタジオ Zarc のコーポレートロゴ。「0 → 10」を、未来を見つめる「目」のかたちに束ねた。</p>
-      <p class="desc en">The corporate logo for Zarc, a Tokyo startup studio — "0 → 10" folded into the shape of an eye gazing at the future.</p>
-      <p class="fact"><span class="ja">Logo design — Illustrator ／ 単独制作</span><span class="en">Logo design — Illustrator ／ solo</span></p>
-      <a class="more" href="works/zarc/"><span class="ja">くわしく →</span><span class="en">more →</span></a>
-    </article>
-
-    <!-- Yakiniku Tabetai -->
-    <article class="work" id="c-yakiniku">
-      <a class="worklink" href="works/yakiniku/">
-        <div class="img"><img src="assets/yakiniku.jpg" alt="Yakiniku Tabetai"></div>
-        <div class="cap"><h2>Yakiniku Tabetai</h2><span class="yr">2021</span></div>
-      </a>
-      <p class="desc ja">「焼肉食べたい」をめぐるUXリサーチとプロトタイピング。リサーチの設計と実施、Figmaでの試作。</p>
-      <p class="desc en">UX research and prototyping around the impulse of "I want yakiniku" — research design, facilitation, and Figma prototypes.</p>
-      <p class="fact"><span class="ja">UX research / prototyping — Figma ／ リサーチの設計・実施</span><span class="en">UX research / prototyping — Figma ／ research design &amp; facilitation</span></p>
-      <a class="more" href="works/yakiniku/"><span class="ja">くわしく →</span><span class="en">more →</span></a>
-    </article>
-</section>
-
-  <!-- WORDS -->
-  <section id="words">
-    <p class="seclabel"><span class="ja">ことば　WORDS</span><span class="en">WORDS</span></p>
-
-    <div class="essay">
-      <p class="et">くらげ</p>
-      <p class="ja">雨の日というのは、土の匂いだったり、いろんなセンチメンタルな記憶だったり、いろんなものが呼び起こされる。</p>
-      <p class="ja">スクランブル交差点を、たまたま、上から見ていた。マークシティの渡り廊下のあたり。最近は観光地化してしまったけれど、上から観察できる場所だ。趣味が悪い例えをするなら、蟻の巣を観察しているような気分になれる。あの日は時間が空いていたのか、何だったのか覚えていないけれど、雨の日にそこから下を見ていた。</p>
-      <p class="ja">スクランブル交差点はいろんな方向に人が行き交っているのに、なかなかぶつからない。雨の日はさらにそうで、みんなが傘に意識が向いているからかもしれない。下を眺めながら、いろんな傘があるのかな、と思っていたのか思っていなかったのか、よく覚えていない。けれど見たら七割八割がビニール傘で、今の世の中、本当にみんなビニール傘なんだな、と思った。撮るとしたら絵になるな、なんて思いながら。</p>
-      <p class="ja">そんなビニール傘がランダムな方向に行き交っているのを上から見ていると、雫も相まって、人がすれ違うときに傘を上げたり傾けたりする動きも相まって、くらげがふわふわ浮いているように見えた。なんだかそんな風に見えたんだよね。</p>
-      <p class="ja">映像で撮って、文字で説明するだけでは、この感覚は伝わらないかなと思って、AI の進化も相まって、実際にあのスクランブル交差点をくらげに変換した映像を作ってみた。最近はモデルの進化のたびに、同じテーマで何度も作り直している。</p>
-      <p class="ja">まあ、そんな感じ。</p>
-      <p class="en" style="font-family:var(--gothic);font-size:13px;color:var(--soft)">Essay in Japanese — "Kurage" (Jellyfish), on the perception behind Shibuya's Neon Umbrella Dance. 2026.</p>
-      <p class="ed"><span class="ja">2026.05 — 音声入力で初稿、その場で軽く整文</span><span class="en">2026.05 — first draft by voice, lightly edited</span></p>
-</div>
-
-    <div class="words" style="margin-top:8vh">
-      <a href="https://note.com/tokeikun/n/n1134f2a72008" target="_blank" rel="noopener"><p class="wt ja">RCAに行くことにした話</p><p class="wt en">Why I left for the RCA</p><p class="wd">2019 — note</p></a>
-      <a href="https://note.com/tokeikun/n/n6b47dad20e9b" target="_blank" rel="noopener"><p class="wt ja">こうして僕はGoogleに入った</p><p class="wt en">How I ended up at Google</p><p class="wd">2019 — note</p></a>
-</div>
+      <p class="desc ja">雨の交差点で、すれ違う傘がくらげに見えた。その見え方を生成AIで映像にする、継続中の試作。2026年7月の映像を掲載。</p>
+      <p class="desc en">Umbrellas passing at a rainy crossing looked like jellyfish. An ongoing attempt to give that perception a moving image, using generative AI. Includes a July 2026 study.</p>
+      <a class="more" href="works/umbrella-dance/"><span class="ja">映像と制作の背景 →</span><span class="en">Film &amp; story →</span></a>
+    </article></div>
+    <aside class="current-study"><div class="ja"><p>いま続けていること｜<a href="/works/umbrella-dance/">交差点をくらげに変える映像の試作</a></p>
+<p>2026年7月の試作を掲載。同じ場面を、生成AIで繰り返しつくっています。</p></div><div class="en"><p>Ongoing｜<a href="/works/umbrella-dance/">Turning a crossing into jellyfish</a></p>
+<p>A July 2026 moving-image study. I keep returning to the same scene with generative AI.</p></div></aside>
   </section>
-
-  <!-- ABOUT -->
-  <section id="about">
-    <p class="seclabel"><span class="ja">略歴　ABOUT</span><span class="en">ABOUT</span></p>
+  <section class="collaboration" aria-labelledby="collaboration-title">
+    <div><p class="seclabel">COLLABORATION</p><h2 id="collaboration-title"><span class="ja">まだ形のないところから、一緒につくる。</span><span class="en">Making something together, from the first question.</span></h2></div>
+    <div><p><span class="ja">気になっている技術や、まだ形になっていないアイデアを、動く試作や体験のデモにする。電子工作・ソフトウェア・映像を使い、一緒に見て、触って、次の可能性を考えるためのものをつくります。共同開発、展示、委嘱制作のご相談をお待ちしています。</span><span class="en">We can turn a technology or an early idea into a working prototype or an experience demo. Through electronics, software and moving image, I make things we can encounter together and use to explore what comes next. I welcome collaborative development, exhibitions and commissions.</span></p><a class="more" href="/contact/"><span class="ja">共同制作・展示のご相談 →</span><span class="en">Collaborations &amp; exhibitions →</span></a></div>
+  </section>
+  <section id="words" class="words-section">
+    <h2 class="seclabel"><span class="ja">ことば　WORDS</span><span class="en">WORDS</span></h2>
+    <div class="words-content">
+      <h3 class="essay-title">くらげ</h3>
+      <div class="essay-excerpt"><div class="ja">雨の日というのは、土の匂いだったり、いろんなセンチメンタルな記憶だったり、いろんなものが呼び起こされる。</div><div class="en">Essay in Japanese — "Kurage" (Jellyfish), on the perception behind Shibuya's Neon Umbrella Dance. 2026.</div></div>
+      <details class="essay-reading" id="kurage">
+        <summary><span class="ja">エッセイを読む</span><span class="en">Read essay (Japanese)</span></summary>
+        <div class="essay">      <p class="et">くらげ</p>
+<div class="ja"><p>雨の日というのは、土の匂いだったり、いろんなセンチメンタルな記憶だったり、いろんなものが呼び起こされる。</p>
+<p>スクランブル交差点を、たまたま、上から見ていた。マークシティの渡り廊下のあたり。最近は観光地化してしまったけれど、上から観察できる場所だ。趣味が悪い例えをするなら、蟻の巣を観察しているような気分になれる。あの日は時間が空いていたのか、何だったのか覚えていないけれど、雨の日にそこから下を見ていた。</p>
+<p>スクランブル交差点はいろんな方向に人が行き交っているのに、なかなかぶつからない。雨の日はさらにそうで、みんなが傘に意識が向いているからかもしれない。下を眺めながら、いろんな傘があるのかな、と思っていたのか思っていなかったのか、よく覚えていない。けれど見たら七割八割がビニール傘で、今の世の中、本当にみんなビニール傘なんだな、と思った。撮るとしたら絵になるな、なんて思いながら。</p>
+<p>そんなビニール傘がランダムな方向に行き交っているのを上から見ていると、雫も相まって、人がすれ違うときに傘を上げたり傾けたりする動きも相まって、くらげがふわふわ浮いているように見えた。なんだかそんな風に見えたんだよね。</p>
+<p>映像で撮って、文字で説明するだけでは、この感覚は伝わらないかなと思って、AI の進化も相まって、実際にあのスクランブル交差点をくらげに変換した映像を作ってみた。最近はモデルの進化のたびに、同じテーマで何度も作り直している。</p>
+<p>まあ、そんな感じ。</p></div>
+      <p class="en" style="font-family:var(--gothic);font-size:13px;color:var(--soft)">Essay in Japanese — "Kurage" (Jellyfish), on the perception behind Shibuya's Neon Umbrella Dance. 2026.</p>
+      <p class="ed"><span class="ja">2026.05 — 音声入力で初稿、その場で軽く整文</span><span class="en">2026.05 — first draft by voice, lightly edited</span></p></div>
+      </details>
+      <div class="words">      <a href="https://note.com/tokeikun/n/n1134f2a72008" target="_blank" rel="noopener"><p class="wt ja">RCAに行くことにした話</p><p class="wt en">Why I left for the RCA</p><p class="wd">2019 — note</p></a>
+      <a href="https://note.com/tokeikun/n/n6b47dad20e9b" target="_blank" rel="noopener"><p class="wt ja">こうして僕はGoogleに入った</p><p class="wt en">How I ended up at Google</p><p class="wd">2019 — note</p></a></div>
+    </div>
+  </section>
+  <section id="about" class="about-section">
+    <h2 class="seclabel"><span class="ja">プロフィール　ABOUT</span><span class="en">ABOUT</span></h2>
     <div class="about">
-      <div class="img"><img src="assets/portrait.jpg" alt="堺 崇行 / Takayuki Sakai"></div>
+      <div class="img"><img src="assets/portrait.jpg" alt="堺 崇行 / Takayuki Sakai" loading="lazy"></div>
       <div>
-        <div class="bio">
-          <p class="ja">横浜生まれ。慶應SFCで心理学・社会学・認知科学を学び、卒業後は DeNA、Wantedly、自分の会社（Wonder C）、Google と、ビジネスの畑にいた。30代でロンドンに渡り、RCA / Imperial College の Innovation Design Engineering を修了。現在は東京で、行動科学とAIの会社で働きながら、作品をつくっている。</p>
-          <p class="en">Born in Yokohama. Studied psychology, sociology and cognitive science at Keio SFC, then spent years on the business side — DeNA, Wantedly, a company of my own (Wonder C), and Google. Moved to London in my thirties for Innovation Design Engineering at the RCA / Imperial College. Now based in Tokyo, working at a behavioural-science-and-AI company, and making things.</p>
-</div>
-        <p class="cred"><span class="ja">Royal College of Art / Imperial College London — Innovation Design Engineering (MA/MSc)・Keio SFC・Fab Academy 2019・BaPA・CIID<br>LEXUS Design Award 2021 shortlist・IPSJ Interaction 2014（査読・筆頭著者）・渋谷芸術祭 2022・Maker Faire Tokyo 2014–15・日本テレビ「SENSORS」「NEWS ZERO」</span><span class="en">Royal College of Art / Imperial College London — Innovation Design Engineering (MA/MSc)・Keio SFC・Fab Academy 2019・BaPA・CIID<br>LEXUS Design Award 2021 shortlist・IPSJ Interaction 2014 (peer-reviewed, first author)・Shibuya Arts Festival 2022・Maker Faire Tokyo 2014–15・NTV "SENSORS" / "NEWS ZERO"</span></p>
+        <div class="bio"><div class="ja"><p>横浜生まれ。慶應SFCで心理学・社会学・認知科学を学び、卒業後は DeNA、Wantedly、自分の会社（Wonder C）、Google と、ビジネスの畑にいた。30代でロンドンに渡り、RCA / Imperial College の Innovation Design Engineering を修了。現在は東京で、行動科学とAIの会社で働きながら、作品をつくっている。</p></div>
+<div class="en"><p>Born in Yokohama. Studied psychology, sociology and cognitive science at Keio SFC, then spent years on the business side — DeNA, Wantedly, a company of my own (Wonder C), and Google. Moved to London in my thirties for Innovation Design Engineering at the RCA / Imperial College. Now based in Tokyo, working at a behavioural-science-and-AI company, and making things.</p></div></div>
+        <section class="credentials" aria-label="CV">
+          <div class="cred"><div class="ja"><h2>学歴</h2>
+<ul><li>Royal College of Art / Imperial College London — Innovation Design Engineering（MA/MSc）修了</li><li>慶應義塾大学 SFC — 心理学・社会学・認知科学を学ぶ</li></ul>
+<h2>制作・デザインの学習</h2>
+<ul><li>Fab Academy 2019</li><li>BaPA</li><li>CIID Copenhagen — Prototyping</li></ul>
+<h2>展示</h2>
+<ul><li>2022｜渋谷芸術祭 — IDentity</li><li>2016｜BaPA 修了展（日テレホール）— Sole Animal</li><li>2014–2015｜Maker Faire Tokyo — BOWING PENGUIN</li></ul>
+<h2>学術発表</h2>
+<ul><li>2014｜情報処理学会 インタラクション2014 — BOWING PENGUIN（査読論文・筆頭著者）</li></ul>
+<h2>選出</h2>
+<ul><li>2021｜LEXUS DESIGN AWARD ショートリスト — Kage</li></ul>
+<h2>メディア</h2>
+<ul><li>日本テレビ「SENSORS」</li><li>日本テレビ「NEWS ZERO」</li></ul></div><div class="en"><h2>Education</h2>
+<ul><li>Royal College of Art / Imperial College London — MA/MSc, Innovation Design Engineering</li><li>Keio University SFC — studied psychology, sociology and cognitive science</li></ul>
+<h2>Design & making programmes</h2>
+<ul><li>Fab Academy 2019</li><li>BaPA</li><li>CIID Copenhagen — Prototyping</li></ul>
+<h2>Exhibitions</h2>
+<ul><li>2022 | Shibuya Arts Festival — IDentity</li><li>2016 | BaPA graduation show, Nittele Hall, Tokyo — Sole Animal</li><li>2014–2015 | Maker Faire Tokyo — BOWING PENGUIN</li></ul>
+<h2>Academic presentations</h2>
+<ul><li>2014 | IPSJ Interaction 2014 — BOWING PENGUIN (peer-reviewed paper, first author)</li></ul>
+<h2>Recognition</h2>
+<ul><li>2021 | LEXUS DESIGN AWARD shortlist — Kage</li></ul>
+<h2>Media</h2>
+<ul><li>Nippon TV “SENSORS”</li><li>Nippon TV “NEWS ZERO”</li></ul></div></div>
+        </section>
       </div>
     </div>
   </section>
-
-</div>
+  <section id="archive" class="archive-section">
+    <div class="section-heading"><h2 class="seclabel"><span class="ja">すべての作品　ARCHIVE</span><span class="en">ALL WORKS</span></h2></div>
+    <nav class="windex">
+      <a href="works/umbrella-dance/"><img src="assets/shibuya.jpg" alt="" loading="lazy"><span class="t">Shibuya's Neon Umbrella Dance</span><span class="y">2025 —</span></a>
+      <a href="works/kage/"><img src="assets/kage.jpg" alt="" loading="lazy"><span class="t">Kage（影）</span><span class="y">2021</span></a>
+      <a href="works/identity/"><img src="assets/identity.jpg" alt="" loading="lazy"><span class="t">IDentity</span><span class="y">2021</span></a>
+      <a href="works/gizmo/"><img src="assets/gizmo_hero.jpg" alt="" loading="lazy"><span class="t">Angry AI Speaker — GIZMO</span><span class="y">2019</span></a>
+      <a href="works/ascii-chair/"><img src="assets/ascii_chair_2.jpg" alt="" loading="lazy"><span class="t">ASCII Chair</span><span class="y">2019</span></a>
+      <a href="works/sole-animal/"><img src="assets/sole_animal.jpg" alt="" loading="lazy"><span class="t">Sole Animal</span><span class="y">2016</span></a>
+      <a href="works/power-of-touch/"><img src="assets/power_of_touch.jpg" alt="" loading="lazy"><span class="t">Power of Touch</span><span class="y">2019</span></a>
+      <a href="works/remember-umbrella/"><img src="assets/umbrella.jpg" alt="" loading="lazy"><span class="t">Remember Umbrella</span><span class="y">2014</span></a>
+      <a href="works/estimer/"><img src="assets/estimer.jpg" alt="" loading="lazy"><span class="t">Estimer</span><span class="y">2014</span></a>
+      <a href="works/zarc/"><img src="assets/zarc_thumb.jpg" alt="" loading="lazy"><span class="t">Zarc（Brand Logo Design）</span><span class="y">2021</span></a>
+      <a href="works/yakiniku/"><img src="assets/yakiniku.jpg" alt="" loading="lazy"><span class="t">Yakiniku Tabetai</span><span class="y">2021</span></a>
+      <a href="works/bowing-penguin/"><span class="noimg">B</span><span class="t">BOWING PENGUIN</span><span class="y">2014</span></a>
+      <a href="works/anonymous-mask/"><span class="noimg">A</span><span class="t">Anonymous Mask</span><span class="y">2015</span></a>
+    </nav>
+  </section>
+</main>
 
 <footer id="contact">
   <div class="links">
     <a href="https://x.com/tokeikun" target="_blank" rel="noopener">X @tokeikun</a>
     <a href="https://www.instagram.com/tokeikun/" target="_blank" rel="noopener">Instagram</a>
     <a href="https://www.linkedin.com/in/takayuki-sakai-91775133/" target="_blank" rel="noopener">LinkedIn</a>
-
+<a href="/contact/" style="text-decoration:none;border-bottom:1px solid var(--line)"><span class="ja">一緒につくる・ご相談</span><span class="en">Make something together</span></a>
   </div>
   <p class="dm"><span class="ja">ご連絡は X / Instagram のDMへ。</span><span class="en">For inquiries, DM me on X or Instagram.</span></p>
   <small>© 2026 堺 崇行 / Takayuki Sakai</small>
@@ -444,6 +217,14 @@ addEventListener('hashchange',function(){
   lang.addEventListener('click',function(){ setLang(body.dataset.lang==='ja'?'en':'ja'); });
   var saved=null; try{ saved=localStorage.getItem('lang'); }catch(e){}
   setLang(saved==='en' ? 'en' : 'ja');
+  function revealHash(){
+    var id;try{id=decodeURIComponent(location.hash.slice(1));}catch(e){return;}
+    if(!id)return;
+    var target=document.getElementById(id);
+    if(target && target.tagName==='DETAILS')target.open=true;
+  }
+  window.addEventListener('hashchange',revealHash);
+  revealHash();
 </script>
 </body>
 </html>

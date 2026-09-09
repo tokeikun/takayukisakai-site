@@ -1,16 +1,17 @@
 id: kage
 title: Kage（影）
 card: yes
+featured: 1
 year: 2021
 year_detail: 2021 ・ 3 months
 image: kage.jpg
 video: https://youtu.be/DNeou3QddFg
 
 ## desc.ja
-離れた場所にいる人の動きを、部屋の壁に影として映す装置。ウェブカメラとプロジェクターによるインタラクション。
+離れた人の何気ない動きを、部屋の壁に影として映す。障子に映る祖父母の影に感じた安心から、会話をしなくても気配が伝わる体験を試した。
 
 ## desc.en
-A device that casts a distant person's movements on your wall as a shadow — an interaction built from a webcam and a projector.
+A distant person’s small movements appear as shadows on your wall. The comfort of my grandparents’ shadows on a shoji screen led me to explore presence without a conversation.
 
 ## fact.ja
 Interaction design — webcam + projector ／ 森龍太と共作 ／ LEXUS Design Award 2021 shortlist ／ plaplax『Kage』へのオマージュ
@@ -25,19 +26,41 @@ Interaction design — webcam + projector ／ with Ryuta Mori / LEXUS Design Awa
 Shadows are mysterious entities. They're not the person themselves, but they appear because of the person's existence. Like the comfort felt as a child, lying in bed and seeing the shadows of grandparents on the shoji screens of the veranda.
 
 ## detail.ja
-大学院留学の半年後、世界はパンデミックに入った。キャンパスやオフィスの集まりは禁止され、それぞれの部屋から参加することになり、孤立感が生まれた。物理的に集まれなくなってビデオツールが爆発的に普及し、人と会う手段はオンラインに移った。つながりやすくなったように見えて、学校や職場の同僚が「なんとなく共存している空間」は失われた。
+### 着想 — 障子に映る祖父母の影
 
-人の動きは情報を運んでいる。正午に誰かが立ち上がるのを見れば、お腹が空いたのかなと思う。コーヒーを手に二人が席に戻るのを見れば、仲がいいのだなと思う。その情報が、コミュニティへのゆるやかな所属感をつくっている。そして生活に彩りを与えるのは、感覚が不意に受け取る「ゆらぎ」だ。ときどき吹く風、急な雨、どこかから漂う料理の匂い。自室のリモートワークには、そのゆらぎがない。
+子どものころ、布団に入りながら、縁側の障子に映る祖父母の影を見て安心した。姿や表情が見えなくても、誰かがそこにいると感じられる。その記憶が、Kageの手がかりになった。
 
-影は不思議な存在だ。本人ではないのに、本人がいるから生まれる。影を見ると、なぜか誰かの存在を感じる。子どものころ、布団に入りながら、縁側の障子に映る祖父母の影を見て感じた安心のように。
+大学院留学中にパンデミックが始まり、学校や職場の人と「なんとなく同じ場所にいる」時間が失われた。ビデオ通話で話すことはできる。でも、誰かが席を立ったり、飲み物を持って戻ってきたりする、会話の外側の動きは届きにくい。
 
-Kage は、ウェブカメラとプロジェクターという身近な機材で、離れた人のストレッチや、飲み物を取りにいく動きを、壁の影として再現する。リモートワークのチームを、あるいは祖父母と孫を、距離を越えてつなぐ。物理的に離れていても、孤独を感じない社会をつくるための装置だ。
+### 体験 — 話しかけなくても、動きが届く
+
+ウェブカメラで捉えた人の動きを、離れた部屋の壁にプロジェクターで影として映す。ストレッチや、飲み物を取りにいく動きが、相手の部屋に現れる。顔や会話の内容を伝えるビデオ通話とは違う、気配の伝わり方を試した。
 
 ## detail.en
-Six months after I started studying abroad, the world was hit by the pandemic. Gatherings on campus and in offices were prohibited, and we had to participate from our own rooms, leading to a sense of isolation. Video tools exploded in popularity — yet the space where school or workplace colleagues casually coexist was lost.
+### Starting point — shadows on a shoji screen
 
-Human movements carry information. If you see someone stand up at noon, you might think they're hungry; two people returning with coffee, you might assume they're close. This information subtly provides a sense of belonging. What adds color to our lives are the random "fluctuations" our senses unexpectedly receive — an occasional breeze, sudden rain, the scent of cooking. Working remotely, there are no such fluctuations.
+As a child, I found comfort in my grandparents’ shadows on the shoji screen while lying in bed. I could feel someone was there without seeing a face or expression. That memory became a starting point for Kage.
 
-Shadows are mysterious entities. They're not the person themselves, but they appear because of the person's existence. Like the comfort felt as a child, lying in bed and seeing the shadows of grandparents on the shoji screens of the veranda.
+The pandemic began while I was studying abroad. Video calls let us talk, but the small movements of sharing a place—someone standing up or returning with a drink—became harder to encounter.
 
-Installed in a living room or bedroom, Kage captures a person stretching at their desk or crossing to get a drink, and projects it as a shadow on the wall — connecting remote teams, or grandparents and grandchildren, across distance.
+### Experience — movement without a call
+
+A webcam captures a person’s movements and a projector casts them as shadows on a wall in another room. A stretch or a walk to get a drink appears in the other space. The prototype explores how presence might travel beyond a face and a conversation.
+
+## process.ja
+### 制作 — 身近な機材で気配を映す
+
+2021年、3か月の制作。ウェブカメラとプロジェクターを組み合わせ、離れた場所の動きを影として再現する試作をつくった。
+
+### この試作で探っていること
+
+人とつながるために、いつも会話や顔の映像が必要なのだろうか。Kageでは、何気ない動きに目を向けている。会話の外側にある動きから、気配を共有する方法を探っている。
+
+## process.en
+### Making — presence with familiar equipment
+
+Made over three months in 2021, the prototype combines a webcam and a projector to reproduce movements from another space as shadows.
+
+### What it explores
+
+Does connecting always require conversation or a face on a screen? Kage draws attention to incidental movements. It explores how presence might be shared through movements outside a conversation.

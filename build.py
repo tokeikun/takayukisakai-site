@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-build.py — content/ のテキストから real.html を組み立てる。
+build.py — content/ のテキストから index.html と各作品・固定ページを組み立てる。
 使い方:  python3 build.py
 編集するのは content/site.md と content/works/*.md だけ。template.html は触らなくてOK。
 """
@@ -45,24 +45,27 @@ def video_embed(url):
         return f"https://player.vimeo.com/video/{m.group(1)}", "Vimeo"
     return None, None
 
-def render_work_card(h, s):
+def render_work_card(h, s, featured=False):
     wid = h["id"]
+    loading = 'fetchpriority="high"' if h.get("featured") == "1" else 'loading="lazy"'
     out = [f'    <!-- {h["title"]} -->', f'    <article class="work" id="c-{wid}">',
            f'      <a class="worklink" href="works/{wid}/">',
-           f'        <div class="img"><img src="assets/{h["image"]}" alt="{h["title"]}"></div>',
+           f'        <div class="img"><img src="assets/{h["image"]}" alt="{h["title"]}" {loading} decoding="async"></div>',
            f'        <div class="cap"><h2>{h["title"]}</h2><span class="yr">{h["year"]}</span></div>',
            '      </a>']
-    if s.get("desc.ja"): out.append(f'      <p class="desc ja">{s["desc.ja"]}</p>')
-    if s.get("desc.en"): out.append(f'      <p class="desc en">{s["desc.en"]}</p>')
-    if s.get("fact.ja") or s.get("fact.en"):
-        out.append(f'      <p class="fact">{bi(s.get("fact.ja",""), s.get("fact.en",""))}</p>')
-    if s.get("concept.ja") or s.get("concept.en"):
+    if s.get("desc.ja"): out.append(f'      <p class="desc ja">{inline_md(s["desc.ja"])}</p>')
+    if s.get("desc.en"): out.append(f'      <p class="desc en">{inline_md(s["desc.en"])}</p>')
+    if not featured and (s.get("fact.ja") or s.get("fact.en")):
+        out.append(f'      <p class="fact">{bi(inline_md(s.get("fact.ja","")), inline_md(s.get("fact.en","")))}</p>')
+    if not featured and (s.get("concept.ja") or s.get("concept.en")):
         out.append('      <div class="said">')
         out.append('        <p class="who"><span class="ja">コンセプト</span><span class="en">CONCEPT</span></p>')
         if s.get("concept.ja"): out.append(f'        <p class="q ja">{s["concept.ja"]}</p>')
         if s.get("concept.en"): out.append(f'        <p class="q qen en">{s["concept.en"]}</p>')
         out.append('      </div>')
-    out.append(f'      <a class="more" href="works/{wid}/"><span class="ja">くわしく →</span><span class="en">more →</span></a>')
+    ja_label = "映像と制作の背景 →" if h.get("video") or h.get("video_file") else "作品と制作の背景 →"
+    en_label = "Film &amp; story →" if h.get("video") or h.get("video_file") else "Explore the work →"
+    out.append(f'      <a class="more" href="works/{wid}/">{bi(ja_label,en_label)}</a>')
     out.append('    </article>')
     return "\n".join(out)
 
@@ -70,8 +73,8 @@ def render_work_row(h, s):
     wid = h["id"]
     out = [f'      <div class="rowline"><span class="t"><a href="works/{wid}/">{h["title"]}</a></span>'
            f'<span class="d">{h["year"]}</span>']
-    if s.get("desc.ja"): out.append(f'<span class="n ja">{s["desc.ja"]}</span>')
-    if s.get("desc.en"): out.append(f'<span class="n en">{s["desc.en"]}</span>')
+    if s.get("desc.ja"): out.append(f'<span class="n ja">{inline_md(s["desc.ja"])}</span>')
+    if s.get("desc.en"): out.append(f'<span class="n en">{inline_md(s["desc.en"])}</span>')
     out.append('</div>')
     return "".join(out)
 
@@ -81,7 +84,7 @@ def render_detail(h, s):
            '    <a class="back" href="#works"><span class="ja">← 作品にもどる</span><span class="en">← back to works</span></a>',
            f'    <h2>{h["title"]}</h2>',
            f'    <p class="dyr">{h.get("year_detail", h["year"])}</p>']
-    fact = bi(s.get("fact.ja",""), s.get("fact.en",""))
+    fact = bi(inline_md(s.get("fact.ja","")), inline_md(s.get("fact.en","")))
     if h.get("docs"):
         fact += f' ／ <a href="{h["docs"]}" target="_blank" rel="noopener">documentation ↗</a>'
     if fact: out.append(f'    <p class="fact">{fact}</p>')
@@ -111,7 +114,11 @@ SITE = "https://takayukisakai.com"
 def esc(t):
     return (t or "").replace('"','&quot;')
 
-def render_work_page(h, s, style, ga, all_works=None):
+def header_brand(head):
+    name = head.get("hero_name", "堺 崇行")
+    return f'<a class="brand" href="/" aria-label="{name} / Takayuki Sakai — Home"><span class="nm">{name}</span><span class="brand-roman">TAKAYUKI SAKAI</span></a>'
+
+def render_work_page(h, s, style, ga, all_works=None, site_head=None):
     wid=h["id"]; title=h["title"]
     desc=(s.get("desc.ja") or s.get("desc.en") or "").strip()
     img=h.get("image")
@@ -141,61 +148,79 @@ def render_work_page(h, s, style, ga, all_works=None):
 </script>
 {ga}
 <style>{style}
-  .wpage{{max-width:720px;margin:0 auto;padding:90px var(--gut) 120px}}
-  .wpage h1{{font-family:var(--mincho);font-size:clamp(26px,4.5vw,40px);font-weight:600;letter-spacing:.05em}}
-  .wpage .hero-img{{border:1px solid var(--line);margin-bottom:5vh}}
-  .wpage .hero-img img{{width:100%;height:auto;display:block}}
-  .wpage .dyr{{font-size:12px;letter-spacing:.16em;color:var(--soft);margin:8px 0 26px}}
-  .wpage .fact{{margin-bottom:5vh}}
-  .wlayout{{max-width:1100px;margin:0 auto;display:block}}
-  @media(min-width:1040px){{
-    .wlayout{{display:grid;grid-template-columns:240px minmax(0,1fr);gap:24px;align-items:start}}
-    .wside{{grid-column:1;grid-row:1;position:sticky;top:70px;padding:90px 0 40px 24px}}
-    .wlayout > .wpage{{grid-column:2}}
-  }}
-  .wside{{padding:20px var(--gut) 60px}}
-  .wside .slabel{{font-size:10.5px;letter-spacing:.3em;color:var(--soft);margin-bottom:14px}}
-  .wside a{{display:flex;align-items:center;gap:10px;padding:6px 0;text-decoration:none;
-    font-size:12.5px;color:var(--soft);border-bottom:1px solid transparent}}
-  .wside a:hover{{color:var(--ink)}}
-  .wside a.cur{{color:var(--ink);font-family:var(--mincho)}}
-  .wside img,.wside .ni{{width:36px;height:26px;object-fit:cover;flex:none;border:1px solid var(--line);background:#eeeae0}}
-  .wside .ni{{display:flex;align-items:center;justify-content:center;font-family:var(--mincho);font-size:12px;color:#b3ab9c}}
+  .wlayout{{max-width:1240px;margin:0 auto}}
+  .wpage{{width:100%;max-width:1120px;margin:0 auto;padding:48px var(--gut) 64px;min-width:0}}
+  .wpage h1{{font:500 clamp(32px,5vw,52px)/1.4 var(--mincho);letter-spacing:.03em}}
+  .wpage .dyr{{font-size:13px;letter-spacing:.12em;color:var(--soft);margin:12px 0 32px}}
+  .wpage .hero-img{{margin-bottom:32px}}
+  .wpage .hero-img img{{width:100%;height:auto;max-height:85vh;object-fit:contain}}
+  .wpage .fact{{margin:26px auto 40px}}
+  .wpage .dbody,.wpage .process,.wpage .work-contact{{max-width:740px;margin-left:auto;margin-right:auto}}
+  .wside{{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 28px;border-top:1px solid var(--line);margin:0 var(--gut);padding:30px 0 48px}}
+  .wside .slabel{{grid-column:1/-1;font-size:12px;letter-spacing:.12em;color:var(--soft);margin-bottom:20px}}
+  .wside a{{display:flex;align-items:center;gap:12px;padding:12px 0;text-decoration:none;font-size:14px;line-height:1.7;color:var(--soft);border-bottom:1px solid var(--line)}}
+  .wside a:hover,.wside a.cur{{color:var(--ink)}}
+  .wside img,.wside .ni{{width:48px;height:36px;object-fit:cover;flex:none;background:#e6e9e1}}
+  .wside .ni{{display:grid;place-items:center;font-family:var(--gothic)}}
+  @media(max-width:700px){{.wpage{{padding-top:28px}}.wside{{grid-template-columns:1fr 1fr}}}}
+  @media(max-width:420px){{.wside{{grid-template-columns:1fr}}}}
 </style>
 </head>
 <body data-lang="ja">
 <div class="top">
-  <a href="/" style="text-decoration:none"><span class="nm">堺 崇行</span></a>
+  {header_brand(site_head or {})}
   <div class="nav">
     <a href="/#works"><span class="ja">作品</span><span class="en">Works</span></a>
+    <a href="/contact/"><span class="ja">ご相談</span><span class="en">Contact</span></a>
     <button id="lang" aria-label="switch language">EN</button>
   </div>
 </div>
 <div class="wlayout">
 <main class="wpage">""")
     parts.append('  <a class="back" href="/#works"><span class="ja">← 作品にもどる</span><span class="en">← back to works</span></a>')
-    if img:
-        parts.append(f'  <div class="hero-img"><img src="/assets/{img}" alt="{esc(title)}"></div>')
     parts.append(f'  <h1>{title}</h1>')
     parts.append(f'  <p class="dyr">{h.get("year_detail", h.get("year",""))}</p>')
-    fact = bi(s.get("fact.ja",""), s.get("fact.en",""))
+    if h.get("video_file"):
+        poster = h.get("video_poster") or img
+        poster_attr = f' poster="/assets/{poster}"' if poster else ''
+        parts.append(f'  <div class="video hero-film"><video controls playsinline preload="metadata"{poster_attr} aria-label="{esc(title)} — film"><source src="/assets/{h["video_file"]}" type="video/mp4"></video></div>')
+        if s.get("video_caption.ja") or s.get("video_caption.en"):
+            parts.append(f'  <p class="film-caption">{bi(s.get("video_caption.ja",""),s.get("video_caption.en",""))}</p>')
+    elif img:
+        parts.append(f'  <div class="hero-img"><img src="/assets/{img}" alt="{esc(title)}"></div>')
+    fact = bi(inline_md(s.get("fact.ja","")), inline_md(s.get("fact.en","")))
     if h.get("docs"):
         fact += f' ／ <a href="{h["docs"]}" target="_blank" rel="noopener">documentation ↗</a>'
     if fact: parts.append(f'  <p class="fact">{fact}</p>')
     if h.get("video"):
         emb,label=video_embed(h["video"])
-        if emb:
+        if emb and not h.get("video_file"):
             parts.append(f'  <div class="video"><iframe src="{emb}" loading="lazy" allowfullscreen title="{esc(title)} — film"></iframe></div>')
+        if emb:
             parts.append(f'  <a class="vlink" href="{h["video"]}" target="_blank" rel="noopener">▶ <span class="ja">映像を見る（{label}）</span><span class="en">watch the film ({label})</span> ↗</a>')
+    gallery_html = ""
     if h.get("gallery"):
         gis="".join(f'<div class="gi"><img src="/assets/{g.strip()}" alt="{esc(title)} — detail" loading="lazy"></div>' for g in h["gallery"].split(","))
-        parts.append(f'  <div class="gallery">{gis}</div>')
+        gallery_html = f'  <div class="gallery">{gis}</div>'
+        if s.get("gallery_caption.ja") or s.get("gallery_caption.en"):
+            gallery_html += f'<p class="film-caption">{bi(s.get("gallery_caption.ja",""),s.get("gallery_caption.en",""))}</p>'
+        if not s.get("process.ja") and not s.get("process.en"):
+            parts.append(gallery_html)
     parts.append('  <div class="dbody">')
-    for p in paras(s.get("detail.ja","")): parts.append(f'    <p class="ja">{p}</p>')
-    for p in paras(s.get("detail.en","")): parts.append(f'    <p class="den en">{p}</p>')
+    parts.append('<div class="ja">'+block_md(s.get("detail.ja",""))+'</div>')
+    parts.append('<div class="en den">'+block_md(s.get("detail.en",""))+'</div>')
     if s.get("note.ja") or s.get("note.en"):
-        parts.append(f'    <p class="dlabel">{bi(s.get("note.ja",""), s.get("note.en",""))}</p>')
+        parts.append(f'    <p class="dlabel">{bi(inline_md(s.get("note.ja","")), inline_md(s.get("note.en","")))}</p>')
     parts.append('  </div>')
+    if s.get("process.ja") or s.get("process.en"):
+        parts.append('  <section class="process">')
+        for language in ("ja", "en"):
+            if s.get("process." + language):
+                parts.append(f'    <div class="{language}">{block_md(s["process." + language])}</div>')
+        parts.append('  </section>')
+        if gallery_html:
+            parts.append(gallery_html)
+    parts.append('  <section class="work-contact"><h2><span class="ja">この作品から、話してみる。</span><span class="en">Start a conversation.</span></h2><p><span class="ja">気になったことや、一緒に試してみたいことがあれば。共同制作・展示について、お話しできればうれしいです。</span><span class="en">If this brings something to mind, or something you would like to try together, I would love to hear from you about a collaboration or exhibition.</span></p><a class="more" href="/contact/"><span class="ja">ご相談はこちら →</span><span class="en">Get in touch →</span></a></section>')
     parts.append('  </main>')
     if all_works:
         side=['<aside class="wside">','  <p class="slabel"><span class="ja">作品　WORKS</span><span class="en">WORKS</span></p>']
@@ -261,8 +286,8 @@ def render_page(h, s, style, ga, site_head, plinks):
                    f'<span class="en">If the form does not load, <a href="{form_url}" target="_blank" rel="noopener">open it here ↗</a></span></p>')
     else:
         dm='<a href="https://x.com/tokeikun" target="_blank" rel="noopener">X @tokeikun</a> / <a href="https://www.instagram.com/tokeikun/" target="_blank" rel="noopener">Instagram</a>'
-        form_html=(f'<p class="fnote"><span class="ja">フォームは準備中です。{dm} のDMでご連絡ください。</span>'
-                   f'<span class="en">Form coming soon — please DM on {dm} for now.</span></p>')
+        form_html=(f'<p class="fnote"><span class="ja">{dm} のDMからご連絡ください。</span>'
+                   f'<span class="en">Get in touch via DM on {dm}.</span></p>')
     # section groups in order of first appearance
     order=[]; 
     for k in s:
@@ -295,14 +320,15 @@ def render_page(h, s, style, ga, site_head, plinks):
 <meta name="twitter:site" content="@tokeikun">
 {ga}
 <style>{style}
-  .page{{max-width:720px;margin:0 auto;padding:110px var(--gut) 120px}}
+  .page{{max-width:1100px;margin:0 auto;padding:48px var(--gut) 80px}}
   .page h1{{font-family:var(--mincho);font-size:clamp(26px,4.5vw,40px);font-weight:600;letter-spacing:.05em;margin-bottom:6vh}}
-  .page h2{{font-size:11px;letter-spacing:.34em;color:var(--soft);font-weight:400;margin:9vh 0 3vh;display:flex;align-items:center;gap:16px}}
+  .page h2{{font-size:16px;letter-spacing:.08em;color:var(--soft);font-weight:400;margin:24px 0;display:flex;align-items:center;gap:16px}}
+  .page .pblk{{padding:24px 0 0}}
   .page h2::after{{content:"";flex:1;height:1px;background:var(--line)}}
   .pblk:first-of-type h2{{margin-top:0}}
-  .page p{{font-size:14px;line-height:2.2;max-width:38em;margin-bottom:1.4em;color:#2b2721}}
+  .page p{{font-size:16px;line-height:2.2;max-width:38em;margin-bottom:1.4em;color:#2b2721}}
   .page ul{{list-style:none;margin:0 0 2em}}
-  .page li{{font-size:14px;line-height:2;padding:10px 0;border-bottom:1px solid var(--line)}}
+  .page li{{font-size:16px;line-height:2;padding:10px 0;border-bottom:1px solid var(--line)}}
   .page li:first-child{{border-top:1px solid var(--line)}}
   .page strong{{font-family:var(--mincho);font-weight:600;letter-spacing:.04em}}
   .page a{{border-bottom:1px solid var(--line);text-decoration:none}}
@@ -316,14 +342,15 @@ def render_page(h, s, style, ga, site_head, plinks):
 </head>
 <body data-lang="ja">
 <div class="top">
-  <a href="/" style="text-decoration:none"><span class="nm">堺 崇行</span></a>
+  {header_brand(site_head or {})}
   <div class="nav">
     <a href="/#works"><span class="ja">作品</span><span class="en">Works</span></a>
+    <a href="/contact/"><span class="ja">ご相談</span><span class="en">Contact</span></a>
     <button id="lang" aria-label="switch language">EN</button>
   </div>
 </div>
 <main class="page">
-  {'<p class="draft">DRAFT — 未公開（確認用）</p>' if draft else ''}
+{'  <p class="draft">DRAFT — 未公開（確認用）</p>' if draft else ''}
   <h1><span class="ja">{tja}</span><span class="en">{ten}</span></h1>
 {chr(10).join(body)}
 </main>
@@ -347,17 +374,24 @@ def main():
     works = []
     for f in sorted(glob.glob(os.path.join(ROOT, "content/works/*.md"))):
         h, s = parse_md(f)
+        if os.path.basename(f).startswith("_"): continue
         if not h.get("id") or not h.get("title"):
             print(f"!! {os.path.basename(f)}: id / title がありません。スキップ"); continue
+        h.setdefault("year", "")
+        h.setdefault("order", str((len(works)+1)*10))
         works.append((h, s))
 
-    cards = "\n\n".join(render_work_card(h, s) for h, s in works if h.get("card","yes") == "yes")
+    works.sort(key=lambda work: int(work[0].get("order", "999999")))
+
+    featured_works = sorted(((h,s) for h,s in works if h.get("featured")), key=lambda work: int(work[0]["featured"]))
+    lead = render_work_card(*featured_works[0], featured=True) if featured_works else ""
+    cards = "\n\n".join(render_work_card(h, s, featured=True) for h, s in featured_works[1:])
     rows_items = [render_work_row(h, s) for h, s in works if h.get("card") == "row"]
     rows = ('\n    <div style="margin-top:8vh">\n' + "\n".join(rows_items) + "\n    </div>") if rows_items else ""
     details = "\n\n".join(render_detail(h, s) for h, s in works)
     index_items = []
     for h, _s in works:
-        href = ("#c-"+h["id"]) if h.get("card","yes")=="yes" else ("works/"+h["id"]+"/")
+        href = "works/"+h["id"]+"/"
         timg = h.get("thumb") or h.get("image")
         initial = (h["title"].strip()[:1]).upper()
         thumb = f'<img src="assets/{timg}" alt="" loading="lazy">' if timg else f'<span class="noimg">{initial}</span>'
@@ -367,7 +401,7 @@ def main():
     sh, ss = parse_md(os.path.join(ROOT, "content/site.md"))
 
     essay = [f'      <p class="et">{ss.get("essay.title","")}</p>']
-    for p in paras(ss.get("essay.ja","")): essay.append(f'      <p class="ja">{p}</p>')
+    essay.append('<div class="ja">'+block_md(ss.get("essay.ja",""))+'</div>')
     if ss.get("essay.note.en"):
         essay.append(f'      <p class="en" style="font-family:var(--gothic);font-size:13px;color:var(--soft)">{ss["essay.note.en"]}</p>')
     essay.append(f'      <p class="ed">{bi(ss.get("essay.date.ja",""), ss.get("essay.date.en",""))}</p>')
@@ -381,15 +415,27 @@ def main():
         links.append(f'      <a href="{url}" target="_blank" rel="noopener"><p class="wt ja">{tja}</p><p class="wt en">{ten}</p><p class="wd">{date}</p></a>')
 
     bio = []
-    for p in paras(ss.get("bio.ja","")): bio.append(f'          <p class="ja">{p}</p>')
-    for p in paras(ss.get("bio.en","")): bio.append(f'          <p class="en">{p}</p>')
+    bio.append('<div class="ja">'+block_md(ss.get("bio.ja",""))+'</div>')
+    bio.append('<div class="en">'+block_md(ss.get("bio.en",""))+'</div>')
 
-    cred = bi("<br>".join(ss.get("cred.ja","").splitlines()), "<br>".join(ss.get("cred.en","").splitlines()))
+    cred = bi(block_md(ss.get("cred.ja","")), block_md(ss.get("cred.en","")), "div")
     contact = bi(ss.get("contact.ja",""), ss.get("contact.en",""))
 
-    out = tpl
+    out = tpl.replace("<!--HEADER_BRAND-->", header_brand(sh))
+    out = out.replace("<!--HERO_ROLE-->", sh.get("hero_role", "Artist / Design Engineer"))
+    out = out.replace("<!--HERO_NAME-->", sh.get("hero_name", "堺 崇行"))
+    out = out.replace("<!--HERO_SUB-->", bi(sh.get("hero_sub_ja", "Takayuki Sakai — Tokyo"), sh.get("hero_sub_en", "堺 崇行 — Tokyo")))
+    intro = bi("".join(f'<p>{inline_md(p)}</p>' for p in paras(ss.get("intro.ja",""))), "".join(f'<p>{inline_md(p)}</p>' for p in paras(ss.get("intro.en",""))), "div")
+    out = out.replace("<!--INTRO-->", intro)
+    out = out.replace("<!--COLLAB_TITLE-->", bi(inline_md(ss.get("collaboration.title.ja","")),inline_md(ss.get("collaboration.title.en",""))))
+    out = out.replace("<!--COLLAB-->", bi(inline_md(ss.get("collaboration.ja","")),inline_md(ss.get("collaboration.en",""))))
+    out = out.replace("<!--CURRENT-->", bi(block_md(ss.get("current.ja","")), block_md(ss.get("current.en","")), "div"))
     out = out.replace("<!--INDEX-->", windex)
+    out = out.replace("<!--LEAD_WORK-->", lead)
     out = out.replace("<!--WORKS-->", cards)
+    out = out.replace("<!--ESSAY_TITLE-->", inline_md(ss.get("essay.title", "")))
+    first_paragraph = next(iter(paras(ss.get("essay.ja", ""))), "")
+    out = out.replace("<!--ESSAY_EXCERPT-->", bi(inline_md(first_paragraph), inline_md(ss.get("essay.note.en", "")), "div"))
     out = out.replace("<!--DETAILS-->", "")
     out = out.replace("<!--ESSAY-->", "\n".join(essay))
     out = out.replace("<!--LINKS-->", "\n".join(links))
@@ -406,7 +452,7 @@ def main():
     if os.path.isdir(wdir): _shutil.rmtree(wdir)
     for h,sec in works:
         d=os.path.join(wdir,h["id"]); os.makedirs(d,exist_ok=True)
-        open(os.path.join(d,"index.html"),"w",encoding="utf-8").write(render_work_page(h,sec,style,ga,works))
+        open(os.path.join(d,"index.html"),"w",encoding="utf-8").write(render_work_page(h,sec,style,ga,works,sh))
     # 汎用ページ
     pages=[]
     for f in sorted(glob.glob(os.path.join(ROOT,"content/pages/*.md"))):
@@ -425,8 +471,7 @@ def main():
 
     dst = os.path.join(ROOT, "index.html")
     open(dst, "w", encoding="utf-8").write(out)
-    ncards = sum(1 for h,_ in works if h.get("card","yes")=="yes")
-    print(f"OK: index.html + works/{len(works)}ページ + pages/{len(pages)}（公開 {len(public_pages)}） + sitemap.xml を再生成しました（カード {ncards} ／ 行 {len(rows_items)}）")
+    print(f"OK: index.html（主な作品 {len(featured_works)} ／ 全作品 {len(works)}）+ works/{len(works)}ページ + pages/{len(pages)}（公開設定 {len(public_pages)}）+ sitemap.xml を再生成しました")
 
 if __name__ == "__main__":
     main()

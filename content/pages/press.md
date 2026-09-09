@@ -1,5 +1,5 @@
 # プレス／CV ページ（/press/）
-# ★ プロフィール文は事務所（Claude）が事実ベースで起こした三人称の下書き。本人確認前。
+# 取材・展示検討に使うプロフィール、作品画像、経歴。
 # draft: yes のあいだは noindex・フッター未リンク。
 
 slug: press
@@ -10,167 +10,195 @@ desc_en: Bio, hi-res images and CV of Takayuki Sakai, for press and curatorial u
 draft: yes
 
 ## intro.ja
-取材・掲載・出展検討のための資料です。文章と画像は、クレジット表記のうえ、報道・紹介目的でそのままお使いいただけます。改変・トリミングが必要な場合はひとことご連絡ください。
+取材・掲載や、展示をご検討いただくためのプロフィール、作品画像、経歴をまとめています。共同制作のご相談は、[こちら](/contact/)からお寄せください。
+
+[プロフィール](#bio) ／ [制作について](#practice) ／ [作品画像](#images) ／ [経歴](#cv)
 
 ## intro.en
-Materials for press, publications and curatorial review. Texts and images may be used as-is for editorial purposes with credit. Please get in touch before altering or cropping.
+Biographies, work images and background for editorial and exhibition inquiries. For collaborations, please [get in touch](/contact/).
+
+[Biography](#bio) / [About the practice](#practice) / [Work images](#images) / [CV](#cv)
 
 ## bio.ja
 ### プロフィール
 
-**50字**
+**短い紹介**
 
-堺 崇行（さかい・たかゆき）。アーティスト／デザインエンジニア。東京を拠点に、テクノロジーと身体性をめぐる作品を制作。
+堺 崇行（さかい・たかゆき）。東京を拠点とするアーティスト／デザインエンジニア。日常の気づきを出発点に、電子工作や映像を通じて、人と技術の関わりや、身近なものの見え方を探る。
 
-**200字**
+**詳しい紹介**
 
-堺 崇行（さかい・たかゆき）。アーティスト／デザインエンジニア。横浜生まれ。慶應義塾大学SFCで心理学・社会学・認知科学を学んだのち、DeNA、Wantedly、起業、Googleとビジネスの現場を経て、ロンドンの Royal College of Art / Imperial College London で Innovation Design Engineering（MA/MSc）を修了。人の「合理的な行動」と「実際の行動」のずれを、電子工作・AR・機械学習・映像で可視化する作品を制作。『Kage』で LEXUS DESIGN AWARD 2021 ショートリスト。東京在住。
+堺 崇行（さかい・たかゆき）。アーティスト／デザインエンジニア。横浜生まれ、東京を拠点に活動。
 
-**500字**
+日常で目に留まった動きや、ふと感じたことを、他者が見たり触れたりできる作品へと展開する。離れた人の気配を影で伝える『Kage』、質問にうんざりしてピンポン球を撃つ『GIZMO』、雨の交差点をくらげの群れに見立てる『Shibuya’s Neon Umbrella Dance』など、電子工作、AR、映像、生成AIを用いて制作している。
 
-堺 崇行（さかい・たかゆき）。アーティスト／デザインエンジニア。横浜生まれ、東京在住。
-
-慶應義塾大学SFCで心理学・社会学・認知科学を学び、卒業後は DeNA、Wantedly、自身の会社（Wonder C）、Google と、十年あまりビジネスの側に身を置く。その間も個人で制作を続け、2014年にはお辞儀に反応してお辞儀を返す『BOWING PENGUIN』を情報処理学会インタラクション2014で筆頭著者として発表、Maker Faire Tokyo 2014・2015に出展。2016年には映像制作学校 BaPA の修了制作『Sole Animal』を日テレホールで展示。
-
-30代でロンドンに渡り、Royal College of Art / Imperial College London の Innovation Design Engineering（MA/MSc）を修了。在学中に、影とインタラクションする『Kage』（森龍太との共作）が LEXUS DESIGN AWARD 2021 のショートリストに選出。修了制作『IDentity』（AR × StyleGAN で「顔の見え方」を問う）は渋谷芸術祭2022に出展。
-
-一貫した関心は、人の「合理的な行動」と「実際の行動」のずれ。それを電子工作・AR・機械学習・生成AI映像といった手段で、思わず身体が動いてしまう体験として可視化する。近作『Shibuya's Neon Umbrella Dance』（2025–）では、雨の渋谷スクランブル交差点の傘の群れをくらげの群れに変換し、都市の観察を生成AIで映像化している。日本テレビ「SENSORS」「NEWS ZERO」で作品が紹介された。現在は東京で、行動科学とAIの会社に勤めながら制作を続けている。
+慶應義塾大学SFCで心理学・社会学・認知科学を学び、DeNA、Wantedly、起業、Googleなどビジネスの現場を経験したのち、Royal College of Art / Imperial College LondonのInnovation Design Engineering（MA/MSc）を修了。『Kage』（森龍太と共作）はLEXUS DESIGN AWARD 2021ショートリストに選出。『IDentity』を渋谷芸術祭2022に出展。
 
 ## bio.en
 ### Biography
 
-**Short (approx. 30 words)**
+**Short**
 
-Takayuki Sakai is a Tokyo-based artist and design engineer whose works make the gap between how we think we behave and how we actually behave visible — through electronics, AR, machine learning and video.
+Takayuki Sakai is a Tokyo-based artist and design engineer. Starting with everyday observations, he uses electronics and moving image to explore how people relate to technology and how familiar things can be perceived differently.
 
-**Medium (approx. 120 words)**
+**Extended**
 
-Takayuki Sakai (b. Yokohama) is an artist and design engineer based in Tokyo. After studying psychology, sociology and cognitive science at Keio University SFC, he spent over a decade on the business side — DeNA, Wantedly, his own company and Google — while continuing to make things independently. He then moved to London for the Innovation Design Engineering programme (MA/MSc) at the Royal College of Art and Imperial College London. His works, which stage the gap between rational and actual human behaviour through electronics, AR, machine learning and generative video, include *Kage* (shortlisted for the LEXUS DESIGN AWARD 2021), *IDentity* (Shibuya Arts Festival 2022) and *BOWING PENGUIN* (IPSJ Interaction 2014, first author). His work has been featured on Nippon TV's "SENSORS" and "NEWS ZERO".
+Takayuki Sakai is an artist and design engineer born in Yokohama and based in Tokyo.
+
+His works give tangible form to movements and sensations that catch his attention in everyday life. They include Kage, which conveys a distant person’s presence through a shadow; GIZMO, an assistant that fires a ping-pong ball when asked a question; and Shibuya’s Neon Umbrella Dance, which reimagines umbrellas at a rainy crossing as drifting jellyfish. He works across physical computing, AR, moving image and generative AI.
+
+After studying psychology, sociology and cognitive science at Keio SFC and working in business at DeNA, Wantedly, his own company and Google, he completed the MA/MSc in Innovation Design Engineering at the Royal College of Art and Imperial College London. Kage, made with Ryuta Mori, was shortlisted for the LEXUS DESIGN AWARD 2021. IDentity was exhibited at the Shibuya Arts Festival 2022.
+
+## practice.ja
+### 制作について
+
+雨の日、交差点を行き交う傘が、くらげの群れのように見えた。子どものころ、障子に映る祖父母の影に安心した。そういう、ふと気になったことや覚えている感覚が、制作の出発点になっています。
+
+僕にはこう見えた、こう感じた。それを言葉だけで説明するのではなく、映像や、実際に動くものにしてみる。誰かが見たり触れたりして、そこから話がはじまるような作品をつくりたいと思っています。
+
+## practice.en
+### About the practice
+
+On a rainy day, umbrellas crossing in different directions looked like a swarm of jellyfish. As a child, I found comfort in my grandparents’ shadows on a shoji screen. Small observations and remembered sensations like these are often where a work begins.
+
+This is how it looked to me; this is how it felt. I try giving that perception a form—a moving image or a working object—that someone else can encounter. I hope a conversation can begin there.
 
 ## portrait.ja
 ### ポートレート
 
 ![堺 崇行 — ポートレート](/assets/press/takayuki-sakai_portrait.jpg)
 
-[高解像度をダウンロード（3000×2250, JPG）](/assets/press/takayuki-sakai_portrait.jpg) ・ クレジット：© Takayuki Sakai
+[高解像度をダウンロード（3000×2250, JPG）](/assets/press/takayuki-sakai_portrait.jpg)
 
 ## portrait.en
 ### Portrait
 
 ![Takayuki Sakai — portrait](/assets/press/takayuki-sakai_portrait.jpg)
 
-[Download hi-res (3000×2250, JPG)](/assets/press/takayuki-sakai_portrait.jpg) · Credit: © Takayuki Sakai
+[Download hi-res (3000×2250, JPG)](/assets/press/takayuki-sakai_portrait.jpg)
 
 ## images.ja
 ### 作品画像（高解像度）
 
 ![Shibuya's Neon Umbrella Dance（2025–）](/assets/press/shibuya-neon-umbrella-dance_2025.jpg)
 
-**Shibuya's Neon Umbrella Dance**（2025–）生成AI映像 ・ [ダウンロード（1360×2048）](/assets/press/shibuya-neon-umbrella-dance_2025.jpg) ・ © Takayuki Sakai
+**Shibuya's Neon Umbrella Dance**（2025–）生成AI映像 ・ [ダウンロード（1360×2048）](/assets/press/shibuya-neon-umbrella-dance_2025.jpg)
 
 ![Kage（2021）](/assets/press/kage_2021.jpg)
 
-**Kage（影）**（2021）インタラクション ・ 森龍太と共作 ・ LEXUS DESIGN AWARD 2021 shortlist ・ [ダウンロード（2398×1532）](/assets/press/kage_2021.jpg) ・ © Takayuki Sakai
+**Kage（影）**（2021）インタラクション ・ 制作：堺 崇行、森龍太 ・ LEXUS DESIGN AWARD 2021 shortlist ・ [ダウンロード（2398×1532）](/assets/press/kage_2021.jpg)
 
 ![Angry AI Speaker — GIZMO（2019）](/assets/press/angry-ai-speaker-gizmo_2019.jpg)
 
-**Angry AI Speaker — GIZMO**（2019）フィジカルコンピューティング ・ [ダウンロード（3000×2250）](/assets/press/angry-ai-speaker-gizmo_2019.jpg) ・ © Takayuki Sakai
+**Angry AI Speaker — GIZMO**（2019）フィジカルコンピューティング ・ 制作：堺 崇行、Min Cai ・ [ダウンロード（3000×2250）](/assets/press/angry-ai-speaker-gizmo_2019.jpg)
 
 ![ASCII Chair（2019）](/assets/press/ascii-chair_2019.jpg)
 
-**ASCII Chair**（2019）家具 ・ [ダウンロード（3000×2250）](/assets/press/ascii-chair_2019.jpg) ・ © Takayuki Sakai
+**ASCII Chair**（2019）家具 ・ [ダウンロード（3000×2250）](/assets/press/ascii-chair_2019.jpg)
 
 ![Sole Animal（2016）](/assets/press/sole-animal_2016.jpg)
 
-**Sole Animal**（2016）フィジカルコンピューティング ・ [ダウンロード（3000×2250）](/assets/press/sole-animal_2016.jpg) ・ © Takayuki Sakai
+**Sole Animal**（2016）フィジカルコンピューティング ・ [ダウンロード（3000×2250）](/assets/press/sole-animal_2016.jpg)
 
 ## images.en
 ### Work images (hi-res)
 
 ![Shibuya's Neon Umbrella Dance (2025–)](/assets/press/shibuya-neon-umbrella-dance_2025.jpg)
 
-**Shibuya's Neon Umbrella Dance** (2025–) generative AI video · [download (1360×2048)](/assets/press/shibuya-neon-umbrella-dance_2025.jpg) · © Takayuki Sakai
+**Shibuya's Neon Umbrella Dance** (2025–) generative AI video · [download (1360×2048)](/assets/press/shibuya-neon-umbrella-dance_2025.jpg)
 
 ![Kage (2021)](/assets/press/kage_2021.jpg)
 
-**Kage** (2021) interaction, with Ryuta Mori · LEXUS DESIGN AWARD 2021 shortlist · [download (2398×1532)](/assets/press/kage_2021.jpg) · © Takayuki Sakai
+**Kage** (2021) interaction · Work by Takayuki Sakai and Ryuta Mori · LEXUS DESIGN AWARD 2021 shortlist · [download (2398×1532)](/assets/press/kage_2021.jpg)
 
 ![Angry AI Speaker — GIZMO (2019)](/assets/press/angry-ai-speaker-gizmo_2019.jpg)
 
-**Angry AI Speaker — GIZMO** (2019) physical computing · [download (3000×2250)](/assets/press/angry-ai-speaker-gizmo_2019.jpg) · © Takayuki Sakai
+**Angry AI Speaker — GIZMO** (2019) physical computing · Work by Takayuki Sakai and Min Cai · [download (3000×2250)](/assets/press/angry-ai-speaker-gizmo_2019.jpg)
 
 ![ASCII Chair (2019)](/assets/press/ascii-chair_2019.jpg)
 
-**ASCII Chair** (2019) furniture · [download (3000×2250)](/assets/press/ascii-chair_2019.jpg) · © Takayuki Sakai
+**ASCII Chair** (2019) furniture · [download (3000×2250)](/assets/press/ascii-chair_2019.jpg)
 
 ![Sole Animal (2016)](/assets/press/sole-animal_2016.jpg)
 
-**Sole Animal** (2016) physical computing · [download (3000×2250)](/assets/press/sole-animal_2016.jpg) · © Takayuki Sakai
+**Sole Animal** (2016) physical computing · [download (3000×2250)](/assets/press/sole-animal_2016.jpg)
 
 ## cv.ja
-### 経歴
+### 学歴
 
-**展示・発表**
+- Royal College of Art / Imperial College London — Innovation Design Engineering（MA/MSc）修了
+- 慶應義塾大学 SFC — 心理学・社会学・認知科学を学ぶ
 
-- 2025– Shibuya's Neon Umbrella Dance（生成AI映像、継続中）
-- 2022 渋谷芸術祭 2022 ― IDentity
-- 2021 LEXUS DESIGN AWARD 2021 ショートリスト ― Kage（森龍太と共作）
-- 2019 Fab Academy 2019 最終制作 ― Power of Touch
-- 2016 BaPA 修了展（日テレホール）― Sole Animal
-- 2015 Maker Faire Tokyo 2015 ― BOWING PENGUIN
-- 2014 Maker Faire Tokyo 2014 ― BOWING PENGUIN
-- 2014 情報処理学会 インタラクション2014 ― BOWING PENGUIN（査読論文・筆頭著者）
+### 制作・デザインの学習
 
-**メディア**
+- Fab Academy 2019
+- BaPA
+- CIID Copenhagen — Prototyping
+
+### 展示
+
+- 2022｜渋谷芸術祭 — IDentity
+- 2016｜BaPA 修了展（日テレホール）— Sole Animal
+- 2014–2015｜Maker Faire Tokyo — BOWING PENGUIN
+
+### 学術発表
+
+- 2014｜情報処理学会 インタラクション2014 — BOWING PENGUIN（査読論文・筆頭著者）
+
+### 選出
+
+- 2021｜LEXUS DESIGN AWARD ショートリスト — Kage
+
+### メディア
 
 - 日本テレビ「SENSORS」
 - 日本テレビ「NEWS ZERO」
 
-**教育**
-
-- Royal College of Art / Imperial College London ― Innovation Design Engineering（MA/MSc）
-- 慶應義塾大学 SFC ― 心理学・社会学・認知科学
-- Fab Academy 2019 ／ BaPA ／ CIID Copenhagen（Prototyping）
-
 ## cv.en
-### CV
+### Education
 
-**Exhibitions & presentations**
+- Royal College of Art / Imperial College London — MA/MSc, Innovation Design Engineering
+- Keio University SFC — studied psychology, sociology and cognitive science
 
-- 2025– Shibuya's Neon Umbrella Dance (generative AI video, ongoing)
-- 2022 Shibuya Arts Festival 2022 — IDentity
-- 2021 LEXUS DESIGN AWARD 2021, shortlist — Kage (with Ryuta Mori)
-- 2019 Fab Academy 2019 final project — Power of Touch
-- 2016 BaPA graduation show, Nittele Hall, Tokyo — Sole Animal
-- 2015 Maker Faire Tokyo 2015 — BOWING PENGUIN
-- 2014 Maker Faire Tokyo 2014 — BOWING PENGUIN
-- 2014 IPSJ Interaction 2014 — BOWING PENGUIN (peer-reviewed paper, first author)
+### Design & making programmes
 
-**Media**
+- Fab Academy 2019
+- BaPA
+- CIID Copenhagen — Prototyping
 
-- Nippon TV "SENSORS"
-- Nippon TV "NEWS ZERO"
+### Exhibitions
 
-**Education**
+- 2022 | Shibuya Arts Festival — IDentity
+- 2016 | BaPA graduation show, Nittele Hall, Tokyo — Sole Animal
+- 2014–2015 | Maker Faire Tokyo — BOWING PENGUIN
 
-- Royal College of Art / Imperial College London — Innovation Design Engineering (MA/MSc)
-- Keio University SFC — psychology, sociology, cognitive science
-- Fab Academy 2019 / BaPA / CIID Copenhagen (Prototyping)
+### Academic presentations
+
+- 2014 | IPSJ Interaction 2014 — BOWING PENGUIN (peer-reviewed paper, first author)
+
+### Recognition
+
+- 2021 | LEXUS DESIGN AWARD shortlist — Kage
+
+### Media
+
+- Nippon TV “SENSORS”
+- Nippon TV “NEWS ZERO”
 
 ## terms.ja
-### ご利用について
+### 掲載・画像のご利用について
 
-- 画像・文章は報道・紹介・出展検討の目的でご利用いただけます（クレジット：© Takayuki Sakai）
-- トリミング・加工・商用利用は事前にご相談ください
-- 掲載後、URLまたは誌面をお知らせいただけると嬉しいです
+プロフィール文は、長さや用途に合わせてお使いいただけます。画像の使用やクレジット表記については、掲載先と用途を添えてご連絡ください。共同制作の作品については、各作品ページに担当・共作者を記載しています。
 
-[ご連絡はこちら →](/contact/)
+掲載後にURLや誌面をお知らせいただけるとうれしいです。
+
+[掲載・画像使用について連絡する →](/contact/)
 
 ## terms.en
-### Usage
+### Publication and image inquiries
 
-- Images and texts may be used for editorial and curatorial purposes (credit: © Takayuki Sakai)
-- Please ask before cropping, altering, or any commercial use
-- A link or copy after publication is much appreciated
+You are welcome to use the biographies at a length appropriate to your publication. For image use and credit lines, please get in touch with the publication and intended use. Individual work pages list collaborators and contributions.
 
-[Get in touch →](/contact/)
+A link or copy after publication would be appreciated.
+
+[Contact about publication or image use →](/contact/)

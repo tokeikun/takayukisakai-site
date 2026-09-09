@@ -136,8 +136,11 @@ if(top!==self){top.location=self.location}
     ["year","年（一覧に出る表記）","例: 2021 ／ 2025 —"],
     ["year_detail","年（詳細ページの表記）","例: 2021 ・ 3 months"],
     ["card","見せ方",""],
+    ["featured","トップに掲載する順番","1・2・3。空欄なら全作品一覧だけに掲載"],
     ["image","画像ファイル名","assets/ に入っているファイル名。例: kage.png"],
     ["video","動画URL","YouTube か Vimeo のURLをそのまま"],
+    ["video_file","サイト内の動画","assets/ に入っているMP4ファイル名（あれば）"],
+    ["video_poster","動画の表紙画像","assets/ の画像ファイル名。空欄なら作品画像を使用"],
     ["gallery","追加画像","カンマ区切り。例: a.jpg, b.jpg"],
     ["docs","資料リンク","外部ドキュメントのURL（あれば）"],
     ["id","ID（変えない）","URLに使われます"]
@@ -151,6 +154,12 @@ if(top!==self){top.location=self.location}
     ["concept.en","コンセプト（英語）",""],
     ["detail.ja","詳細ページ本文（日本語）","空行で段落を分ける"],
     ["detail.en","詳細ページ本文（英語）",""],
+    ["process.ja","制作の背景（日本語）","### 見出し、空行で段落。詳細本文のあとに表示"],
+    ["process.en","制作の背景（英語）",""],
+    ["video_caption.ja","動画の説明（日本語）","試作の年月、音声の有無など"],
+    ["video_caption.en","動画の説明（英語）",""],
+    ["gallery_caption.ja","追加画像の説明（日本語）",""],
+    ["gallery_caption.en","追加画像の説明（英語）",""],
     ["note.ja","補足（日本語）","詳細ページ末尾の小さな一行。なければ空でOK"],
     ["note.en","補足（英語）",""]
   ];
@@ -161,6 +170,12 @@ if(top!==self){top.location=self.location}
     ["hero_sub_en","名前の下の行（英語表示時）",""]
   ];
   var SITE_SECTIONS = [
+    ["intro.ja","トップの紹介文（日本語）","空行で段落を分ける"],
+    ["intro.en","トップの紹介文（英語）",""],
+    ["collaboration.title.ja","共同制作への入口・見出し（日本語）",""],
+    ["collaboration.title.en","共同制作への入口・見出し（英語）",""],
+    ["collaboration.ja","共同制作への入口・本文（日本語）",""],
+    ["collaboration.en","共同制作への入口・本文（英語）",""],
     ["essay.title","エッセイのタイトル",""],
     ["essay.ja","エッセイ本文","空行で段落を分ける"],
     ["essay.date.ja","エッセイの日付（日本語）",""],
