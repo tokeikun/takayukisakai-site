@@ -49,9 +49,9 @@ def render_work_card(h, s, featured=False):
     wid = h["id"]
     loading = 'fetchpriority="high"' if h.get("featured") == "1" else 'loading="lazy"'
     out = [f'    <!-- {h["title"]} -->', f'    <article class="work" id="c-{wid}">',
-           f'      <a class="worklink" href="works/{wid}/">',
-           f'        <div class="img"><img src="assets/{h["image"]}" alt="{h["title"]}" {loading} decoding="async"></div>',
-           f'        <div class="cap"><h2>{h["title"]}</h2><span class="yr">{h["year"]}</span></div>',
+           f'      <a class="worklink" href="/works/{wid}/">',
+           f'        <div class="img rv"><img src="/assets/{h["image"]}" alt="{h["title"]}" {loading} decoding="async"{img_attrs(h["image"])} style="view-transition-name:vt-{wid}"></div>',
+           f'        <div class="cap rv"><h2>{mixed(h["title"])}</h2><span class="yr">{h["year"]}</span></div>',
            '      </a>']
     if s.get("desc.ja"): out.append(f'      <p class="desc ja">{inline_md(s["desc.ja"])}</p>')
     if s.get("desc.en"): out.append(f'      <p class="desc en">{inline_md(s["desc.en"])}</p>')
@@ -65,7 +65,7 @@ def render_work_card(h, s, featured=False):
         out.append('      </div>')
     ja_label = "映像と制作の背景 →" if h.get("video") or h.get("video_file") else "作品と制作の背景 →"
     en_label = "Film &amp; story →" if h.get("video") or h.get("video_file") else "Explore the work →"
-    out.append(f'      <a class="more" href="works/{wid}/">{bi(ja_label,en_label)}</a>')
+    out.append(f'      <a class="more rv" href="/works/{wid}/">{bi(ja_label,en_label)}</a>')
     out.append('    </article>')
     return "\n".join(out)
 
@@ -114,6 +114,48 @@ SITE = "https://takayukisakai.com"
 def esc(t):
     return (t or "").replace('"','&quot;')
 
+HEAD_COMMON = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
+  '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
+  '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500&family=Cormorant+Garamond:wght@400;500&display=swap">')
+
+import struct
+_size_cache={}
+def img_size(fname):
+    """assets/ 内の jpg/png の (w,h)。読めなければ None"""
+    if not fname: return None
+    if fname in _size_cache: return _size_cache[fname]
+    path=os.path.join(ROOT,"assets",fname); r=None
+    try:
+        with open(path,"rb") as f:
+            head=f.read(26)
+            if head[:8]==b"\x89PNG\r\n\x1a\n":
+                r=struct.unpack(">II",head[16:24])
+            elif head[:2]==b"\xff\xd8":
+                f.seek(2)
+                while True:
+                    b=f.read(1)
+                    while b and b!=b"\xff": b=f.read(1)
+                    while b==b"\xff": b=f.read(1)
+                    if not b: break
+                    m=b[0]
+                    if m in (0xC0,0xC1,0xC2,0xC3,0xC5,0xC6,0xC7,0xC9,0xCA,0xCB,0xCD,0xCE,0xCF):
+                        f.read(3); hgt,wid=struct.unpack(">HH",f.read(4)); r=(wid,hgt); break
+                    ln=struct.unpack(">H",f.read(2))[0]; f.seek(ln-2,1)
+    except Exception: r=None
+    _size_cache[fname]=r; return r
+
+def thumb_src(fname):
+    """assets/thumbs/ に縮小版があればそれを使う"""
+    return f"/assets/thumbs/{fname}" if fname and os.path.exists(os.path.join(ROOT,"assets","thumbs",fname)) else f"/assets/{fname}"
+
+def img_attrs(fname):
+    r=img_size(fname)
+    return f' width="{r[0]}" height="{r[1]}"' if r else ""
+
+def mixed(title):
+    """欧文の連なりを <span class=lt> で包む（和欧混植用）"""
+    return re.sub(r"([A-Za-z0-9][A-Za-z0-9 &'\u2019\-\u2014:.,!?/]*[A-Za-z0-9.!?]|[A-Za-z0-9])", r'<span class="lt">\1</span>', title)
+
 def header_brand(head):
     name = head.get("hero_name", "堺 崇行")
     return f'<a class="brand" href="/" aria-label="{name} / Takayuki Sakai — Home"><span class="nm">{name}</span><span class="brand-roman">TAKAYUKI SAKAI</span></a>'
@@ -134,7 +176,8 @@ def render_work_page(h, s, style, ga, all_works=None, site_head=None):
 <meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{SITE}/works/{wid}/">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-<meta name="theme-color" content="#faf9f5">
+<meta name="theme-color" content="#f6f5f0">
+{HEAD_COMMON}
 <meta property="og:type" content="article">
 <meta property="og:url" content="{SITE}/works/{wid}/">
 <meta property="og:title" content="{esc(title)} — 堺 崇行">
@@ -178,29 +221,39 @@ def render_work_page(h, s, style, ga, all_works=None, site_head=None):
 <div class="wlayout">
 <main class="wpage">""")
     parts.append('  <a class="back" href="/#works"><span class="ja">← 作品にもどる</span><span class="en">← back to works</span></a>')
-    parts.append(f'  <h1>{title}</h1>')
+    parts.append(f'  <h1>{mixed(title)}</h1>')
     parts.append(f'  <p class="dyr">{h.get("year_detail", h.get("year",""))}</p>')
     if h.get("video_file"):
         poster = h.get("video_poster") or img
         poster_attr = f' poster="/assets/{poster}"' if poster else ''
-        parts.append(f'  <div class="video hero-film"><video controls playsinline preload="metadata"{poster_attr} aria-label="{esc(title)} — film"><source src="/assets/{h["video_file"]}" type="video/mp4"></video></div>')
+        parts.append(f'  <div class="video hero-film" style="view-transition-name:vt-{wid}"><video controls playsinline preload="metadata"{poster_attr} aria-label="{esc(title)} — film"><source src="/assets/{h["video_file"]}" type="video/mp4"></video></div>')
+        if s.get("video_caption.ja") or s.get("video_caption.en"):
+            parts.append(f'  <p class="film-caption">{bi(s.get("video_caption.ja",""),s.get("video_caption.en",""))}</p>')
+    elif h.get("video") and video_embed(h["video"])[0]:
+        emb,label=video_embed(h["video"]); poster=h.get("video_poster") or img
+        pimg = f'<img src="/assets/{poster}" alt="{esc(title)}" fetchpriority="high" decoding="async"{img_attrs(poster)}>' if poster else ''
+        sep = '&' if '?' in emb else '?'
+        parts.append(f'  <div class="video yt hero-film" style="view-transition-name:vt-{wid}" data-src="{emb}{sep}autoplay=1&rel=0" data-title="{esc(title)} — film">{pimg}<button class="play" type="button" aria-label="{esc(title)} — 映像を再生"><span><i></i>Play — {label}</span></button></div>')
         if s.get("video_caption.ja") or s.get("video_caption.en"):
             parts.append(f'  <p class="film-caption">{bi(s.get("video_caption.ja",""),s.get("video_caption.en",""))}</p>')
     elif img:
-        parts.append(f'  <div class="hero-img"><img src="/assets/{img}" alt="{esc(title)}"></div>')
+        parts.append(f'  <div class="hero-img"><img src="/assets/{img}" alt="{esc(title)}" fetchpriority="high" decoding="async"{img_attrs(img)} style="view-transition-name:vt-{wid}"></div>')
     fact = bi(inline_md(s.get("fact.ja","")), inline_md(s.get("fact.en","")))
     if h.get("docs"):
         fact += f' ／ <a href="{h["docs"]}" target="_blank" rel="noopener">documentation ↗</a>'
     if fact: parts.append(f'  <p class="fact">{fact}</p>')
     if h.get("video"):
         emb,label=video_embed(h["video"])
-        if emb and not h.get("video_file"):
-            parts.append(f'  <div class="video"><iframe src="{emb}" loading="lazy" allowfullscreen title="{esc(title)} — film"></iframe></div>')
+        if False:
+            poster = h.get("video_poster") or img
+            pimg = f'<img src="/assets/{poster}" alt="" loading="lazy"{img_attrs(poster)}>' if poster else ''
+            sep = '&' if '?' in emb else '?'
+            parts.append(f'  <div class="video yt" data-src="{emb}{sep}autoplay=1&rel=0" data-title="{esc(title)} — film">{pimg}<button class="play" type="button" aria-label="{esc(title)} — 映像を再生"><span><i></i>Play — {label}</span></button></div>')
         if emb:
             parts.append(f'  <a class="vlink" href="{h["video"]}" target="_blank" rel="noopener">▶ <span class="ja">映像を見る（{label}）</span><span class="en">watch the film ({label})</span> ↗</a>')
     gallery_html = ""
     if h.get("gallery"):
-        gis="".join(f'<div class="gi"><img src="/assets/{g.strip()}" alt="{esc(title)} — detail" loading="lazy"></div>' for g in h["gallery"].split(","))
+        gis="".join(f'<div class="gi rv"><img src="/assets/{g.strip()}" alt="{esc(title)} — detail" loading="lazy" decoding="async"{img_attrs(g.strip())}></div>' for g in h["gallery"].split(","))
         gallery_html = f'  <div class="gallery">{gis}</div>'
         if s.get("gallery_caption.ja") or s.get("gallery_caption.en"):
             gallery_html += f'<p class="film-caption">{bi(s.get("gallery_caption.ja",""),s.get("gallery_caption.en",""))}</p>'
@@ -223,25 +276,27 @@ def render_work_page(h, s, style, ga, all_works=None, site_head=None):
     parts.append('  <section class="work-contact"><h2><span class="ja">この作品から、話してみる。</span><span class="en">Start a conversation.</span></h2><p><span class="ja">気になったことや、一緒に試してみたいことがあれば。共同制作・展示について、お話しできればうれしいです。</span><span class="en">If this brings something to mind, or something you would like to try together, I would love to hear from you about a collaboration or exhibition.</span></p><a class="more" href="/contact/"><span class="ja">ご相談はこちら →</span><span class="en">Get in touch →</span></a></section>')
     parts.append('  </main>')
     if all_works:
-        side=['<aside class="wside">','  <p class="slabel"><span class="ja">作品　WORKS</span><span class="en">WORKS</span></p>']
+        ids=[oh["id"] for oh,_ in all_works]; i=ids.index(wid) if wid in ids else 0
+        prev_w=all_works[i-1][0]; next_w=all_works[(i+1)%len(all_works)][0]
+        def pn(w,cls,lbl_ja,lbl_en):
+            return (f'  <a class="{cls}" href="/works/{w["id"]}/" data-img="/assets/{w.get("image") or w.get("thumb") or ""}">'
+                    f'<span class="lbl"><span class="ja">{lbl_ja}</span><span class="en">{lbl_en}</span></span><span class="t">{mixed(w["title"])}</span></a>')
+        parts.append('<nav class="pn" aria-label="前後の作品">'+pn(prev_w,"prev","← 前の作品","← Previous")+pn(next_w,"next","次の作品 →","Next →")+'</nav>')
+        side=['<aside class="wside">','  <p class="slabel"><span class="ja">作品　Works</span><span class="en">Works</span></p>']
         for oh,_os in all_works:
             oid=oh["id"]; cur=' class="cur"' if oid==wid else ''
             timg=oh.get("thumb") or oh.get("image")
-            tn=f'<img src="/assets/{timg}" alt="" loading="lazy">' if timg else f'<span class="ni">{(oh["title"].strip()[:1]).upper()}</span>'
-            side.append(f'  <a href="/works/{oid}/"{cur}>{tn}<span>{oh["title"]}</span></a>')
+            big=oh.get("image") or oh.get("thumb")
+            tn=f'<img src="{thumb_src(timg)}" alt="" loading="lazy">' if timg else f'<span class="ni">{(oh["title"].strip()[:1]).upper()}</span>'
+            dimg=f' data-img="/assets/{big}"' if big else ''
+            side.append(f'  <a href="/works/{oid}/"{cur}{dimg}>{tn}<span>{mixed(oh["title"])}</span></a>')
         side.append('</aside>')
         parts.append("\n".join(side))
     parts.append("""</div>
-<footer style="max-width:720px;margin:0 auto;padding:0 var(--gut) 60px">
-  <small style="font-size:10.5px;color:var(--soft);letter-spacing:.16em">© 堺 崇行 / Takayuki Sakai — <a href="/" style="color:var(--soft)">takayukisakai.com</a></small>
+<footer style="max-width:1240px;margin:0 auto;padding:30px var(--gut) 50px;border-top:0">
+  <small>© 堺 崇行 / Takayuki Sakai — <a href="/" style="color:var(--soft);text-decoration:none">takayukisakai.com</a></small>
 </footer>
-<script>
-var body=document.body,lang=document.getElementById("lang");
-function setLang(l){body.dataset.lang=l;document.documentElement.lang=l;lang.textContent=l==="ja"?"EN":"日本語";try{localStorage.setItem("lang",l)}catch(e){}}
-lang.addEventListener("click",function(){setLang(body.dataset.lang==="ja"?"en":"ja")});
-var sv=null;try{sv=localStorage.getItem("lang")}catch(e){}
-setLang(sv==="en"?"en":"ja");
-</script>
+<script src="/assets/site.js" defer></script>
 </body>
 </html>""")
     return "\n".join(parts)
@@ -310,7 +365,8 @@ def render_page(h, s, style, ga, site_head, plinks):
 {robots}
 <link rel="canonical" href="{SITE}/{slug}/">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-<meta name="theme-color" content="#faf9f5">
+<meta name="theme-color" content="#f6f5f0">
+{HEAD_COMMON}
 <meta property="og:type" content="website">
 <meta property="og:url" content="{SITE}/{slug}/">
 <meta property="og:title" content="{esc(tja)} — 堺 崇行">
@@ -358,13 +414,7 @@ def render_page(h, s, style, ga, site_head, plinks):
   <div class="links" style="display:flex;gap:24px;font-size:13px;letter-spacing:.08em;flex-wrap:wrap;margin-bottom:24px">{plinks}</div>
   <small style="font-size:10.5px;color:var(--soft);letter-spacing:.16em">© 堺 崇行 / Takayuki Sakai — <a href="/" style="color:var(--soft)">takayukisakai.com</a></small>
 </footer>
-<script>
-var body=document.body,lang=document.getElementById("lang");
-function setLang(l){{body.dataset.lang=l;document.documentElement.lang=l;lang.textContent=l==="ja"?"EN":"日本語";try{{localStorage.setItem("lang",l)}}catch(e){{}}}}
-lang.addEventListener("click",function(){{setLang(body.dataset.lang==="ja"?"en":"ja")}});
-var sv=null;try{{sv=localStorage.getItem("lang")}}catch(e){{}}
-setLang(sv==="en"?"en":"ja");
-</script>
+<script src="/assets/site.js" defer></script>
 </body>
 </html>"""
 
@@ -390,12 +440,16 @@ def main():
     rows = ('\n    <div style="margin-top:8vh">\n' + "\n".join(rows_items) + "\n    </div>") if rows_items else ""
     details = "\n\n".join(render_detail(h, s) for h, s in works)
     index_items = []
+    featured_ids = {h["id"] for h,_ in featured_works}
     for h, _s in works:
-        href = "works/"+h["id"]+"/"
+        href = "/works/"+h["id"]+"/"
         timg = h.get("thumb") or h.get("image")
+        big = h.get("image") or h.get("thumb")
         initial = (h["title"].strip()[:1]).upper()
-        thumb = f'<img src="assets/{timg}" alt="" loading="lazy">' if timg else f'<span class="noimg">{initial}</span>'
-        index_items.append(f'      <a href="{href}">{thumb}<span class="t">{h["title"]}</span><span class="y">{h["year"]}</span></a>')
+        vt = f' style="view-transition-name:vt-{h["id"]}"' if (timg and h["id"] not in featured_ids) else ''
+        thumb = f'<img src="{thumb_src(timg)}" alt="" loading="lazy"{vt}>' if timg else f'<span class="noimg">{initial}</span>'
+        dimg = f' data-img="/assets/{big}"' if big else ''
+        index_items.append(f'      <a href="{href}"{dimg}>{thumb}<span class="t">{mixed(h["title"])}</span><span class="y">{h["year"]}</span></a>')
     windex = '<nav class="windex">\n' + "\n".join(index_items) + '\n    </nav>'
 
     sh, ss = parse_md(os.path.join(ROOT, "content/site.md"))
@@ -421,7 +475,7 @@ def main():
     cred = bi(block_md(ss.get("cred.ja","")), block_md(ss.get("cred.en","")), "div")
     contact = bi(ss.get("contact.ja",""), ss.get("contact.en",""))
 
-    out = tpl.replace("<!--HEADER_BRAND-->", header_brand(sh))
+    out = tpl.replace("<!--HEADER_BRAND-->", header_brand(sh)).replace("<!--HEAD_COMMON-->", HEAD_COMMON)
     out = out.replace("<!--HERO_ROLE-->", sh.get("hero_role", "Artist / Design Engineer"))
     out = out.replace("<!--HERO_NAME-->", sh.get("hero_name", "堺 崇行"))
     out = out.replace("<!--HERO_SUB-->", bi(sh.get("hero_sub_ja", "Takayuki Sakai — Tokyo"), sh.get("hero_sub_en", "堺 崇行 — Tokyo")))
