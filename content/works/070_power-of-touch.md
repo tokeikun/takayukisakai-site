@@ -3,7 +3,10 @@ title: Power of Touch
 card: yes
 year: 2019
 year_detail: 2019
-image: power_of_touch.jpg
+image: power_of_touch_hand.jpg
+video_file: power-of-touch_2019.mp4
+video_poster: power_of_touch_hand.jpg
+gallery: power_of_touch.jpg
 docs: https://fabacademy.org/2019/labs/kannai/students/takayuki-sakai/projects/final-project/
 
 ## desc.ja
@@ -23,6 +26,12 @@ Physical computing — ATtiny44 / Peltier cell / servo / Fusion 360 / laser cut 
 
 ## concept.en
 This idea came from my interest in visualizing power that people have but isn't noticed — like a parent's hand healing pain.
+
+## video_caption.ja
+Fab Academy 2019 最終プレゼンテーション映像 ／ 約1分 ／ 音声あり
+
+## video_caption.en
+Fab Academy 2019 final presentation film / approx. 1 min / with sound
 
 ## detail.ja
 手のひらの体温で動く人工植物。ペルチェ素子が熱を受けとると、サーボが花をまわしはじめる。「人が持っているのに、気づかれていない力を可視化する」——痛いところに当てられた親の手が、なぜか効くように。回路設計から筐体まで、自分の手でつくった。
